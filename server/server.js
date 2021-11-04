@@ -22,4 +22,6 @@ app.get("/", (req, res) => {
     res.send("Server is running");
 });
 
+app.use('/reservations', require('./routes/reservations'));
+
 app.listen(PORT, () => console.log("Server is Running..."));
