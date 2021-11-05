@@ -5,7 +5,7 @@ const Reservation = require('../models/reservation');
 router.get('/', (req, res) => {
   Reservation.findAll()
     .then((reservations) => {
-      res.send(`find successfully: ${reservations}`);
+      res.send(reservations);
     })
     .catch(err => res.status(500).send(err));
 });
@@ -15,7 +15,7 @@ router.get('/:reservationId', (req, res) => {
   Reservation.findOneById(req.params.reservationId)
     .then((reservation) => {
       if (!reservation) return res.status(404).send({ err: 'Reservation not found' });
-      res.send(`findOne successfully: ${reservation}`);
+      res.send(reservation);
     })
     .catch(err => res.status(500).send(err));
 });
