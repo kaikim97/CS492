@@ -23,5 +23,6 @@ app.get("/", (req, res) => {
 });
 
 app.use('/reservations', require('./routes/reservations'));
+app.use('/halls', require('./routes/halls'));
 
 app.listen(PORT, () => console.log("Server is Running..."));
