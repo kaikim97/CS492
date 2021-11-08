@@ -31,12 +31,14 @@ router.post('/', (req, res) => {
       else if (hall.available < req.body.seats) return res.status(404).send({
           err: "Not enough seats"
       });
-      hall.available = hall.available - req.body.seats;
-      hall.save();
-      return Reservation.create(req.body);
-  })
-  .then(reservation => {
-    res.send(reservation)
+      
+      Reservation.create(req.body)
+        .then(reservation => {
+          hall.available = hall.available - req.body.seats;
+          hall.save();
+          res.send(reservation);
+        })
+        .catch(err=>res.status(500).send(err));
   })
   .catch(err => res.status(500).send(err));  
 });
