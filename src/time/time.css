@@ -1,0 +1,45 @@
+.time_tbl table {
+  font-family: '돋움',Dotum,Helvetica;
+  /* width: 40%; */
+  margin-top: 10%;
+  /* margin-bottom: -1px; */
+  margin-left : 10%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: #6C6C6C;
+  /* border: 2px solid #f2f2f2; */
+}
+
+
+.time_tbl tbody td {
+  /* width: 100px; */
+  font-family: '돋움',Dotum,Helvetica;
+  /* padding: 20px 0 7px; */
+}
+
+.firstCol {
+  /* float: right; */
+  margin-right: 20px;
+  padding: 15px 50px 15px;
+  /* border-bottom: 0px solid #f2f2f2; */
+  color: #6C6C6C;
+  text-align: right;
+  font-size: 50px;
+  letter-spacing :2px; 
+  /* background-color: #b4b4b4; */
+  border-radius: 10px;
+
+}
+
+
+.ampm {
+  font-size: 30px;
+  margin-left: 20px;
+  pointer-events: none;
+}
+
+.seat{
+  font-size: 17px;
+  letter-spacing :0px; 
+  margin-left: 20px;
+}

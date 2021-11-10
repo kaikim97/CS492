@@ -1,8 +1,27 @@
 import "./App.css";
-import PersonalInfo from "./PersonalInfo";
+import TimeTable from "./time/timeTable";
 
 function App() {
-  return <div></div>;
+  return (
+    // <div className="App">
+    //   <header className="App-header">
+    //     <img src={logo} className="App-logo" alt="logo" />
+    //     <p>
+    //       Edit <code>src/App.js</code> and save to reload.
+    //     </p>
+    //     <a
+    //       className="App-link"
+    //       href="https://reactjs.org"
+    //       target="_blank"
+    //       rel="noopener noreferrer"
+    //     >
+    //       Learn React
+    //     </a>
+    //   </header>
+    // </div>
+
+    <TimeTable />
+  );
 }
 
 export default App;
