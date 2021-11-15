@@ -29,6 +29,7 @@ router.post('/', (req, res) => {
         .catch(err => res.status(500).send(err));
 });
 
+// Delete hall
 router.delete('/:time', (req,res) => {
     Hall.deleteByTime(req.params.time)
         .then(() => res.sendStatus(200))
