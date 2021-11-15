@@ -25,12 +25,12 @@ hallSchema.statics.findAll = function () {
     return this.find({});
 }
 
-hallSchema.statics.findOneByTime = function (t) {
-    return this.findOne({time:t});
+hallSchema.statics.findOneByInfo = function (title, date, time) {
+    return this.findOne({title: title, date: date, time:time});
 }
 
-hallSchema.statics.deleteByTime = function (t) {
-    return this.remove({time:t});
+hallSchema.statics.deleteByInfo = function (title, date, time) {
+    return this.remove({title: title, date: date, time:time});
 }
 
 
