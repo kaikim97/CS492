@@ -1,6 +1,7 @@
 import "./App.css";
-import axios from "axios";
+import api from "./api";
 import TimeTable from "./time/timeTable";
+import PersonalInfo from "./PersonalInfo";
 
 function App() {
   return (
@@ -21,7 +22,7 @@ function App() {
     //   </header>
     // </div>
 
-    <TimeTable />
+    <PersonalInfo />
   );
 }
 

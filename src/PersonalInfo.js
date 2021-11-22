@@ -2,8 +2,30 @@ import "./PersonalInfo.css";
 import { useState } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import api from "./api";
 
 export default function PersonalInfo() {
+  const data = api.getAllReservations().then((response) => {
+    console.log(response.data);
+  });
+
+  const data2 = api.getAllHalls().then((response) => {
+    console.log(response.data);
+  });
+  //name, phone, title, date, time, seats
+  const createReservation = api
+    .createReservation({
+      name: "SeokHwan",
+      phone: "01051995990",
+      title: "Eternals",
+      date: "211115",
+      time: "1300",
+      seats: ["F11", "F12"],
+    })
+    .then((response) => {
+      console.log(response);
+    });
+
   const [time, setTime] = useState("1230");
   const [seat, setSeat] = useState(["F11", "F12"]);
   const [phone, setPhone] = useState("");
