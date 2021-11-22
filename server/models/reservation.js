@@ -1,17 +1,17 @@
 const mongoose = require("mongoose");
 
 // Define Schemes
-const reservationSchema = new mongoose.Schema(
-  {
-    name: { type: String, required: true },
-    phone: { type: String, required: true },
-    time: { type: String, required: true },
-    seats: { type: Number, required: true },
-  },
-  {
-    timestamps: true,
-  }
-);
+const reservationSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  phone: { type: String, required: true },
+  title: { type: String, require: true },
+  date: { type: String, required: true },
+  time: { type: String, required: true },
+  seats: { type: [String], required: true }
+},
+{
+  timestamps: true
+});
 
 reservationSchema.statics.create = function (payload) {
   const reservation = new this(payload);

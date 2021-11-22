@@ -23,18 +23,24 @@ router.get('/:reservationId', (req, res) => {
 
 // Create new reservation
 router.post('/', (req, res) => {
-  Hall.findOneByTime(req.body.time)
+  Hall.findOneByInfo(req.body.title, req.body.date, req.body.time)
   .then((hall) => {
       if (!hall) return res.status(404).send({
           err: 'Hall not found'
       });
-      else if (hall.available < req.body.seats) return res.status(404).send({
-          err: "Not enough seats"
-      });
       
+      req.body.seats.forEach(function(seatID) {
+        if(hall.occupied.has(seatID) && hall.occupied.get(seatID)==true) {
+          return res.status(404).send({err: "Already reserved seat"});
+        }
+      });
+
       Reservation.create(req.body)
         .then(reservation => {
-          hall.available = hall.available - req.body.seats;
+          hall.available = hall.available - req.body.seats.length;
+          req.body.seats.forEach(function(seatID) {
+            hall.occupied.set(seatID, true);
+          });
           hall.save();
           res.send(reservation);
         })
@@ -47,9 +53,12 @@ router.post('/', (req, res) => {
 router.delete('/:reservationId', (req, res) => {
   Reservation.findOneById(req.params.reservationId)
   .then((reservation) => {
-      Hall.findOneByTime(reservation.time)
+      Hall.findOneByInfo(reservation.title, reservation.date, reservation.time)
       .then((hall) => {
-        hall.available = hall.available + reservation.seats;
+        hall.available = hall.available + reservation.seats.length;
+        reservation.seats.forEach(function(seatID) {
+          hall.occupied.delete(seatID);
+        });
         hall.save();
         return Reservation.deleteById(req.params.reservationId) 
       })

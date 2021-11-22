@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 
 const app = express();
-app.use(cors());
 
 const PORT = 80;
 const MONGO_URI =
@@ -12,6 +11,7 @@ const MONGO_URI =
 app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
 mongoose.Promise = global.Promise;
 
