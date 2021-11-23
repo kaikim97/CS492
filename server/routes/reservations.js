@@ -11,6 +11,19 @@ router.get('/', (req, res) => {
     .catch(err => res.status(500).send(err));
 });
 
+// Find One by Birth, Phone
+router.get('/search', (req, res) => {
+  let birth = req.query.birth;
+  let phone = req.query.phone;
+  let password = req.query.password;
+  Reservation.findQuery(birth, phone, password)
+    .then((reservations) => {
+      if (reservations.length == 0) return res.status(404).send({ err: 'Reservation not found or invalid password' });
+      res.send(reservations);
+    })
+    .catch(err => res.status(500).send(err));
+});
+
 // Find One by Id
 router.get('/:reservationId', (req, res) => {
   Reservation.findOneById(req.params.reservationId)
