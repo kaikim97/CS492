@@ -1,28 +1,14 @@
 import "./App.css";
-import api from "./api";
-import TimeTable from "./time/timeTable";
-import PersonalInfo from "./PersonalInfo";
+import axios from "axios";
+import TimeTable from "./components/time/timeTable";
+import Seat from "./components/seat/seat";
 
 function App() {
   return (
-    // <div className="App">
-    //   <header className="App-header">
-    //     <img src={logo} className="App-logo" alt="logo" />
-    //     <p>
-    //       Edit <code>src/App.js</code> and save to reload.
-    //     </p>
-    //     <a
-    //       className="App-link"
-    //       href="https://reactjs.org"
-    //       target="_blank"
-    //       rel="noopener noreferrer"
-    //     >
-    //       Learn React
-    //     </a>
-    //   </header>
-    // </div>
-
-    <PersonalInfo />
+    <div style={{ display: "flex", flexDirection: "row" }}>
+      <TimeTable />
+      <Seat />
+    </div>
   );
 }
 
