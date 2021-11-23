@@ -16,6 +16,7 @@ export default function PersonalInfo() {
   });
   //name, phone, title, date, time, seats
 
+  const [date, setDate] = useState("20211103");
   const [title, setTitle] = useState("듄");
   const [time, setTime] = useState("1230");
   const [seat, setSeat] = useState(["F11", "F12"]);
@@ -64,8 +65,47 @@ export default function PersonalInfo() {
     }
   };
 
+  const parseDate = (date) => {
+    const temp =
+      date.slice(0, 4) + "," + date.slice(4, 6) + "," + date.slice(6);
+
+    const dateString = new Date(temp);
+    const dayInt = dateString.getDay();
+    console.log(dayInt);
+
+    const dayString =
+      dayInt == 0
+        ? "일"
+        : dayInt == 1
+        ? "월"
+        : dayInt == 2
+        ? "화"
+        : dayInt == 3
+        ? "수"
+        : dayInt == 4
+        ? "목"
+        : dayInt == 5
+        ? "금"
+        : "토";
+
+    console.log(dayString);
+
+    const result =
+      date.slice(0, 4) +
+      "." +
+      date.slice(4, 6) +
+      "." +
+      date.slice(6) +
+      "(" +
+      dayString +
+      ")";
+
+    return result;
+  };
+
   const parseTime = (time) => {
-    const temp = time.slice(0, 2) + ":" + time.slice(2);
+    const amPm = time > 1200 ? "PM" : "AM";
+    const temp = time.slice(0, 2) + ":" + time.slice(2) + amPm;
     return temp;
   };
 
@@ -93,7 +133,7 @@ export default function PersonalInfo() {
             <div id="title">{title}</div>
 
             <div id="dateTime">
-              <p> 2021.11.03(수)</p>
+              <p> {parseDate(date)}</p>
               <p> {parseTime(time)}</p>
             </div>
             <div id="seatPrice">
