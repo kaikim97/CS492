@@ -5,9 +5,9 @@ import Seat from "./components/seat/seat";
 
 function App() {
   return (
-    <div style={{ display: 'flex', flexDirection: 'row' }}>
-        <TimeTable />
-        <Seat />
+    <div style={{ display: "flex", flexDirection: "row" }}>
+      <TimeTable />
+      <Seat />
     </div>
   );
 }

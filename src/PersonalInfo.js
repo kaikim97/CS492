@@ -1,18 +1,46 @@
 import "./PersonalInfo.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import Modal from "@mui/material/Modal";
+import Paper from "@mui/material/Paper";
+import api from "./api";
 
 export default function PersonalInfo() {
+  const data = api.getAllReservations().then((response) => {
+    console.log(response.data);
+  });
+
+  const data2 = api.getAllHalls().then((response) => {
+    console.log(response.data);
+  });
+  //name, phone, title, date, time, seats
+
+  const [date, setDate] = useState("20211103");
+  const [title, setTitle] = useState("듄");
   const [time, setTime] = useState("1230");
   const [seat, setSeat] = useState(["F11", "F12"]);
+  const [birthday, setBirthday] = useState("");
   const [phone, setPhone] = useState("");
   const [pwd, setPwd] = useState("");
   const [pwdConfirm, setPwdConfirm] = useState("");
   const [done, setDone] = useState(false);
+  const [open, setOpen] = useState(true);
+  const [buttonDisabled, setButtonDisabled] = useState(true);
+
+  useEffect(() => {
+    if (phone.length >= 10 && pwd.length == 4 && pwdConfirm.length == 4) {
+      setButtonDisabled(false);
+    } else {
+      setButtonDisabled(true);
+    }
+  }, [phone, pwd, pwdConfirm]);
 
   const handleChange = (event) => {
     switch (event.target.id) {
+      case "birthday":
+        setBirthday(event.target.value);
+        break;
       case "phone":
         setPhone(event.target.value);
         break;
@@ -37,8 +65,47 @@ export default function PersonalInfo() {
     }
   };
 
+  const parseDate = (date) => {
+    const temp =
+      date.slice(0, 4) + "," + date.slice(4, 6) + "," + date.slice(6);
+
+    const dateString = new Date(temp);
+    const dayInt = dateString.getDay();
+    console.log(dayInt);
+
+    const dayString =
+      dayInt == 0
+        ? "일"
+        : dayInt == 1
+        ? "월"
+        : dayInt == 2
+        ? "화"
+        : dayInt == 3
+        ? "수"
+        : dayInt == 4
+        ? "목"
+        : dayInt == 5
+        ? "금"
+        : "토";
+
+    console.log(dayString);
+
+    const result =
+      date.slice(0, 4) +
+      "." +
+      date.slice(4, 6) +
+      "." +
+      date.slice(6) +
+      "(" +
+      dayString +
+      ")";
+
+    return result;
+  };
+
   const parseTime = (time) => {
-    const temp = time.slice(0, 2) + ":" + time.slice(2);
+    const amPm = time > 1200 ? "PM" : "AM";
+    const temp = time.slice(0, 2) + ":" + time.slice(2) + amPm;
     return temp;
   };
 
@@ -60,77 +127,112 @@ export default function PersonalInfo() {
     </div>
   ) : (
     <div>
-      <h3>예약 내역을 확인하고 개인정보를 입력해 주세요.</h3>
+      <Modal open={open}>
+        <div id="modalRoot">
+          <div id="firstHalf">
+            <div id="title">{title}</div>
 
-      <div id="check">
-        <h3>예약확인</h3>
-        <p>시간: {parseTime(time)}</p>
-        <p>좌석: {seat.join(", ")}</p>
-      </div>
+            <div id="dateTime">
+              <p> {parseDate(date)}</p>
+              <p> {parseTime(time)}</p>
+            </div>
+            <div id="seatPrice">
+              <p>{seat.join(", ")}</p>
+              <p>198,000원</p>
+            </div>
+          </div>
+          <hr className="solid" />
 
-      <div id="enterInfo">
-        <h3 className="subtitle">개인정보 입력</h3>
-        <div className="textfield">
-          <h4 className="subtitle">휴대폰 번호</h4>
-          <TextField
-            id="phone"
-            value={phone}
-            onChange={handleChange}
-            inputProps={{ maxLength: 11 }}
-            size="small"
-          />
+          <div id="bottomHalf">
+            <div id="enterInfo">
+              <div className="textfield">
+                <p className="subtitle">생년월일(6자리)</p>
+                <TextField
+                  id="birthday"
+                  value={birthday}
+                  onChange={handleChange}
+                  inputProps={{ maxLength: 11, style: { marginLeft: "1vw" } }}
+                  InputProps={{
+                    style: { fontSize: "min(1.4vw, 2.3vh)" },
+                  }}
+                  variant="standard"
+                  style={{ width: "60%" }}
+                />
+              </div>
+              <div className="textfield">
+                <p className="subtitle">휴대폰 번호</p>
+                <TextField
+                  id="phone"
+                  value={phone}
+                  onChange={handleChange}
+                  inputProps={{ maxLength: 11, style: { marginLeft: "1vw" } }}
+                  InputProps={{
+                    style: { fontSize: "min(1.4vw, 2.3vh)" },
+                  }}
+                  variant="standard"
+                  style={{ width: "60%" }}
+                />
+              </div>
+              <div className="textfield">
+                <p className="subtitle">비밀번호(4자리)</p>
+                <TextField
+                  id="pwd"
+                  type="password"
+                  value={pwd}
+                  onChange={handleChange}
+                  inputProps={{ maxLength: 11, style: { marginLeft: "1vw" } }}
+                  InputProps={{
+                    style: { fontSize: "min(1.4vw, 2.3vh)" },
+                  }}
+                  variant="standard"
+                  style={{ width: "60%" }}
+                />
+              </div>
+              <div className="textfield">
+                <p className="subtitle">비밀번호 확인</p>
+                <TextField
+                  id="pwdConfirm"
+                  type="password"
+                  value={pwdConfirm}
+                  onChange={handleChange}
+                  inputProps={{ maxLength: 11, style: { marginLeft: "1vw" } }}
+                  InputProps={{
+                    style: { fontSize: "min(1.4vw, 2.3vh)" },
+                  }}
+                  variant="standard"
+                  style={{ width: "60%" }}
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            style={{
+              width: "85%",
+              marginLeft: "7.5%",
+              marginBottom: "1.5vh",
+              textAlign: "center",
+              fontSize: "min(1vw, 1.6vh)",
+            }}
+          >
+            예약 내역이 맞으시면 생년월일과 휴대폰 번호, 비밀번호를 입력 한 후
+            결제를 완료해주세요
+          </div>
+          <div id="payButton">
+            <Button
+              disabled={buttonDisabled}
+              onClick={handleConfirm}
+              style={{
+                backgroundColor: buttonDisabled ? "lightGray" : "#1899F9",
+                fontSize: "min(2.8vh, 1.7vw)",
+                color: "white",
+                width: "85%",
+              }}
+            >
+              결제하기
+            </Button>
+          </div>
         </div>
-        <div className="textfield">
-          <h4 className="subtitle">비밀번호(숫자 4자리)</h4>
-          <TextField
-            id="pwd"
-            type="password"
-            value={pwd}
-            onChange={handleChange}
-            inputProps={{ maxLength: 4 }}
-            size="small"
-          />
-        </div>
-        <div className="textfield">
-          <h4 className="subtitle">비밀번호 확인</h4>
-          <TextField
-            id="pwdConfirm"
-            type="password"
-            value={pwdConfirm}
-            onChange={handleChange}
-            inputProps={{ maxLength: 4 }}
-            size="small"
-          />
-        </div>
-      </div>
-
-      <div id="buttons">
-        <Button
-          disabled={
-            phone.length < 10 || pwd.length !== 4 || pwdConfirm.length !== 4
-          }
-          onClick={handleConfirm}
-          color="info"
-          style={{
-            backgroundColor: "lightGray",
-            margin: "0 2vw",
-            fontSize: "16px",
-            width: "6vw",
-          }}
-        >
-          확인
-        </Button>
-        <Button
-          style={{
-            backgroundColor: "lightGray",
-            margin: "0 2vw",
-            fontSize: "16px",
-            width: "6vw",
-          }}
-        >
-          돌아가기
-        </Button>
-      </div>
+      </Modal>
     </div>
   );
 }
