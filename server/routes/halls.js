@@ -11,8 +11,11 @@ router.get('/', (req, res) =>{
 });
 
 // Find one by time
-router.get('/:time', (req,res) => {
-    Hall.findOneByTime(req.params.time)
+router.get('/hall', (req,res) => {
+    let title = req.query.title;
+    let date = req.query.date;
+    let time = req.query.time;
+    Hall.findOneByInfo(title, date, time)
     .then((hall) => {
         if (!hall) return res.status(404).send({
             err: 'Hall not found'
@@ -29,8 +32,12 @@ router.post('/', (req, res) => {
         .catch(err => res.status(500).send(err));
 });
 
-router.delete('/:time', (req,res) => {
-    Hall.deleteByTime(req.params.time)
+// Delete hall
+router.delete('/hall', (req,res) => {
+    let title = req.query.title;
+    let date = req.query.date;
+    let time = req.query.time;
+    Hall.deleteByInfo(title, date, time)
         .then(() => res.sendStatus(200))
         .catch(err => res.status(500).send(err));
 });
