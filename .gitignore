@@ -1,5 +1,8 @@
 node_modules/.cache
  node_modules/.cache/.eslintcache
+<<<<<<< HEAD
 node_modules
 node_modules
 node_modules
+=======
+>>>>>>> 302efc1c6dc8baf03e7c05922bb29930aebb5977

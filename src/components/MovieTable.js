@@ -7,6 +7,7 @@ import movie3 from "./movies/베놈2.jpg";
 import movie4 from "./movies/강릉.jpg";
 
 import { useNavigate } from "react-router-dom";
+import api from "../api.js";
 
 const movies = [
   { id: 0, name: "듄", poster: movie1 },
@@ -15,6 +16,10 @@ const movies = [
   { id: 3, name: "강릉", poster: movie4 },
   { id: 4, name: "강릉", poster: movie4 },
 ];
+
+const data2 = api.getAllHalls().then((response) => {
+    console.log(response.data);
+  });
 
 const MovieTable = ({ movies = [] }) => {
   const [selected, setSelected] = useState(null);
