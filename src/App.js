@@ -1,25 +1,28 @@
-
 import logo from "./logo.svg";
 import "./App.css";
+import { AuthContext, AuthProvider } from "./context";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import TopBar from "./components/TopBar";
-import MovieTable from "./components/MovieTable";
-import DateAndTimeTable from "./components/DateAndTimeTable";
+import TopBar from "./features/TopBar";
+import MovieTable from "./features/movieTable/MovieTable";
+import DateAndTimeTable from "./features/dateAndTimeTable/DateAndTimeTable";
+import PersonalInfo from "./PersonalInfo";
 
 function App() {
   return (
-    <div className="App">
-      <TopBar />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" exact element={<MovieTable />} />
-          <Route path="/movieInfo" element={<DateAndTimeTable />} />
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <AuthProvider>
+      <div className="App">
+        <TopBar />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" exact element={<MovieTable />} />
+            <Route path="/movieInfo" element={<DateAndTimeTable />} />
+          </Routes>
+        </BrowserRouter>
+        {/* <PersonalInfo /> */}
+      </div>
+    </AuthProvider>
   );
 }
 
 export default App;
-

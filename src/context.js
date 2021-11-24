@@ -1,19 +1,27 @@
 import React, { useReducer, createContext } from "react";
 
 const initialState = {
+  title: "",
   date: "",
   time: "",
 };
 
 const AuthContext = createContext({
+  title: "",
   date: "",
   time: "",
+  setTitle: (title) => {},
   setDate: (date) => {},
   setTime: (time) => {},
 });
 
 function authReducer(state, action) {
   switch (action.type) {
+    case "SETTITLE":
+      return {
+        ...state,
+        title: action.payload,
+      };
     case "SETDATE":
       return {
         ...state,
@@ -29,7 +37,12 @@ function authReducer(state, action) {
 
 function AuthProvider(props) {
   const [state, dispatch] = useReducer(authReducer, initialState);
-
+  function setTitle(title) {
+    dispatch({
+      type: "SETTITLE",
+      payload: title,
+    });
+  }
   function setDate(date) {
     dispatch({
       type: "SETDATE",
@@ -47,8 +60,10 @@ function AuthProvider(props) {
   return (
     <AuthContext.Provider
       value={{
+        title: state.title,
         date: state.date,
         time: state.time,
+        setTitle,
         setDate,
         setTime,
       }}
