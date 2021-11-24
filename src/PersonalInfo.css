@@ -20,10 +20,12 @@
 
 #firstHalf {
   padding-left: 6vw;
-  padding-top: 8vh;
+  padding-right: 6vw;
+  padding-top: 7vh;
 }
 #bottomHalf {
   padding-left: 6vw;
+  padding-right: 6vw;
   padding-top: 2vh;
   margin-bottom: 4vh;
 }
