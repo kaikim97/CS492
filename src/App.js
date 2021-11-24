@@ -1,15 +1,25 @@
+
+import logo from "./logo.svg";
 import "./App.css";
-import axios from "axios";
-import TimeTable from "./components/time/timeTable";
-import Seat from "./components/seat/seat";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import TopBar from "./components/TopBar";
+import MovieTable from "./components/MovieTable";
+import DateAndTimeTable from "./components/DateAndTimeTable";
 
 function App() {
   return (
-    <div style={{ display: "flex", flexDirection: "row" }}>
-      <TimeTable />
-      <Seat />
+    <div className="App">
+      <TopBar />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" exact element={<MovieTable />} />
+          <Route path="/movieInfo" element={<DateAndTimeTable />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
 
 export default App;
+
