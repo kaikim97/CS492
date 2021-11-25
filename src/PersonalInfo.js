@@ -17,9 +17,9 @@ export default function PersonalInfo() {
 
   const context = useContext(AuthContext);
 
-  const [date, setDate] = useState("20211209");
-  const [title, setTitle] = useState("Eternals");
-  const [time, setTime] = useState("1100");
+  const [date, setDate] = useState("20211201");
+  const [title, setTitle] = useState("Dune");
+  const [time, setTime] = useState("2200");
   const [seat, setSeat] = useState(["F16", "F17"]);
   const [birthday, setBirthday] = useState("");
   const [phone, setPhone] = useState("");
