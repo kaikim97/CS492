@@ -51,7 +51,7 @@
 }
 #dateTime {
   display: flex;
-  width: 40%;
+  width: 50%;
   justify-content: space-between;
   font-size: min(2.8vh, 1.8vw);
 }
