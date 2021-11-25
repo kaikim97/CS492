@@ -3,6 +3,7 @@ import React, { useReducer, createContext } from "react";
 const initialState = {
   date: "",
   time: "",
+  seats: [],
 };
 
 const AuthContext = createContext({
@@ -10,6 +11,7 @@ const AuthContext = createContext({
   time: "",
   setDate: (date) => {},
   setTime: (time) => {},
+  setSeats: (seat) => {},
 });
 
 function authReducer(state, action) {
@@ -23,6 +25,11 @@ function authReducer(state, action) {
       return {
         ...state,
         time: action.payload,
+      };
+    case "SETSEATS":
+      return {
+        ...state,
+        seats: action.payload,
       };
   }
 }
@@ -44,13 +51,22 @@ function AuthProvider(props) {
     });
   }
 
+  function setSeats(seat) {
+    dispatch({
+      type: "SETSEATS",
+      payload: seat,
+    });
+  }
+
   return (
     <AuthContext.Provider
       value={{
         date: state.date,
         time: state.time,
+        seats: state.seats,
         setDate,
         setTime,
+        setSeats,
       }}
       {...props}
     />
