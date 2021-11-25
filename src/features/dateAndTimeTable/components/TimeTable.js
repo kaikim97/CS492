@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useContext } from "react";
+import { AuthContext } from "../../../context";
 
 const times = [
   { time: "10:00", seat: 30 },
@@ -13,8 +15,9 @@ const times = [
 
 const TimeTable = ({ times = [] }) => {
   const [selectedTime, setSelectedTime] = useState(null);
+  const context = useContext(AuthContext);
   return (
-    <div class="font-sans mt-10 mx-auto text-gray-500 font-medium">
+    <div class={`font-sans mt-10 mx-auto  font-medium`}>
       <table>
         <tbody>
           {times.map((section) => (
@@ -23,6 +26,7 @@ const TimeTable = ({ times = [] }) => {
               section={section}
               selectedTime={selectedTime}
               setSelectedTime={setSelectedTime}
+              context={context}
             />
           ))}
         </tbody>
@@ -31,20 +35,25 @@ const TimeTable = ({ times = [] }) => {
   );
 };
 
-const TimeRow = ({ section, selectedTime, setSelectedTime }) => {
+const TimeRow = ({ section, selectedTime, setSelectedTime, context }) => {
   const [isShown, setIsShown] = useState(false);
+
+  const ifDateSelected = context.date != "";
+  console.log("ifDateSelectedboolean: ", ifDateSelected);
+
+  console.log("asdfasd ", context.time);
   const { time, seat } = section;
-  const seatWithTotal = seat + "/343";
+  const seatWithTotal = seat + "/551";
   return (
     <tr>
       <td
-        class={`mr-20 py-5 px-10  tracking-wide text-right rounded-md ${
-          selectedTime === null ? "hover:bg-gray-100 hover:text-blue-500" : ""
-        } ${
-          selectedTime === section
-            ? "text-blue-500 bg-gray-100 "
-            : "text-gray-500"
-        } `}
+        class={`mr-20 py-5 px-10 tracking-wide text-right rounded-md ${
+          context.time === "" ? "hover:bg-gray-100 hover:text-blue-500" : ""
+        } ${context.time === section ? "text-blue-500 bg-gray-100 " : ""} ${
+          ifDateSelected
+            ? "text-gray-500 "
+            : "text-gray-200 pointer-events-none"
+        }`}
         onClick={timeClick}
       >
         <span
@@ -72,6 +81,7 @@ const TimeRow = ({ section, selectedTime, setSelectedTime }) => {
   }
   function timeClick(e) {
     setSelectedTime(section);
+    context.setTime(section);
   }
 };
 

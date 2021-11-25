@@ -1,7 +1,11 @@
 import React, { useState } from "react";
+import { useContext } from "react";
+import { AuthContext } from "../../../context";
 
 const DateTable = () => {
   const [selectedDate, setSelectedDate] = useState(null);
+  const context = useContext(AuthContext);
+
   // let today = new Date();
   let today = new Date(2021, 11, 1);
   console.log(dateToString(today).substring(0, 4));
@@ -49,6 +53,7 @@ const DateTable = () => {
               setCurrentYear={setCurrentYear}
               selectedDate={selectedDate}
               setSelectedDate={setSelectedDate}
+              context={context}
             />
           ))}
         </tbody>
@@ -63,6 +68,7 @@ const DateRow = ({
   setCurrentYear,
   selectedDate,
   setSelectedDate,
+  context,
 }) => {
   let cur_year = date.substring(0, 4);
   let cur_month = date.substring(4, 6);
@@ -97,6 +103,8 @@ const DateRow = ({
   );
   function dateClick(e) {
     setSelectedDate(date);
+    context.setDate(date.substring(0, 8));
+    context.setTime("");
   }
 };
 

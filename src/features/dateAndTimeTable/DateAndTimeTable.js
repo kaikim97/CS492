@@ -6,16 +6,16 @@ import TimeTable from "./components/TimeTable";
 import { useContext } from "react";
 import { AuthContext } from "../../context";
 
-const times = [
-  { time: "10:00", seat: 30 },
-  { time: "11:00", seat: 67 },
-  { time: "12:00", seat: 44 },
-  { time: "14:00", seat: 16 },
-  { time: "16:00", seat: 24 },
-  { time: "18:00", seat: 98 },
-  { time: "20:00", seat: 29 },
-  { time: "21:00", seat: 41 },
-];
+// const times = [
+//   { time: "10:00", seat: 30 },
+//   { time: "11:00", seat: 67 },
+//   { time: "12:00", seat: 44 },
+//   { time: "14:00", seat: 16 },
+//   { time: "16:00", seat: 24 },
+//   { time: "18:00", seat: 98 },
+//   { time: "20:00", seat: 29 },
+//   { time: "21:00", seat: 41 },
+// ];
 
 const DateAndTimeTable = ({ times = [] }) => {
   const context = useContext(AuthContext);
@@ -34,8 +34,8 @@ const DateAndTimeTable = ({ times = [] }) => {
         <div class="flex-auto h-5/6 overflow-y-scroll">
           <DateTable />
         </div>
-        <div class="flex-auto">
-          <TimeTable times={times} />
+        <div class="flex-auto h-full overflow-y-scroll">
+          <TimeTable />
         </div>
       </div>
     </div>
@@ -193,4 +193,4 @@ const DateAndTimeTable = ({ times = [] }) => {
 //   }
 // }
 
-export default () => <DateAndTimeTable times={times} />;
+export default () => <DateAndTimeTable />;

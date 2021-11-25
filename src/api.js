@@ -16,7 +16,8 @@ export const deleteReservation = (id) => api.delete("/${id}");
 
 //halls api
 export const getAllHalls = () => api2.get("/");
-export const getHallsByTime = (time) => api2.get("/${time}");
+// export const getHallsByTime = (time) => api2.get("/${time}");
+export const getHallsByInfo = (payload) => api2.get("/hall?" + payload);
 
 const apis = {
   getAllReservations,
@@ -24,7 +25,7 @@ const apis = {
   createReservation,
   deleteReservation,
   getAllHalls,
-  getHallsByTime,
+  getHallsByInfo,
 };
 
 export default apis;
