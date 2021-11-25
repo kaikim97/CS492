@@ -7,6 +7,7 @@ import TopBar from "./components/TopBar";
 import MovieTable from "./components/MovieTable";
 import DateAndTimeTable from "./components/DateAndTimeTable";
 import PersonalInfo from "./PersonalInfo";
+import FindReservation from "./findReservation";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
             <Route path="/" exact element={<MovieTable />} />
             <Route path="/movieInfo" element={<DateAndTimeTable />} />
             <Route path="/personalInfo" element={<PersonalInfo />} />
+            <Route path="/findReservation" element={<FindReservation />} />
           </Routes>
         </BrowserRouter>
       </div>
