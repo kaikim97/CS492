@@ -20,14 +20,14 @@ mongoose
     .catch(e => console.error(e));
 
 const titles = ["Dune", "Eternals", "Venom", "Gangneung"];
-const dates = ["211201", "211202", "211203", "211204", "211205", "211206", "211207"];
+const dates = ["20211201", "20211202", "20211203", "20211204", "20211205", "20211206", "20211207"];
 const times = ["0800", "1000", "1200", "1400", "1600", "1800", "2000", "2200"];
 
-//upload to DB
+// upload to DB
 titles.forEach(title =>
     dates.forEach(date => 
         times.forEach(time =>
-            Hall.create({"title": title, "date": date, "time": time, "available": 500})
+            Hall.create({"title": title, "date": date, "time": time, "available": 551})
             .then(hall => console.log(hall))
             .catch(err => console.log(err))
         )    
