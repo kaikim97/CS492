@@ -1,60 +1,109 @@
 import React, { useRef, useEffect, useContext, useState } from "react";
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import seatData from "./seats-kaist.json";
-import "./seat.css"
+import "./seat.css";
 
 function Seat() {
   const canvasRef = useRef(null);
   const seatMap = seatData.map;
   const seatInfo = seatData.seats;
 
-  // count: # of selected seats
-  const [count, setcount] = useState(0);
+  const [selectedSeat, setSeat] = useState([]);
 
+  // Draw seats
   useEffect(() => {
-    const canvas = canvasRef.current
-    const context = canvas.getContext('2d')
+    const canvas = canvasRef.current;
+    const context = canvas.getContext("2d");
 
-    // Draw seats
-    if (seatInfo != 'undefined' && seatInfo != null) {
-      seatInfo.forEach(seatgroup => {
-        seatgroup.rectangles.forEach(seat => {
+    if (seatInfo != "undefined" && seatInfo != null) {
+      seatInfo.forEach((seatgroup) => {
+        seatgroup.rectangles.forEach((seat) => {
           // Add Seat availablity & id info
           seat.available = true;
           context.fillStyle = seatgroup.color;
-          context.fillRect(seat.lefttop.x, seat.lefttop.y, seat.size.width, seat.size.height);
+          context.fillRect(
+            seat.lefttop.x,
+            seat.lefttop.y,
+            seat.size.width,
+            seat.size.height
+          );
         });
       });
     }
+  }, []);
 
-    canvas.addEventListener('click', function(e) {
-    // Get x, y coordinates
-      var x = e.layerX;
-      var y = e.layerY;
-      seatInfo.forEach(seatgroup => {
-        seatgroup.rectangles.forEach(seat => {
-          // Detect a selected seat
-          if (seat.lefttop.x < x && seat.lefttop.x + seat.size.width > x &&
-            seat.lefttop.y < y && seat.lefttop.y + seat.size.height > y) {
+  // Manage click event
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const context = canvas.getContext("2d");
+
+    canvas.addEventListener(
+      "click",
+      function (e) {
+        // Get x, y coordinates
+        var x = e.offsetX;
+        var y = e.offsetY;
+        seatInfo.forEach((seatgroup) => {
+          seatgroup.rectangles.forEach((seat) => {
+            // Detect a selected seat
+            if (
+              seat.lefttop.x < x &&
+              seat.lefttop.x + seat.size.width > x &&
+              seat.lefttop.y < y &&
+              seat.lefttop.y + seat.size.height > y
+            ) {
               e.preventDefault();
+              // Make a seatNumber
+              // format : "Alphabet + Number" ex) "A10"
+              // Alphabet : A ~ S
+              // Number   : 1 ~ 29
+              var rownum = (seat.lefttop.y - 11) / 30;
+              var row = String.fromCharCode(rownum + 65);
+              var col = (seat.lefttop.x - 17) / 30 + 1;
+              const seatNum = row + String(col);
               if (seat.available) {
-                context.fillStyle = 'grey';
+                context.fillStyle = "grey";
                 seat.available = false;
+                setSeat((selectedSeat) => selectedSeat.concat(seatNum));
               } else {
                 context.fillStyle = seatgroup.color;
                 seat.available = true;
+                setSeat((selectedSeat) =>
+                  selectedSeat.filter((s) => s !== seatNum)
+                );
               }
-              context.fillRect(seat.lefttop.x, seat.lefttop.y, seat.size.width, seat.size.height);
-          }
+              context.fillRect(
+                seat.lefttop.x,
+                seat.lefttop.y,
+                seat.size.width,
+                seat.size.height
+              );
+            }
+          });
         });
-      });
-    }, false);
+      },
+      false
+    );
   }, []);
 
-  return (
-    <div className="seat-layout">
-      <canvas ref={canvasRef} width={seatMap.size.width} height={seatMap.size.height} color={seatMap.background}></canvas>
-    </div>
-  );
-};
+  useEffect(() => {
+    console.log(selectedSeat);
+  }, [selectedSeat]);
 
-export default Seat
+  return (
+    <TransformWrapper doubleClick={{ disabled: true }} maxScale={3}>
+      <TransformComponent>
+        <div className="seat-layout">
+          <canvas
+            ref={canvasRef}
+            width={seatMap.size.width}
+            height={seatMap.size.height}
+            color={seatMap.background}
+          ></canvas>
+        </div>
+      </TransformComponent>
+    </TransformWrapper>
+  );
+}
+
+export default Seat;

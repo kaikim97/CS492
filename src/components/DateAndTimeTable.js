@@ -1,6 +1,6 @@
-
 import React, { useState } from "react";
 import movie1 from "./movies/듄.jpg";
+import Seat from "./seat/seat";
 
 const times = [
   { time: "10:00", seat: 30 },
@@ -14,19 +14,28 @@ const times = [
 ];
 
 const DateAndTimeTable = ({ times = [] }) => {
+  const [isShown, setIsShown] = useState(false);
+
+  function handleChange(newValue) {
+    setIsShown(newValue);
+  }
+
   return (
-    <div class="w-1/3 h-95screen bg-white font-bold">
-      <div class="h-1/5">
-        <img src={movie1} class="w-1/3 h-full object-cover w-full"></img>
-      </div>
-      <div class="flex h-4/5">
-        <div class="flex-auto h-5/6 overflow-y-scroll">
-          <DateTable />
+    <div class="flex">
+      <div class="w-1/3 h-95screen bg-white font-bold">
+        <div class="h-1/5">
+          <img src={movie1} class="w-1/3 h-full object-cover w-full"></img>
         </div>
-        <div class="flex-auto">
-          <TimeTable times={times} />
+        <div class="flex h-4/5">
+          <div class="flex-auto h-5/6 overflow-y-scroll">
+            <DateTable />
+          </div>
+          <div class="flex-auto">
+            <TimeTable times={times} hoverFunc={handleChange} />
+          </div>
         </div>
       </div>
+      <div class="w-2/3"> {isShown && <Seat />}</div>
     </div>
   );
 };
@@ -110,13 +119,17 @@ const DateRow = ({ date, currentYear, setCurrentYear }) => {
   );
 };
 
-const TimeTable = ({ times = [] }) => {
+const TimeTable = (props) => {
   return (
     <div class="font-sans mt-10 mx-auto text-gray-500 font-medium">
       <table>
         <tbody>
-          {times.map((section) => (
-            <TimeRow key={section.time} section={section} />
+          {props.times.map((section) => (
+            <TimeRow
+              key={section.time}
+              section={section}
+              hoverFunc={props.hoverFunc}
+            />
           ))}
         </tbody>
       </table>
@@ -124,9 +137,9 @@ const TimeTable = ({ times = [] }) => {
   );
 };
 
-const TimeRow = ({ section }) => {
-  const [isShown, setIsShown] = useState(false);
-  const { time, seat } = section;
+const TimeRow = (props) => {
+  // const [isShown, setIsShown] = useState(false);
+  const { time, seat } = props.section;
   const seatWithTotal = seat + "/343";
   return (
     <tr>
@@ -147,12 +160,15 @@ const TimeRow = ({ section }) => {
       </td>
     </tr>
   );
+
   function mouseOverTime(e) {
-    setIsShown(true);
+    props.hoverFunc(true);
+    // console.log(isShown);
   }
 
   function mouseOutTime(e) {
-    setIsShown(false);
+    props.hoverFunc(false);
+    // console.log(isShown);
   }
 };
 
@@ -174,4 +190,3 @@ function amOrPm(time) {
 
 // export default () => <TimeTable times={times} />;
 export default () => <DateAndTimeTable times={times} />;
-
