@@ -66,7 +66,12 @@ const TimeRow = ({ section, selectedTime, setSelectedTime, context }) => {
         <span className="ampm" class="text-3xl ml-3 mr-10">
           {amOrPm(time)}
         </span>
-        <span className="seat" class="text-sm  pt-4 pr-5 tracking-normal">
+        <span
+          className="seat"
+          class={`text-sm  pt-4 pr-5 tracking-normal ${
+            ifDateSelected ? "" : "hidden"
+          }`}
+        >
           {seatWithTotal}
         </span>
       </td>

@@ -51,6 +51,8 @@ const MovieTable = ({ movies = [] }) => {
   );
   function goNext() {
     context.setTitle(movies[selected].name);
+    context.setDate("");
+    context.setTime("");
     navigate("/movieInfo");
   }
 };
