@@ -34,6 +34,16 @@ function Seat() {
         });
       });
     }
+    for (var i = 0; i < 19; i++) {
+      context.font = "bold 12pt Calibri";
+      context.fillStyle = "black";
+      context.fillText(String.fromCharCode(i + 65), 0, 29 + 30 * i);
+    }
+    for (var i = 1; i < 30; i++) {
+      context.font = "bold 12pt Calibri";
+      context.fillStyle = "black";
+      context.fillText(String(i), 30 * i - 12, 12);
+    }
   }, []);
 
   // Manage click event
@@ -58,7 +68,7 @@ function Seat() {
             ) {
               e.preventDefault();
               // Make a seatNumber
-              // format : "Alphabet + Number" ex) "A10"
+              // Format : "Alphabet + Number" ex) "A10"
               // Alphabet : A ~ S
               // Number   : 1 ~ 29
               var rownum = (seat.lefttop.y - 11) / 30;
@@ -95,11 +105,11 @@ function Seat() {
   }, [selectedSeat]);
 
   return (
-    <div>
-      <div>
+    <div class="flex flex-col">
+      <div class="self-center pt-52">
         <TransformWrapper doubleClick={{ disabled: true }} maxScale={3}>
           <TransformComponent>
-            <div className="seat-layout">
+            <div>
               <canvas
                 ref={canvasRef}
                 width={seatMap.size.width}
@@ -110,7 +120,15 @@ function Seat() {
           </TransformComponent>
         </TransformWrapper>
       </div>
-      <div>
+      <div class="">
+        <div class="text-xl text-center">
+          <b>선택된 좌석</b>
+        </div>
+        {selectedSeat.map((seat) => (
+          <div class="text-center">{seat}</div>
+        ))}
+      </div>
+      <div class="">
         {selectedSeat.length != 0 && (
           <button
             class="w-60 py-3 text-lg rounded-lg bg-gray-200 text-gray-500 absolute right-7 bottom-7"
