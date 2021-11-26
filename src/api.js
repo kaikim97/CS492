@@ -17,6 +17,7 @@ export const deleteReservation = (id) => api.delete("/" + id);
 
 //halls api
 export const getAllHalls = () => api2.get("/");
+// export const getHallsByTime = (time) => api2.get("/${time}");
 export const getHallsByInfo = (payload) => api2.get("/hall?" + payload);
 
 const apis = {

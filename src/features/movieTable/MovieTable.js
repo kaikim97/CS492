@@ -1,27 +1,29 @@
 import React, { useState } from "react";
 import "./MovieTable.css";
 
-import movie1 from "./movies/듄.jpg";
-import movie2 from "./movies/이터널스.jpg";
-import movie3 from "./movies/베놈2.jpg";
-import movie4 from "./movies/강릉.jpg";
+import movie1 from "../../components/movies/듄.jpg";
+import movie2 from "../../components/movies/이터널스.jpg";
+import movie3 from "../../components/movies/베놈2.jpg";
+import movie4 from "../../components/movies/강릉.jpg";
 
 import { useNavigate } from "react-router-dom";
-import api from "../api.js";
+import api from "../../api.js";
+import { useContext } from "react";
+import { AuthContext } from "../../context.js";
 
 const movies = [
   { id: 0, name: "듄", poster: movie1 },
   { id: 1, name: "이터널스", poster: movie2 },
   { id: 2, name: "베놈2", poster: movie3 },
   { id: 3, name: "강릉", poster: movie4 },
-  { id: 4, name: "강릉", poster: movie4 },
 ];
 
-const data2 = api.getAllHalls().then((response) => {
-    console.log(response.data);
-  });
+const data = api.getAllHalls().then((response) => {
+  console.log(response.data);
+});
 
 const MovieTable = ({ movies = [] }) => {
+  const context = useContext(AuthContext);
   const [selected, setSelected] = useState(null);
   const navigate = useNavigate();
   return (
@@ -48,10 +50,10 @@ const MovieTable = ({ movies = [] }) => {
     </div>
   );
   function goNext() {
-    navigate("/movieInfo", {
-      name: movies[selected].name,
-      poster: movies[selected].poster,
-    });
+    context.setTitle(movies[selected].name);
+    context.setDate("");
+    context.setTime("");
+    navigate("/movieInfo");
   }
 };
 
@@ -81,4 +83,3 @@ const Movie = ({ movie, selected, setSelected }) => {
 };
 
 export default () => <MovieTable movies={movies} />;
-
