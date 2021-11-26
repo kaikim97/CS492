@@ -19,6 +19,8 @@ function Seat() {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
 
+    setSeat((selectedSeat) => []);
+
     if (seatInfo != "undefined" && seatInfo != null) {
       seatInfo.forEach((seatgroup) => {
         seatgroup.rectangles.forEach((seat) => {
@@ -44,7 +46,7 @@ function Seat() {
       context.fillStyle = "black";
       context.fillText(String(i), 30 * i - 12, 12);
     }
-  }, []);
+  }, [ctx.time]);
 
   // Manage click event
   useEffect(() => {
@@ -99,10 +101,6 @@ function Seat() {
       false
     );
   }, []);
-
-  useEffect(() => {
-    console.log(selectedSeat);
-  }, [selectedSeat]);
 
   return (
     <div class="flex flex-col">
