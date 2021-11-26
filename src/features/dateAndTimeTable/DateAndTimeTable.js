@@ -30,9 +30,11 @@ const DateAndTimeTable = ({ times = [] }) => {
           </div>
         </div>
       </div>
-      <div class="w-2/3">
-        {" "}
-        {context.date != "" && context.time != "" && <Seat />}
+      <div class="flex">
+        <div class="w-2/3 justify-center">
+          {" "}
+          {context.date != "" && context.time != "" && <Seat />}
+        </div>
       </div>
     </div>
   );

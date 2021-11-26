@@ -1,9 +1,13 @@
 import React, { useRef, useEffect, useContext, useState } from "react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+import { AuthContext } from "../../context.js";
 import seatData from "./seats-kaist.json";
 import "./seat.css";
+import { useNavigate } from "react-router-dom";
 
 function Seat() {
+  const ctx = useContext(AuthContext);
+  const navigate = useNavigate();
   const canvasRef = useRef(null);
   const seatMap = seatData.map;
   const seatInfo = seatData.seats;
@@ -91,19 +95,39 @@ function Seat() {
   }, [selectedSeat]);
 
   return (
-    <TransformWrapper doubleClick={{ disabled: true }} maxScale={3}>
-      <TransformComponent>
-        <div className="seat-layout">
-          <canvas
-            ref={canvasRef}
-            width={seatMap.size.width}
-            height={seatMap.size.height}
-            color={seatMap.background}
-          ></canvas>
-        </div>
-      </TransformComponent>
-    </TransformWrapper>
+    <div>
+      <div>
+        <TransformWrapper doubleClick={{ disabled: true }} maxScale={3}>
+          <TransformComponent>
+            <div className="seat-layout">
+              <canvas
+                ref={canvasRef}
+                width={seatMap.size.width}
+                height={seatMap.size.height}
+                color={seatMap.background}
+              ></canvas>
+            </div>
+          </TransformComponent>
+        </TransformWrapper>
+      </div>
+      <div>
+        {selectedSeat.length != 0 && (
+          <button
+            class="w-60 py-3 text-lg rounded-lg bg-gray-200 text-gray-500 absolute right-7 bottom-7"
+            type="submit"
+            onClick={goNext}
+          >
+            다음
+          </button>
+        )}
+      </div>
+    </div>
   );
+
+  function goNext() {
+    ctx.setSeats(selectedSeat);
+    navigate("/personalInfo");
+  }
 }
 
 export default Seat;
