@@ -69,7 +69,7 @@ const TimeRow = ({ section, selectedTime, setSelectedTime, context }) => {
         <span
           className="seat"
           class={`text-sm  pt-4 pr-5 tracking-normal ${
-            ifDateSelected ? "" : "hidden"
+            ifDateSelected ? "" : "text-white "
           }`}
         >
           {seatWithTotal}

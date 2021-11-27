@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import api from "../../api.js";
 import { useContext } from "react";
 import { AuthContext } from "../../context.js";
+import axios from "axios";
 
 const movies = [
   { id: 0, name: "듄", poster: movie1 },
@@ -18,8 +19,8 @@ const movies = [
   { id: 3, name: "강릉", poster: movie4 },
 ];
 
-const data = api.getAllHalls().then((response) => {
-  console.log(response.data);
+const data = api.searchMovie("query=듄").then((response) => {
+  console.log(response.data.items[0]);
 });
 
 const MovieTable = ({ movies = [] }) => {
