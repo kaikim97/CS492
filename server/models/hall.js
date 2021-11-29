@@ -29,6 +29,10 @@ hallSchema.statics.findOneByInfo = function (title, date, time) {
     return this.findOne({title: title, date: date, time:time});
 }
 
+hallSchema.statics.findAvailable = function (title, date) {
+    return this.find({title: title, date: date}, {time:1, available:1}).sort({time:1});
+}
+
 hallSchema.statics.deleteByInfo = function (title, date, time) {
     return this.remove({title: title, date: date, time:time});
 }
