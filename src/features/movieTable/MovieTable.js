@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./MovieTable.css";
+import MovieRating from "./MovieRating";
 
 import movie1 from "../../components/movies/듄.jpg";
 import movie2 from "../../components/movies/이터널스.jpg";
@@ -12,12 +13,6 @@ import { useContext } from "react";
 import { AuthContext } from "../../context.js";
 import axios from "axios";
 
-const data = api.searchMovie("query=듄").then((response) => {
-  // const dune_director = response.data.items[0].director;
-  // const dune_actor = response.data.items[0].actor;
-  // const dune_userRating = response.data.items[0].userRating;
-});
-
 const movies = [
   { id: 0, name: "듄", poster: movie1 },
   { id: 1, name: "이터널스", poster: movie2 },
@@ -25,13 +20,13 @@ const movies = [
   { id: 3, name: "강릉", poster: movie4 },
 ];
 
-const MovieTable = ({ movies = [] }) => {
+export default function MovieTable() {
   const context = useContext(AuthContext);
   const [selected, setSelected] = useState(null);
   const navigate = useNavigate();
   return (
     <div>
-      <div class="flex justify-center mt-60 ml-10 text-gray-500 overflow-x-auto ">
+      <div class="flex justify-center mt-table ml-10 text-gray-500 overflow-x-auto ">
         {movies.map((movie) => (
           <Movie
             key={movie.id}
@@ -58,7 +53,7 @@ const MovieTable = ({ movies = [] }) => {
     context.setTime("");
     navigate("/movieInfo");
   }
-};
+}
 
 const Movie = ({ movie, selected, setSelected }) => {
   const { id, name, poster } = movie;
@@ -83,10 +78,11 @@ const Movie = ({ movie, selected, setSelected }) => {
             onMouseLeave={movieLeave}
           ></img>
         </div>
-        <div class="opacity-0 group-hover:opacity-100 text-white text-xs font-semibold absolute bottom-0 p-5">
-          <p class="text-lg font-bold">
-            {userRating != null && `${userRating}`}
+        <div class=" pointer-events-none opacity-0 group-hover:opacity-100 text-white text-xs font-semibold absolute bottom-0 p-5">
+          <p class="text-lg text-yellow-300 font-bold">
+            {userRating !== null && `${userRating}`}
           </p>
+          {userRating && <MovieRating userRating={userRating} />}
           <p>{director != null && `${director} 감독`}</p>
           <p>{actor != null && `${actor}`}</p>
         </div>
@@ -102,7 +98,6 @@ const Movie = ({ movie, selected, setSelected }) => {
   function movieHover(e) {
     setHover(id);
     const data = api.searchMovie(`query=${name}`).then((response) => {
-      setUserRating(response.data.items[0].userRating);
       const director_before_parse = response.data.items[0].director;
       const actor_before_parse = response.data.items[0].actor;
       const actor_after_parse = actor_before_parse
@@ -113,6 +108,7 @@ const Movie = ({ movie, selected, setSelected }) => {
         .substring(0, director_before_parse.length - 1)
         .split("|")
         .join(" | ");
+      setUserRating(response.data.items[0].userRating);
       setDirector(director_after_parse);
       setActor(actor_after_parse);
     });
@@ -120,8 +116,6 @@ const Movie = ({ movie, selected, setSelected }) => {
   function movieLeave(e) {
     setUserRating(null);
     setDirector(null);
-    setDirector(null);
+    setActor(null);
   }
 };
-
-export default () => <MovieTable movies={movies} />;

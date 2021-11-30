@@ -17,6 +17,7 @@ module.exports = {
       },
       spacing: {
         poster: "2%",
+        table: "17vh",
       },
     },
   },
