@@ -100,6 +100,21 @@ router.put("/:reservationId", (req, res) => {
     .catch((err) => res.status(500).send(err));
 });
 
+// Update reservation
+router.put('/:reservationId', (req, res) => {
+  Reservation.findOneById(req.params.reservationId)
+    .then((reservation) => {
+      if (!reservation) return res.status(404).send({ err: 'Reservation not found' });
+      reservation.birth = req.body.birth;
+      reservation.phone = req.body.phone;
+      reservation.password = req.body.password;
+      reservation.price = req.body.price;
+      reservation.save();
+      res.send(reservation);
+    })
+    .catch(err => res.status(500).send(err));
+});
+
 // Delete reservation by ID
 router.delete("/:reservationId", (req, res) => {
   Reservation.findOneById(req.params.reservationId)

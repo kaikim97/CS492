@@ -56,6 +56,7 @@ function Seat() {
     const context = canvas.getContext("2d");
 
     setSeat((selectedSeat) => []);
+    setPrice(0);
 
     if (seatInfo != "undefined" && seatInfo != null) {
       seatInfo.forEach((seatgroup) => {
