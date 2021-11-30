@@ -8,7 +8,8 @@ import { AuthContext } from "../../context";
 
 const DateAndTimeTable = ({ times = [] }) => {
   const context = useContext(AuthContext);
-  const title = context.title;
+  // const title = context.title;
+  const title = window.localStorage.getItem("title");
   console.log("TITLE: ", title);
   return (
     <div class="w-1/3 h-95screen bg-white font-bold">

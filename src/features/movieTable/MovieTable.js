@@ -49,6 +49,7 @@ export default function MovieTable() {
   );
   function goNext() {
     context.setTitle(movies[selected].name);
+    window.localStorage.setItem("title", movies[selected].name);
     context.setDate("");
     context.setTime("");
     navigate("/movieInfo");

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./MovieRating.css";
 import { useNavigate } from "react-router-dom";
 import api from "../../api.js";
 import { useContext } from "react";
