@@ -14,9 +14,10 @@ const api3 = axios.create({
 
 //reservation api
 export const getAllReservations = (payload) => api.get("/", payload);
-export const getReservationById = (id, payload) => api.get("/${id}", payload);
+export const getReservationById = (id) => api.get("/" + id);
+export const getReservationQuery = (payload) => api.get("/search?" + payload);
 export const createReservation = (payload) => api.post("/", payload);
-export const deleteReservation = (id) => api.delete("/${id}");
+export const deleteReservation = (id) => api.delete("/" + id);
 
 //halls api
 export const getAllHalls = () => api2.get("/");
@@ -30,6 +31,7 @@ export const searchMovie = (search) => api3.get("/getMovie?" + search);
 const apis = {
   getAllReservations,
   getReservationById,
+  getReservationQuery,
   createReservation,
   deleteReservation,
   getAllHalls,

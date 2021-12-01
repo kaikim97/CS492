@@ -17,9 +17,10 @@ function App() {
           <Routes>
             <Route path="/" exact element={<MovieTable />} />
             <Route path="/movieInfo" element={<DateAndTimeTable />} />
+            <Route path="/personalInfo" element={<PersonalInfo />} />
+            {/* <Route path="/findReservation" element={<FindReservation />} /> */}
           </Routes>
         </BrowserRouter>
-        {/* <PersonalInfo /> */}
       </div>
     </AuthProvider>
   );

@@ -1,25 +1,26 @@
 import "./PersonalInfo.css";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { Link } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Paper from "@mui/material/Paper";
 import api from "./api";
+import { AuthContext } from "./context.js";
 
 export default function PersonalInfo() {
   const data = api.getAllReservations().then((response) => {
     console.log(response.data);
   });
 
-  const data2 = api.getAllHalls().then((response) => {
-    console.log(response.data);
-  });
   //name, phone, title, date, time, seats
 
-  const [date, setDate] = useState("20211103");
-  const [title, setTitle] = useState("듄");
-  const [time, setTime] = useState("1230");
-  const [seat, setSeat] = useState(["F11", "F12"]);
+  const context = useContext(AuthContext);
+
+  const [date, setDate] = useState("20211201");
+  const [title, setTitle] = useState("Dune");
+  const [time, setTime] = useState("2200");
+  const [seat, setSeat] = useState(["F16", "F17"]);
   const [birthday, setBirthday] = useState("");
   const [phone, setPhone] = useState("");
   const [pwd, setPwd] = useState("");
@@ -27,6 +28,7 @@ export default function PersonalInfo() {
   const [done, setDone] = useState(false);
   const [open, setOpen] = useState(true);
   const [buttonDisabled, setButtonDisabled] = useState(true);
+  const [id, setId] = useState("");
 
   useEffect(() => {
     if (phone.length >= 10 && pwd.length == 4 && pwdConfirm.length == 4) {
@@ -58,6 +60,21 @@ export default function PersonalInfo() {
 
   const handleConfirm = () => {
     if (pwd === pwdConfirm) {
+      const createReservation = api
+        .createReservation({
+          birth: birthday,
+          phone: phone,
+          password: pwd,
+          title: title,
+          date: date,
+          time: time,
+          seats: seat,
+        })
+        .then((response) => {
+          console.log(response.data._id);
+          setId(response.data._id);
+          context.setDate(date);
+        });
       console.log("예약이 완료되었습니다.");
       setDone(true);
     } else {
@@ -111,19 +128,55 @@ export default function PersonalInfo() {
 
   return done ? (
     <div>
-      <p>{phone}님의 예약이 완료되었습니다.</p>
-      <p>시간: {parseTime(time)}</p>
-      <p>좌석: {seat.join(", ")}</p>
-      <Button
-        style={{
-          margin: "2vh 0",
-          backgroundColor: "lightGray",
-          fontSize: "16px",
-          width: "6vw",
-        }}
-      >
-        돌아가기
-      </Button>
+      <Modal open={open}>
+        <div id="modalRoot">
+          <div id="firstHalf">
+            <div id="title">{title}</div>
+
+            <div id="dateTime">
+              <p> {parseDate(date)}</p>
+              <p> {parseTime(time)}</p>
+            </div>
+            <div id="seatPrice">
+              <p>{seat.join(", ")}</p>
+              <p>198,000원</p>
+            </div>
+          </div>
+          <hr className="solid" />
+          <div id="bottomHalf">
+            <p className="subtitle">예약이 완료되었습니다.</p>
+            <p className="subtitle">예약번호 &nbsp;&nbsp;&nbsp;&nbsp; {id}</p>
+          </div>
+
+          <div
+            style={{
+              width: "85%",
+              marginTop: "20vh",
+              marginLeft: "7.5%",
+              marginBottom: "1.5vh",
+              textAlign: "center",
+              fontSize: "min(1vw, 1.6vh)",
+            }}
+          >
+            예약 조회는 ‘예약 번호로 조회' 또는 ‘생년월일과 휴대폰 번호로 조회'
+            모두 가능합니다
+          </div>
+          <div id="payButton">
+            <Button
+              style={{
+                backgroundColor: "lightGray",
+                fontSize: "min(2.8vh, 1.7vw)",
+                color: "white",
+                width: "85%",
+              }}
+            >
+              <Link to="/" style={{ textDecoration: "none" }}>
+                돌아가기
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </div>
   ) : (
     <div>
