@@ -5,16 +5,19 @@ const initialState = {
   date: "",
   time: "",
   seats: [],
+  id: "",
 };
 
 const AuthContext = createContext({
   title: "",
   date: "",
   time: "",
+  id: "",
   setTitle: (title) => {},
   setDate: (date) => {},
   setTime: (time) => {},
   setSeats: (seat) => {},
+  setId: (id) => {},
 });
 
 function authReducer(state, action) {
@@ -38,6 +41,11 @@ function authReducer(state, action) {
       return {
         ...state,
         seats: action.payload,
+      };
+    case "SETID":
+      return {
+        ...state,
+        id: action.payload,
       };
   }
 }
@@ -71,6 +79,13 @@ function AuthProvider(props) {
     });
   }
 
+  function setId(id) {
+    dispatch({
+      type: "SETID",
+      payload: id,
+    });
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -78,10 +93,12 @@ function AuthProvider(props) {
         date: state.date,
         time: state.time,
         seats: state.seats,
+        id: state.id,
         setTitle,
         setDate,
         setTime,
         setSeats,
+        setId,
       }}
       {...props}
     />

@@ -14,6 +14,8 @@ export const getReservationById = (id) => api.get("/" + id);
 export const getReservationQuery = (payload) => api.get("/search?" + payload);
 export const createReservation = (payload) => api.post("/", payload);
 export const deleteReservation = (id) => api.delete("/" + id);
+export const updateReservationById = (id, payload) =>
+  api.put("/" + id, payload);
 
 //halls api
 export const getAllHalls = () => api2.get("/");
@@ -26,6 +28,7 @@ const apis = {
   getReservationQuery,
   createReservation,
   deleteReservation,
+  updateReservationById,
   getAllHalls,
   getHallsByInfo,
 };

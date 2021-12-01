@@ -3,13 +3,13 @@ import { useContext } from "react";
 import { AuthContext } from "../../../context";
 
 const times = [
-  { time: "10:00", seat: 30 },
-  { time: "11:00", seat: 67 },
-  { time: "12:00", seat: 44 },
-  { time: "14:00", seat: 16 },
-  { time: "16:00", seat: 24 },
-  { time: "18:00", seat: 98 },
-  { time: "20:00", seat: 29 },
+  { time: "1000", seat: 30 },
+  { time: "1100", seat: 67 },
+  { time: "1200", seat: 44 },
+  { time: "1400", seat: 16 },
+  { time: "1600", seat: 24 },
+  { time: "1800", seat: 98 },
+  { time: "2000", seat: 29 },
   { time: "21:00", seat: 41 },
 ];
 
@@ -39,9 +39,9 @@ const TimeRow = ({ section, selectedTime, setSelectedTime, context }) => {
   const [isShown, setIsShown] = useState(false);
 
   const ifDateSelected = context.date != "";
-  console.log("ifDateSelectedboolean: ", ifDateSelected);
+  // console.log("ifDateSelectedboolean: ", ifDateSelected);
 
-  console.log("asdfasd ", context.time);
+  // console.log("asdfasd ", context.time);
   const { time, seat } = section;
   const seatWithTotal = seat + "/551";
   return (

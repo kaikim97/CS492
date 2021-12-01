@@ -57,12 +57,29 @@ router.post("/", (req, res) => {
         .then((reservation) => {
           hall.available = hall.available - req.body.seats.length;
           req.body.seats.forEach(function (seatID) {
+            // TODO: Seat 상태에 따라 T/F 바꿔야 됨
             hall.occupied.set(seatID, true);
           });
           hall.save();
           res.send(reservation);
         })
         .catch((err) => res.status(500).send(err));
+    })
+    .catch((err) => res.status(500).send(err));
+});
+
+// Update reservation
+router.put("/:reservationId", (req, res) => {
+  Reservation.findOneById(req.params.reservationId)
+    .then((reservation) => {
+      if (!reservation)
+        return res.status(404).send({ err: "Reservation not found" });
+      reservation.birth = req.body.birth;
+      reservation.phone = req.body.phone;
+      reservation.password = req.body.password;
+      reservation.price = req.body.price;
+      reservation.save();
+      res.send(reservation);
     })
     .catch((err) => res.status(500).send(err));
 });

@@ -4,6 +4,7 @@ import { AuthContext } from "../../context.js";
 import seatData from "./seats-kaist.json";
 import "./seat.css";
 import { useNavigate } from "react-router-dom";
+import api from "../../api";
 
 function Seat() {
   const ctx = useContext(AuthContext);
@@ -13,6 +14,27 @@ function Seat() {
   const seatInfo = seatData.seats;
 
   const [selectedSeat, setSeat] = useState([]);
+
+  const goNext = () => {
+    ctx.setSeats(selectedSeat);
+    const createReservation = api
+      .createReservation({
+        title: ctx.title,
+        date: ctx.date,
+        time: ctx.time.time,
+        seats: selectedSeat,
+      })
+      .then((response) => {
+        console.log(response.data);
+        if (response.data) {
+          ctx.setId(response.data._id);
+          navigate("/personalInfo");
+        } else {
+          // TODO: 이후 별도 창으로 띄워야함
+          console.log("이미 선택된 좌석입니다");
+        }
+      });
+  };
 
   // Draw seats
   useEffect(() => {
@@ -122,8 +144,10 @@ function Seat() {
         <div class="text-xl text-center">
           <b>선택된 좌석</b>
         </div>
-        {selectedSeat.map((seat) => (
-          <div class="text-center">{seat}</div>
+        {selectedSeat.map((seat, index) => (
+          <div class="text-center" key={index}>
+            {seat}
+          </div>
         ))}
       </div>
       <div class="">
@@ -139,11 +163,6 @@ function Seat() {
       </div>
     </div>
   );
-
-  function goNext() {
-    ctx.setSeats(selectedSeat);
-    navigate("/personalInfo");
-  }
 }
 
 export default Seat;

@@ -3,13 +3,14 @@ const mongoose = require("mongoose");
 // Define Schemes
 const reservationSchema = new mongoose.Schema(
   {
-    birth: { type: String, required: true },
-    phone: { type: String, required: true },
-    password: { type: String, required: true },
-    title: { type: String, require: true },
+    birth: { type: String, required: false },
+    phone: { type: String, required: false },
+    password: { type: String, required: false },
+    title: { type: String, required: true },
     date: { type: String, required: true },
     time: { type: String, required: true },
     seats: { type: [String], required: true },
+    price: { type: Number, required: false },
   },
   {
     timestamps: true,
