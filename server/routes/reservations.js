@@ -57,8 +57,9 @@ router.post("/", (req, res) => {
         .then((reservation) => {
           hall.available = hall.available - req.body.seats.length;
           req.body.seats.forEach(function (seatID) {
-            // TODO: Seat 상태에 따라 T/F 바꿔야 됨
-            hall.occupied.set(seatID, true);
+            // Create : FALSE (Preoccupied)
+            // Update : TRUE  (Reserved)
+            hall.occupied.set(seatID, false);
           });
           hall.save();
           res.send(reservation);

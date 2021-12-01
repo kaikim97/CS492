@@ -6,6 +6,7 @@ const initialState = {
   time: "",
   seats: [],
   id: "",
+  price: 0,
 };
 
 const AuthContext = createContext({
@@ -13,11 +14,13 @@ const AuthContext = createContext({
   date: "",
   time: "",
   id: "",
+  price: 0,
   setTitle: (title) => {},
   setDate: (date) => {},
   setTime: (time) => {},
   setSeats: (seat) => {},
   setId: (id) => {},
+  setPrice: (price) => {},
 });
 
 function authReducer(state, action) {
@@ -46,6 +49,11 @@ function authReducer(state, action) {
       return {
         ...state,
         id: action.payload,
+      };
+    case "SETPRICE":
+      return {
+        ...state,
+        price: action.payload,
       };
   }
 }
@@ -86,6 +94,13 @@ function AuthProvider(props) {
     });
   }
 
+  function setPrice(price) {
+    dispatch({
+      type: "SETPRICE",
+      payload: price,
+    });
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -94,11 +109,13 @@ function AuthProvider(props) {
         time: state.time,
         seats: state.seats,
         id: state.id,
+        price: state.price,
         setTitle,
         setDate,
         setTime,
         setSeats,
         setId,
+        setPrice,
       }}
       {...props}
     />

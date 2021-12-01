@@ -62,8 +62,7 @@ export default function PersonalInfo() {
           birth: birthday,
           phone: phone,
           password: pwd,
-          // TODO: 이후 Price 별도로 넣을 것
-          price: 198000,
+          price: context.price,
         })
         .then((response) => {
           console.log(response.data);
@@ -129,7 +128,7 @@ export default function PersonalInfo() {
             </div>
             <div id="seatPrice">
               <p>{context.seats.join(", ")}</p>
-              <p>198,000원</p>
+              <p>{context.price}원</p>
             </div>
           </div>
           <hr className="solid" />
@@ -183,7 +182,7 @@ export default function PersonalInfo() {
             </div>
             <div id="seatPrice">
               <p>{context.seats.join(", ")}</p>
-              <p>198,000원</p>
+              <p>{context.price}원</p>
             </div>
           </div>
           <hr className="solid" />
