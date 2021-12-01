@@ -22,7 +22,9 @@ export const deleteReservation = (id) => api.delete("/${id}");
 export const getAllHalls = () => api2.get("/");
 // export const getHallsByTime = (time) => api2.get("/${time}");
 export const getHallsByInfo = (payload) => api2.get("/hall?" + payload);
+export const getAvailable = (payload) => api2.get("/available?" + payload);
 
+//movies api
 export const searchMovie = (search) => api3.get("/getMovie?" + search);
 
 const apis = {
@@ -32,6 +34,7 @@ const apis = {
   deleteReservation,
   getAllHalls,
   getHallsByInfo,
+  getAvailable,
   searchMovie,
 };
 

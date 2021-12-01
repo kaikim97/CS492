@@ -30,28 +30,4 @@ router.get("/getMovie", async function (req, res) {
   }
 });
 
-// router.get("/getMovie", async function (req, res) {
-//   const word = req.query.query;
-//   axios
-//     .get("https://openapi.naver.com/v1/search/movie.json", {
-//       params: {
-//         query: word,
-//         display: 20,
-//       },
-//       headers: {
-//         "X-Naver-Client-Id": ID_KEY,
-//         "X-Naver-Client-Secret": SECRET_KEY,
-//         "Access-Control-Allow-Origin": "*",
-//       },
-//     })
-//     .then(function (response) {
-//       console.log(response.data.items);
-//       const items = response.data.items;
-//       res.send({ items: items });
-//     })
-//     .catch(function (error) {
-//       console.log(error);
-//     });
-// });
-
 module.exports = router;

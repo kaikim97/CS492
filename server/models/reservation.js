@@ -10,6 +10,7 @@ const reservationSchema = new mongoose.Schema(
     date: { type: String, required: true },
     time: { type: String, required: true },
     seats: { type: [String], required: true },
+    price: { type: Number, required: true },
   },
   {
     timestamps: true,

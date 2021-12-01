@@ -6,7 +6,6 @@ const DateTable = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const context = useContext(AuthContext);
 
-  // let today = new Date();
   let today = new Date(2021, 11, 1);
   console.log(dateToString(today).substring(0, 4));
 
@@ -16,8 +15,7 @@ const DateTable = () => {
   const [currentMonth, setCurrentMonth] = useState(
     dateToString(today).substring(4, 6)
   );
-  // const currentYear = dateToString(today).substring(0, 4);
-  // const currentMonth = dateToString(today).substring(4, 6);
+
   const [yearChanged, setYearChanged] = useState(false);
 
   const dates = [dateToString(today)];
@@ -49,8 +47,6 @@ const DateTable = () => {
             <DateRow
               key={date}
               date={date}
-              currentYear={currentYear}
-              setCurrentYear={setCurrentYear}
               selectedDate={selectedDate}
               setSelectedDate={setSelectedDate}
               context={context}
@@ -62,28 +58,12 @@ const DateTable = () => {
   );
 };
 
-const DateRow = ({
-  date,
-  currentYear,
-  setCurrentYear,
-  selectedDate,
-  setSelectedDate,
-  context,
-}) => {
-  let cur_year = date.substring(0, 4);
-  let cur_month = date.substring(4, 6);
+const DateRow = ({ date, selectedDate, setSelectedDate, context }) => {
   let cur_date = date.substring(6, 8);
   let cur_day = date.substring(8, 9);
 
-  // if (cur_year != currentYear) {
-  //   // console.log("year changed", cur_year);
-  //   // setCurrentYear("");
-  // }
   return (
     <div>
-      {/* <tr>
-        <td class="ml-20 mr-20 text-xl px-10">{yearChanged && cur_year}</td>
-      </tr> */}
       <tr>
         <div
           class={` text-lg py-3 px-10 rounded-md ${

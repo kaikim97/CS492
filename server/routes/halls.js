@@ -10,7 +10,7 @@ router.get('/', (req, res) =>{
         .catch(err => res.status(500).send(err));
 });
 
-// Find one by time
+// Find one by (title, date, time)
 router.get('/hall', (req,res) => {
     let title = req.query.title;
     let date = req.query.date;
@@ -23,6 +23,24 @@ router.get('/hall', (req,res) => {
         res.send(hall);
     })
     .catch(err=> res.status(500).send(err));
+} );
+
+// Get array of (time, available) by (title, date)
+router.get('/available', (req,res) => {
+    let title = req.query.title;
+    let date = req.query.date;
+
+    Hall.findAvailable(title, date)
+    .then((halls) => {
+        if (!halls) return res.status(404).send({
+            err: 'Hall not found'
+        });
+        res.send(halls);
+        console.log(halls.length)
+    })
+    .catch(err=> res.status(500).send(err));
+
+    
 } );
 
 // Create new hall

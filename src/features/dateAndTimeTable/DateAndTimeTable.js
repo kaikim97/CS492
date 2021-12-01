@@ -6,9 +6,8 @@ import TimeTable from "./components/TimeTable";
 import { useContext } from "react";
 import { AuthContext } from "../../context";
 
-const DateAndTimeTable = ({ times = [] }) => {
+const DateAndTimeTable = () => {
   const context = useContext(AuthContext);
-  // const title = context.title;
   const title = window.localStorage.getItem("title");
   console.log("TITLE: ", title);
   return (
@@ -16,7 +15,6 @@ const DateAndTimeTable = ({ times = [] }) => {
       <div class="h-1/4">
         <img
           src={require(`../../components/movies/${title}.jpg`).default}
-          // src={require("../../components/movies/듄.jpg").default}
           class="w-1/3 h-full object-cover w-full"
         ></img>
       </div>
