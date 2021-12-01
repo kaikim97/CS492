@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import api from "../../api.js";
 import { useContext } from "react";
 import { AuthContext } from "../../context.js";
+import TopBar from "../TopBar";
 
 const movies = [
   { id: 0, name: "듄", poster: movie1 },
@@ -26,8 +27,14 @@ const MovieTable = ({ movies = [] }) => {
   const context = useContext(AuthContext);
   const [selected, setSelected] = useState(null);
   const navigate = useNavigate();
+
+  const findReservation = () => {
+    navigate("/findReservation");
+  };
+
   return (
     <div>
+      <TopBar function={findReservation} />
       <div class="flex justify-center mt-60 ml-10 text-gray-500 overflow-x-auto ">
         {movies.map((movie) => (
           <Movie
