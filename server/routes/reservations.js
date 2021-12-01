@@ -48,7 +48,12 @@ router.post("/", (req, res) => {
         });
 
       req.body.seats.forEach(function (seatID) {
-        if (hall.occupied.has(seatID) && hall.occupied.get(seatID) == true) {
+        if (hall.occupied.has(seatID) && hall.occupied.get(seatID) == false) {
+          return res.status(404).send({ err: "Already preoccupied seat" });
+        } else if (
+          hall.occupied.has(seatID) &&
+          hall.occupied.get(seatID) == true
+        ) {
           return res.status(404).send({ err: "Already reserved seat" });
         }
       });
@@ -58,7 +63,6 @@ router.post("/", (req, res) => {
           hall.available = hall.available - req.body.seats.length;
           req.body.seats.forEach(function (seatID) {
             // Create : FALSE (Preoccupied)
-            // Update : TRUE  (Reserved)
             hall.occupied.set(seatID, false);
           });
           hall.save();
@@ -79,6 +83,17 @@ router.put("/:reservationId", (req, res) => {
       reservation.phone = req.body.phone;
       reservation.password = req.body.password;
       reservation.price = req.body.price;
+
+      Hall.findOneByInfo(reservation.title, reservation.date, reservation.time)
+        .then((hall) => {
+          reservation.seats.forEach(function (seatID) {
+            // Update : TRUE  (Reserved)
+            hall.occupied.set(seatID, true);
+          });
+          hall.save();
+        })
+        .catch((err) => res.status(500).send(err));
+
       reservation.save();
       res.send(reservation);
     })
