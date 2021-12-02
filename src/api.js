@@ -21,6 +21,7 @@ export const updateReservationById = (id, payload) =>
 export const getAllHalls = () => api2.get("/");
 // export const getHallsByTime = (time) => api2.get("/${time}");
 export const getHallsByInfo = (payload) => api2.get("/hall?" + payload);
+export const preoccupySeat = (payload) => api2.post("/preoccupy", payload);
 
 const apis = {
   getAllReservations,
@@ -31,6 +32,7 @@ const apis = {
   updateReservationById,
   getAllHalls,
   getHallsByInfo,
+  preoccupySeat,
 };
 
 export default apis;

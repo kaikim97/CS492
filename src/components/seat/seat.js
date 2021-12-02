@@ -3,7 +3,7 @@ import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { AuthContext } from "../../context.js";
 import seatData from "./seats-kaist.json";
 import { useNavigate } from "react-router-dom";
-import api from "../../api";
+import apis from "../../api";
 
 function Seat() {
   const ctx = useContext(AuthContext);
@@ -18,8 +18,8 @@ function Seat() {
   const goNext = () => {
     ctx.setSeats(selectedSeat);
     ctx.setPrice(totalPrice);
-    const createReservation = api
-      .createReservation({
+    const createReservation = apis
+      .preoccupySeat({
         title: ctx.title,
         date: ctx.date,
         time: ctx.time.time,
