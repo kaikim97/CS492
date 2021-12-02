@@ -37,7 +37,6 @@ router.get('/available', (req,res) => {
             err: 'Hall not found'
         });
         res.send(halls);
-        console.log(halls.length)
     })
     .catch(err=> res.status(500).send(err));
 
@@ -126,10 +125,10 @@ router.delete('/hall', (req,res) => {
 });
 
 // Clear occupied map of the hall object for (title, date, time).
-router.get('/clear', (req,res) => {
-    const title = req.query.title;
-    const date = req.query.date;
-    const time = req.query.time;
+router.put('/clear', (req,res) => {
+    const title = req.body.title;
+    const date = req.body.date;
+    const time = req.body.time;
     Hall.findOneByInfo(title, date, time)
     .then((hall) => {
         if (!hall) return res.status(404).send({

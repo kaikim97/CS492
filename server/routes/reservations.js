@@ -13,9 +13,9 @@ router.get('/', (req, res) => {
 
 // Find One by Birth, Phone
 router.get('/search', (req, res) => {
-  let birth = req.query.birth;
-  let phone = req.query.phone;
-  let password = req.query.password;
+  const birth = req.query.birth;
+  const phone = req.query.phone;
+  const password = req.query.password;
   Reservation.findQuery(birth, phone, password)
     .then((reservations) => {
       if (reservations.length == 0) return res.status(404).send({ err: 'Reservation not found or invalid password' });
@@ -35,32 +35,32 @@ router.get('/:reservationId', (req, res) => {
 });
 
 // Create new reservation
-router.post('/', (req, res) => {
-  Hall.findOneByInfo(req.body.title, req.body.date, req.body.time)
-  .then((hall) => {
-      if (!hall) return res.status(404).send({
-          err: 'Hall not found'
-      });
+// router.post('/', (req, res) => {
+//   Hall.findOneByInfo(req.body.title, req.body.date, req.body.time)
+//   .then((hall) => {
+//       if (!hall) return res.status(404).send({
+//           err: 'Hall not found'
+//       });
       
-      req.body.seats.forEach(function(seatID) {
-        if(hall.occupied.has(seatID) && hall.occupied.get(seatID)==true) {
-          return res.status(404).send({err: "Already reserved seat"});
-        }
-      });
+//       req.body.seats.forEach(function(seatID) {
+//         if(hall.occupied.has(seatID) && hall.occupied.get(seatID)==true) {
+//           return res.status(404).send({err: "Already reserved seat"});
+//         }
+//       });
 
-      Reservation.create(req.body)
-        .then(reservation => {
-          hall.available = hall.available - req.body.seats.length;
-          req.body.seats.forEach(function(seatID) {
-            hall.occupied.set(seatID, true);
-          });
-          hall.save();
-          res.send(reservation);
-        })
-        .catch(err=>res.status(500).send(err));
-  })
-  .catch(err => res.status(500).send(err));  
-});
+//       Reservation.create(req.body)
+//         .then(reservation => {
+//           hall.available = hall.available - req.body.seats.length;
+//           req.body.seats.forEach(function(seatID) {
+//             hall.occupied.set(seatID, true);
+//           });
+//           hall.save();
+//           res.send(reservation);
+//         })
+//         .catch(err=>res.status(500).send(err));
+//   })
+//   .catch(err => res.status(500).send(err));  
+// });
 
 // Update reservation
 router.put('/:reservationId', (req, res) => {
