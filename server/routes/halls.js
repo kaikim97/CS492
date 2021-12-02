@@ -107,6 +107,23 @@ router.post("/preoccupy", (req, res) => {
 
 // [DB management]
 
+// Get array of (time, available) by (title, date)
+router.get("/available", (req, res) => {
+  let title = req.query.title;
+  let date = req.query.date;
+
+  Hall.findAvailable(title, date)
+    .then((halls) => {
+      if (!halls)
+        return res.status(404).send({
+          err: "Hall not found",
+        });
+      res.send(halls);
+      console.log(halls.length);
+    })
+    .catch((err) => res.status(500).send(err));
+});
+
 // Create new hall
 router.post("/", (req, res) => {
   Hall.create(req.body)

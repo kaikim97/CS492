@@ -15,14 +15,20 @@ function Seat() {
   const [selectedSeat, setSeat] = useState([]);
   const [totalPrice, setPrice] = useState(0);
 
+  const makeTimeNum = (time) => {
+    return time.split(":").join("");
+  };
+
   const goNext = () => {
     ctx.setSeats(selectedSeat);
     ctx.setPrice(totalPrice);
+    // console.log(ctx.title, ctx.date, makeTimeNum(ctx.time.time), selectedSeat);
+
     const createReservation = apis
       .preoccupySeat({
         title: ctx.title,
         date: ctx.date,
-        time: ctx.time.time,
+        time: makeTimeNum(ctx.time.time),
         seats: selectedSeat,
       })
       .then((response) => {

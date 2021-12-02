@@ -111,7 +111,7 @@ export default function PersonalInfo() {
 
   const parseTime = (time) => {
     const amPm = time > 1200 ? "PM" : "AM";
-    const temp = time.slice(0, 2) + ":" + time.slice(2) + amPm;
+    const temp = time + amPm;
     return temp;
   };
 
