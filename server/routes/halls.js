@@ -50,7 +50,7 @@ router.post("/preoccupy", (req, res) => {
   const date = req.body.date;
   const time = req.body.time;
   const seats = req.body.seats;
-  let rv;
+  let rv_id;
 
   Hall.findOneByInfo(title, date, time)
     .then((hall) => {
@@ -67,7 +67,7 @@ router.post("/preoccupy", (req, res) => {
       //Create reservation object and append to occupied map.
       Reservation.create(req.body)
         .then((reservation) => {
-          rv = reservation;
+          rv_id = reservation._id;
           hall.available = hall.available - req.body.seats.length;
           req.body.seats.forEach(function (seatID) {
             hall.occupied.set(seatID, false);
@@ -87,18 +87,24 @@ router.post("/preoccupy", (req, res) => {
         });
       //Cancel preoccupancy if the seats are not reserved within 5 min.
       setTimeout(async function () {
-        if (rv.birth === "") {
-          hall.available = hall.available + req.body.seats.length;
-          req.body.seats.forEach(function (seatID) {
-            hall.occupied.delete(seatID);
-          });
-          await hall.save();
-          //Delete reservation obj
-          Reservation.deleteById(rv._id).catch((err) =>
-            res.status(500).send({ err: "failed to delete reservation" })
-          );
-        }
-      }, 5 * 60 * 1000); // test with small value (real: 5*60*1000)
+        Reservation.findOneById(rv_id)
+          .then((rv) => {
+            if (!rv)
+              return res.status(404).send({ err: "Reservation not found" });
+            if (rv.birth === "") {
+              hall.available = hall.available + req.body.seats.length;
+              req.body.seats.forEach(function (seatID) {
+                hall.occupied.delete(seatID);
+              });
+              hall.save();
+              //Delete reservation obj
+              Reservation.deleteById(rv_id).catch((err) =>
+                res.status(500).send({ err: "failed to delete reservation" })
+              );
+            }
+          })
+          .catch((err) => res.status(500).send(err));
+      }, 5 * 60 * 1000);
     })
     .catch((err) => {
       res.status(500).send({ err: "failed to find hall" });
