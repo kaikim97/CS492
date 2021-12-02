@@ -11,14 +11,14 @@ export default function TimeTable({}) {
   const [selectedTime, setSelectedTime] = useState(null);
 
   const temp = [
-    { time: "08:00", seat: 0 },
-    { time: "10:00", seat: 0 },
-    { time: "12:00", seat: 0 },
-    { time: "14:00", seat: 0 },
-    { time: "16:00", seat: 0 },
-    { time: "18:00", seat: 0 },
-    { time: "20:00", seat: 0 },
-    { time: "22:00", seat: 0 },
+    { time: "08:00", seat: "" },
+    { time: "10:00", seat: "" },
+    { time: "12:00", seat: "" },
+    { time: "14:00", seat: "" },
+    { time: "16:00", seat: "" },
+    { time: "18:00", seat: "" },
+    { time: "20:00", seat: "" },
+    { time: "22:00", seat: "" },
   ];
   const times = [
     "08:00",
@@ -95,7 +95,7 @@ const TimeRow = ({ section, selectedTime, setSelectedTime, context }) => {
         <span
           className="seat"
           class={`text-sm  pt-4 pr-5 tracking-normal ${
-            ifDateSelected ? "" : "text-white "
+            ifDateSelected && seat != "" ? "" : "text-transparent "
           }`}
         >
           {seatWithTotal}
