@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import DateTable from "./components/DateTable";
 import TimeTable from "./components/TimeTable";
@@ -10,6 +10,10 @@ import { AuthContext } from "../../context";
 const DateAndTimeTable = () => {
   const context = useContext(AuthContext);
   const title = window.localStorage.getItem("title");
+
+  useEffect(() => {
+    context.setTitle(title);
+  }, []);
   console.log("TITLE: ", title);
   return (
     <div class="flex">
