@@ -39,7 +39,7 @@ const DateAndTimeTable = () => {
         </div>
       </div>
 
-      <div class="xl:flex-initial ml-20 ">
+      <div class="xl:flex-auto ml-20 xl:w-2/3">
         {context.date != "" && context.time != "" && <Seat />}
       </div>
     </div>

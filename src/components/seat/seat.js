@@ -26,12 +26,23 @@ function Seat() {
         seatgroup.rectangles.forEach((seat) => {
           // Add Seat availablity & id info
           seat.available = true;
+          context.strokeStyle = seatgroup.color;
           context.fillStyle = seatgroup.color;
+
+          const cornerRadius = 8;
+          context.lineJoin = "round";
+          context.lineWidth = cornerRadius;
+          context.strokeRect(
+            seat.lefttop.x + cornerRadius / 2,
+            seat.lefttop.y + cornerRadius / 2,
+            seat.size.width - cornerRadius,
+            seat.size.height - cornerRadius
+          );
           context.fillRect(
-            seat.lefttop.x,
-            seat.lefttop.y,
-            seat.size.width,
-            seat.size.height
+            seat.lefttop.x + cornerRadius / 2,
+            seat.lefttop.y + cornerRadius / 2,
+            seat.size.width - cornerRadius,
+            seat.size.height - cornerRadius
           );
         });
       });
@@ -78,21 +89,33 @@ function Seat() {
               var col = (seat.lefttop.x - 17) / 30 + 1;
               const seatNum = row + String(col);
               if (seat.available) {
-                context.fillStyle = "grey";
+                context.fillStyle = "#3C68D8";
+                context.strokeStyle = "#3C68D8";
                 seat.available = false;
                 setSeat((selectedSeat) => selectedSeat.concat(seatNum));
               } else {
                 context.fillStyle = seatgroup.color;
+                context.strokeStyle = seatgroup.color;
                 seat.available = true;
                 setSeat((selectedSeat) =>
                   selectedSeat.filter((s) => s !== seatNum)
                 );
               }
+              const cornerRadius = 8;
+              context.lineJoin = "round";
+              context.lineWidth = cornerRadius;
+
+              context.strokeRect(
+                seat.lefttop.x + cornerRadius / 2,
+                seat.lefttop.y + cornerRadius / 2,
+                seat.size.width - cornerRadius,
+                seat.size.height - cornerRadius
+              );
               context.fillRect(
-                seat.lefttop.x,
-                seat.lefttop.y,
-                seat.size.width,
-                seat.size.height
+                seat.lefttop.x + cornerRadius / 2,
+                seat.lefttop.y + cornerRadius / 2,
+                seat.size.width - cornerRadius,
+                seat.size.height - cornerRadius
               );
             }
           });
@@ -103,13 +126,19 @@ function Seat() {
   }, []);
 
   return (
-    <div class="flex flex-col">
-      <div class="self-center pt-52">
-        <TransformWrapper doubleClick={{ disabled: true }} maxScale={3}>
+    <div class="w-full ">
+      <div class="self-center pt-14 xl:pt-40">
+        <TransformWrapper
+          doubleClick={{ disabled: true }}
+          maxScale={3}
+          minScale={0.5}
+        >
           <TransformComponent>
             <div>
               <canvas
                 ref={canvasRef}
+                // width={window.innerWidth}
+                // height={window.innerHeight}
                 width={seatMap.size.width}
                 height={seatMap.size.height}
                 color={seatMap.background}
@@ -118,24 +147,27 @@ function Seat() {
           </TransformComponent>
         </TransformWrapper>
       </div>
-      <div class="">
-        <div class="text-xl text-center">
-          <b>선택된 좌석</b>
+      <div class="absolute bottom-5 right-3 w-11/12 xl:w-2/3 h-16 flex bg-white font-bold rounded-lg">
+        <div class="text-xl text-left text-gray-500 w-5/12 flex mt-5 ml-10 ">
+          {selectedSeat.map((seat) => (
+            <div class="mr-2 align-middle">{seat}</div>
+          ))}
         </div>
-        {selectedSeat.map((seat) => (
-          <div class="text-center">{seat}</div>
-        ))}
-      </div>
-      <div class="">
-        {selectedSeat.length != 0 && (
+        <div class="text-xl flex-initial text-gray-500 flex mt-5">99000</div>
+
+        <div class="grid place-items-center">
           <button
-            class="w-60 py-3 text-lg rounded-lg bg-gray-200 text-gray-500 absolute right-7 bottom-7"
+            class={`w-40 py-2 text-lg font-bold rounded-lg  absolute right-3 ${
+              selectedSeat.length != 0
+                ? "bg-gray-200 text-gray-500"
+                : "bg-gray-100 text-gray-200"
+            } `}
             type="submit"
             onClick={goNext}
           >
-            다음
+            예약하기
           </button>
-        )}
+        </div>
       </div>
     </div>
   );
