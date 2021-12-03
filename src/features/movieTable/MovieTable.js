@@ -26,7 +26,7 @@ export default function MovieTable() {
   const navigate = useNavigate();
   return (
     <div>
-      <div class="flex justify-center mt-table ml-10 text-gray-500 overflow-x-auto ">
+      <div class="overflow-x-scroll  xl:flex-nowrap flex ml-10 xl:justify-center mt-table  text-gray-500 ">
         {movies.map((movie) => (
           <Movie
             key={movie.id}
@@ -38,7 +38,7 @@ export default function MovieTable() {
       </div>
       {selected != null && (
         <button
-          class="w-60 py-3 text-lg rounded-lg bg-gray-200 text-gray-500 absolute right-7 bottom-7"
+          class="w-2/12 py-3 text-lg rounded-lg bg-gray-200 text-gray-500 absolute right-7 bottom-7 font-bold"
           type="submit"
           onClick={goNext}
         >
@@ -64,7 +64,7 @@ const Movie = ({ movie, selected, setSelected }) => {
   const [actor, setActor] = useState(null);
   return (
     <div
-      class={` w-1/4 mr-poster pt-12 pb-6 px-poster border-2 
+      class={` w-60 flex-grow-0 flex-shrink-0 flex-auto  xl:w-1/5 mr-poster pt-12 pb-6 px-poster border-2 
       ${selected === id ? "border-black" : "border-white"} rounded-lg bg-white 
        focus:border-black `}
       onClick={mouseClick}

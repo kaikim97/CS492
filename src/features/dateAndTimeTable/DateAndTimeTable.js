@@ -17,7 +17,7 @@ const DateAndTimeTable = () => {
   console.log("TITLE: ", title);
   return (
     <div class="flex">
-      <div class="w-1/3 h-95screen bg-white font-bold">
+      <div class="w-full lg:w-1/3 h-screen bg-white font-bold">
         <div class="h-1/4 relative bg-gradient-to-t bg-gray-300 from-black to-transparent ">
           <div class="h-full mix-blend-multiply ">
             <img
@@ -31,10 +31,10 @@ const DateAndTimeTable = () => {
         </div>
 
         <div class="flex h-3/4">
-          <div class="flex-auto h-5/6 overflow-y-scroll">
+          <div class=" w-1/3 h-9/10 overflow-y-scroll">
             <DateTable />
           </div>
-          <div class="flex-auto h-full overflow-y-scroll">
+          <div class="w-2/3 h-full overflow-y-scroll">
             <TimeTable />
           </div>
         </div>

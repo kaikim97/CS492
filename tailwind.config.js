@@ -14,10 +14,15 @@ module.exports = {
       height: {
         "5screen": "5vh",
         "95screen": "95vh",
+        "9/10": "90%",
       },
       spacing: {
         poster: "2%",
         table: "17vh",
+        "1/10": "20%",
+      },
+      inset: {
+        "1/3": "33%",
       },
     },
   },
