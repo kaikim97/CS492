@@ -16,21 +16,20 @@ const DateAndTimeTable = () => {
   }, []);
   console.log("TITLE: ", title);
   return (
-    <div class="flex ">
-      <div class="w-96 xl:w-1/3 h-screen bg-white font-bold flex-initial">
-        <div class="h-1/4 relative bg-gradient-to-t bg-gray-300 from-black to-transparent ">
+    <div class="xl:flex ">
+      <div class="w-screen h-60 flex xl:block bg-white font-bold xl:w-1/3 xl:h-screen xl:flex-initial ">
+        <div class="w-1/3 h-full xl:h-1/4 xl:w-full relative bg-gradient-to-t bg-gray-300 from-black to-transparent ">
           <div class="h-full mix-blend-multiply ">
             <img
               src={require(`../../components/movies/${title}.jpg`).default}
-              class="w-1/3 h-full object-cover w-full"
+              class=" h-full object-cover w-full"
             ></img>
           </div>
-          <div class="text-white text-3xl font-bold absolute bottom-10 left-20">
+          <div class="text-white text-xl xl:text-3xl font-bold absolute bottom-10 left-20">
             <p>{title}</p>
           </div>
         </div>
-
-        <div class="flex h-3/4">
+        <div class="flex flex-auto h-full xl:h-3/4">
           <div class=" w-1/3 h-9/10 overflow-y-scroll">
             <DateTable />
           </div>
@@ -40,7 +39,7 @@ const DateAndTimeTable = () => {
         </div>
       </div>
 
-      <div class="flex-initial ml-20">
+      <div class="xl:flex-initial ml-20 ">
         {context.date != "" && context.time != "" && <Seat />}
       </div>
     </div>

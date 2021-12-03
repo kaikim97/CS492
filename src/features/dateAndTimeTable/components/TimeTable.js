@@ -79,8 +79,8 @@ const TimeRow = ({ section, context }) => {
         }`}
         onClick={timeClick}
       >
-        <span class="text-4xl ">{changeTimeForm(time)}</span>
-        <span className="ampm" class="text-3xl ml-3 mr-10">
+        <span class="text-2xl md:text-4xl ">{changeTimeForm(time)}</span>
+        <span className="ampm" class="text-xl md:text-3xl ml-3 mr-10">
           {amOrPm(time)}
         </span>
         <span
