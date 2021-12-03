@@ -16,8 +16,8 @@ const DateAndTimeTable = () => {
   }, []);
   console.log("TITLE: ", title);
   return (
-    <div class="flex">
-      <div class="w-full lg:w-1/3 h-screen bg-white font-bold">
+    <div class="flex ">
+      <div class="w-96 xl:w-1/3 h-screen bg-white font-bold flex-initial">
         <div class="h-1/4 relative bg-gradient-to-t bg-gray-300 from-black to-transparent ">
           <div class="h-full mix-blend-multiply ">
             <img
@@ -39,7 +39,8 @@ const DateAndTimeTable = () => {
           </div>
         </div>
       </div>
-      <div class="w-1/3 flex-1">
+
+      <div class="flex-initial ml-20">
         {context.date != "" && context.time != "" && <Seat />}
       </div>
     </div>
