@@ -6,9 +6,7 @@ import api from "../../../api.js";
 export default function TimeTable({}) {
   const context = useContext(AuthContext);
   const date = context.date;
-  // const title = context.title;
   const title = window.localStorage.getItem("title");
-  const [selectedTime, setSelectedTime] = useState(null);
 
   const temp = [
     { time: "08:00", seat: "" },
@@ -44,9 +42,7 @@ export default function TimeTable({}) {
             const elem = { time: times[i], seat: response.data[i].available };
             s.push(elem);
           }
-          console.log("s 뭐야", s);
           if (s !== []) {
-            console.log("s 있음", s);
             setTimeSeats(s);
           }
         });
@@ -58,13 +54,7 @@ export default function TimeTable({}) {
       <table>
         <tbody>
           {timeSeats.map((section) => (
-            <TimeRow
-              key={section.time}
-              section={section}
-              selectedTime={selectedTime}
-              setSelectedTime={setSelectedTime}
-              context={context}
-            />
+            <TimeRow key={section.time} section={section} context={context} />
           ))}
         </tbody>
       </table>
@@ -72,16 +62,17 @@ export default function TimeTable({}) {
   );
 }
 
-const TimeRow = ({ section, selectedTime, setSelectedTime, context }) => {
+const TimeRow = ({ section, context }) => {
   const ifDateSelected = context.date != "";
   const { time, seat } = section;
   const seatWithTotal = seat + "/551";
+  console.log(context.time);
   return (
     <tr>
       <td
         class={`mr-20 py-5 px-10 tracking-wide text-right rounded-md ${
-          selectedTime === "" ? "hover:bg-gray-100 hover:text-blue-500" : ""
-        } ${context.time === section ? "text-blue-500 bg-gray-100 " : ""} ${
+          context.time === "" ? "hover:bg-gray-100 hover:text-blue-500" : ""
+        } ${context.time === time ? "text-blue-500 bg-gray-100 " : ""} ${
           ifDateSelected
             ? "text-gray-500 "
             : "text-gray-200 pointer-events-none"
@@ -104,8 +95,7 @@ const TimeRow = ({ section, selectedTime, setSelectedTime, context }) => {
     </tr>
   );
   function timeClick(e) {
-    setSelectedTime(section);
-    context.setTime(section);
+    context.setTime(time);
   }
 };
 
@@ -124,5 +114,3 @@ function amOrPm(time) {
     return "AM";
   }
 }
-
-// export default () => <TimeTable times={times} />;
