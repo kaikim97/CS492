@@ -91,7 +91,7 @@ router.post("/preoccupy", (req, res) => {
           .then((rv) => {
             if (!rv)
               return res.status(404).send({ err: "Reservation not found" });
-            if (rv.birth === "") {
+            if (rv.birth == "") {
               hall.available = hall.available + req.body.seats.length;
               req.body.seats.forEach(function (seatID) {
                 hall.occupied.delete(seatID);

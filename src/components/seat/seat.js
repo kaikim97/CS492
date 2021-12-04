@@ -4,6 +4,7 @@ import { AuthContext } from "../../context.js";
 import seatData from "./seats-kaist.json";
 import { useNavigate } from "react-router-dom";
 import apis from "../../api";
+import PersonalInfo from "../../PersonalInfo.js";
 
 function Seat() {
   const ctx = useContext(AuthContext);
@@ -14,15 +15,19 @@ function Seat() {
 
   const [selectedSeat, setSeat] = useState([]);
   const [totalPrice, setPrice] = useState(0);
+  const [open, setOpen] = useState(false);
 
   const makeTimeNum = (time) => {
     return time.split(":").join("");
   };
 
+  const closeModal = () => {
+    setOpen(false);
+  };
+
   const goNext = () => {
     ctx.setSeats(selectedSeat);
     ctx.setPrice(totalPrice);
-    // console.log(ctx.title, ctx.date, makeTimeNum(ctx.time.time), selectedSeat);
 
     const createReservation = apis
       .preoccupySeat({
@@ -35,7 +40,7 @@ function Seat() {
         console.log(response.data);
         if (response.data) {
           ctx.setId(response.data._id);
-          navigate("/personalInfo");
+          setOpen(true);
         } else {
           // TODO: 이후 별도 창으로 띄워야함
           console.log("이미 선택된 좌석입니다");
@@ -186,6 +191,7 @@ function Seat() {
             다음
           </button>
         )}
+        <PersonalInfo open={open} setClose={closeModal} />
       </div>
     </div>
   );

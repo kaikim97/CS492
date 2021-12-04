@@ -8,7 +8,7 @@ import Paper from "@mui/material/Paper";
 import api from "./api";
 import { AuthContext } from "./context.js";
 
-export default function PersonalInfo() {
+export default function PersonalInfo(props) {
   // const data = api.getAllReservations().then((response) => {
   //   console.log(response.data);
   // });
@@ -24,9 +24,10 @@ export default function PersonalInfo() {
   const [pwd, setPwd] = useState("");
   const [pwdConfirm, setPwdConfirm] = useState("");
   const [done, setDone] = useState(false);
-  const [open, setOpen] = useState(true);
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const [id, setId] = useState("");
+
+  const { open, setClose } = props;
 
   useEffect(() => {
     if (phone.length >= 10 && pwd.length == 4 && pwdConfirm.length == 4) {
@@ -109,9 +110,17 @@ export default function PersonalInfo() {
     return result;
   };
 
+  const changeTimeForm = (time) => {
+    if (time.slice(0, 2) * 1 > 12) {
+      return time.slice(0, 2) * 1 - 12 + ":00";
+    } else {
+      return time;
+    }
+  };
+
   const parseTime = (time) => {
     const amPm = time.slice(0, 2) * 1 >= 12 ? "PM" : "AM";
-    const temp = time + amPm;
+    const temp = changeTimeForm(time) + amPm;
     return temp;
   };
 
@@ -172,7 +181,14 @@ export default function PersonalInfo() {
   ) : (
     <div>
       <Modal open={open}>
-        <div id="modalRoot">
+        <div id="modalRoot" class="relative h-32 w-32">
+          <button
+            class="w-30 py-3 text-lg rounded-lg bg-gray-100 text-gray-500 absolute top-0 right-0 h-16 w-16"
+            type="submit"
+            onClick={setClose}
+          >
+            X
+          </button>
           <div id="firstHalf">
             <div id="title">{context.title}</div>
 
