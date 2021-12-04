@@ -66,10 +66,16 @@ export default function PersonalInfo(props) {
           price: context.price,
         })
         .then((response) => {
-          console.log(response.data);
+          if (response) {
+            // console.log(response.data);
+            console.log("예약이 완료되었습니다.");
+            setDone(true);
+          }
+        })
+        .catch((error) => {
+          alert("예약 시간 초과");
+          window.location.href = "/movieInfo";
         });
-      console.log("예약이 완료되었습니다.");
-      setDone(true);
     } else {
       console.log("비밀번호가 일치하지 않습니다.");
     }

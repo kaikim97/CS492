@@ -23,6 +23,7 @@ function Seat() {
 
   const closeModal = () => {
     setOpen(false);
+    apis.deleteReservation(ctx.id);
   };
 
   const goNext = () => {
