@@ -9,6 +9,8 @@
   "seats": [
     {
       "color": "#F4AB67",
+      "price": 59000,
+      "name": "R",
       "rectangles": [
         {
           "lefttop": {
@@ -1754,6 +1756,8 @@
     },
     {
       "color": "#86CA67",
+      "price": 79000,
+      "name": "S",
       "rectangles": [
         {
           "lefttop": {
@@ -3499,6 +3503,8 @@
     },
     {
       "color": "#DFC66E",
+      "price": 99000,
+      "name": "A",
       "rectangles": [
         {
           "lefttop": {

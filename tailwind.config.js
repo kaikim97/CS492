@@ -2,6 +2,12 @@ module.exports = {
   purge: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
   darkMode: false, // or 'media' or 'class'
   theme: {
+    backgroundColor: (theme) => ({
+      ...theme("colors"),
+      R: "#F4AB67",
+      S: "#86CA67",
+      A: "#DFC66E",
+    }),
     fontFamily: {
       sans: ["Noto Sans KR"],
       body: ["Noto Sans KR"],
