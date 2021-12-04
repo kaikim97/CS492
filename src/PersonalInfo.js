@@ -9,18 +9,16 @@ import api from "./api";
 import { AuthContext } from "./context.js";
 
 export default function PersonalInfo() {
-  const data = api.getAllReservations().then((response) => {
-    console.log(response.data);
-  });
-
-  //name, phone, title, date, time, seats
+  // const data = api.getAllReservations().then((response) => {
+  //   console.log(response.data);
+  // });
 
   const context = useContext(AuthContext);
 
-  const [date, setDate] = useState("20211201");
-  const [title, setTitle] = useState("Dune");
-  const [time, setTime] = useState("2200");
-  const [seat, setSeat] = useState(["F16", "F17"]);
+  // const [date, setDate] = useState("20211201");
+  // const [title, setTitle] = useState("Dune");
+  // const [time, setTime] = useState("2200");
+  // const [seat, setSeat] = useState(["F16", "F17"]);
   const [birthday, setBirthday] = useState("");
   const [phone, setPhone] = useState("");
   const [pwd, setPwd] = useState("");
@@ -48,7 +46,6 @@ export default function PersonalInfo() {
         break;
       case "pwd":
         setPwd(event.target.value);
-
         break;
       case "pwdConfirm":
         setPwdConfirm(event.target.value);
@@ -60,20 +57,15 @@ export default function PersonalInfo() {
 
   const handleConfirm = () => {
     if (pwd === pwdConfirm) {
-      const createReservation = api
-        .createReservation({
+      const updateReservation = api
+        .updateReservationById(context.id, {
           birth: birthday,
           phone: phone,
           password: pwd,
-          title: title,
-          date: date,
-          time: time,
-          seats: seat,
+          price: context.price,
         })
         .then((response) => {
-          console.log(response.data._id);
-          setId(response.data._id);
-          context.setDate(date);
+          console.log(response.data);
         });
       console.log("예약이 완료되었습니다.");
       setDone(true);
@@ -88,7 +80,6 @@ export default function PersonalInfo() {
 
     const dateString = new Date(temp);
     const dayInt = dateString.getDay();
-    console.log(dayInt);
 
     const dayString =
       dayInt == 0
@@ -105,8 +96,6 @@ export default function PersonalInfo() {
         ? "금"
         : "토";
 
-    console.log(dayString);
-
     const result =
       date.slice(0, 4) +
       "." +
@@ -121,8 +110,8 @@ export default function PersonalInfo() {
   };
 
   const parseTime = (time) => {
-    const amPm = time > 1200 ? "PM" : "AM";
-    const temp = time.slice(0, 2) + ":" + time.slice(2) + amPm;
+    const amPm = time.slice(0, 2) * 1 >= 12 ? "PM" : "AM";
+    const temp = time + amPm;
     return temp;
   };
 
@@ -131,21 +120,23 @@ export default function PersonalInfo() {
       <Modal open={open}>
         <div id="modalRoot">
           <div id="firstHalf">
-            <div id="title">{title}</div>
+            <div id="title">{context.title}</div>
 
             <div id="dateTime">
-              <p> {parseDate(date)}</p>
-              <p> {parseTime(time)}</p>
+              <p> {parseDate(context.date)}</p>
+              <p> {parseTime(context.time.time)}</p>
             </div>
             <div id="seatPrice">
-              <p>{seat.join(", ")}</p>
-              <p>198,000원</p>
+              <p>{context.seats.join(", ")}</p>
+              <p>{context.price}원</p>
             </div>
           </div>
           <hr className="solid" />
           <div id="bottomHalf">
             <p className="subtitle">예약이 완료되었습니다.</p>
-            <p className="subtitle">예약번호 &nbsp;&nbsp;&nbsp;&nbsp; {id}</p>
+            <p className="subtitle">
+              예약번호 &nbsp;&nbsp;&nbsp;&nbsp; {context.id}
+            </p>
           </div>
 
           <div
@@ -183,15 +174,15 @@ export default function PersonalInfo() {
       <Modal open={open}>
         <div id="modalRoot">
           <div id="firstHalf">
-            <div id="title">{title}</div>
+            <div id="title">{context.title}</div>
 
             <div id="dateTime">
-              <p> {parseDate(date)}</p>
-              <p> {parseTime(time)}</p>
+              <p> {parseDate(context.date)}</p>
+              <p> {parseTime(context.time.time)}</p>
             </div>
             <div id="seatPrice">
-              <p>{seat.join(", ")}</p>
-              <p>198,000원</p>
+              <p>{context.seats.join(", ")}</p>
+              <p>{context.price}원</p>
             </div>
           </div>
           <hr className="solid" />

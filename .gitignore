@@ -1,5 +1,3 @@
-node_modules/.cache
- node_modules/.cache/.eslintcache
 .DS_Store
 src/.DS_Store
 src/features/.DS_Store
