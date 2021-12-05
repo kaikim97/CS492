@@ -9,7 +9,7 @@ const hallSchema = new mongoose.Schema({
         type: Map,      // Key: seatID
         of: {type: Boolean},     // Value: true(reserved), false(preoccupied)
         default: {},
-        required: true
+        required: false
      }
 },
 {

@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import api from "../../api.js";
 import { useContext } from "react";
 import { AuthContext } from "../../context.js";
-import axios from "axios";
+import TopBar from "../TopBar";
 
 const movies = [
   { id: 0, name: "듄", poster: movie1 },
@@ -24,27 +24,39 @@ export default function MovieTable() {
   const context = useContext(AuthContext);
   const [selected, setSelected] = useState(null);
   const navigate = useNavigate();
+
+  const findReservation = () => {
+    navigate("/findReservation");
+  };
+
   return (
-    <div>
-      <div class="overflow-x-scroll flex ml-10  mt-table text-gray-500 ">
-        {movies.map((movie) => (
-          <Movie
-            key={movie.id}
-            movie={movie}
-            selected={selected}
-            setSelected={setSelected}
-          />
-        ))}
+    <div class="flex flex-col h-screen">
+      <div>
+        <TopBar function={findReservation} />
       </div>
-      {selected != null && (
-        <button
-          class="w-40 md:w-52 xl:w-2/12 py-3 text-lg rounded-lg bg-gray-200 text-gray-500 absolute right-7 bottom-7 font-bold"
-          type="submit"
-          onClick={goNext}
-        >
-          다음
-        </button>
-      )}
+      <div class="flex-1 ">
+        <div class="overflow-x-scroll flex text-gray-500 mt-table">
+          {movies.map((movie) => (
+            <Movie
+              key={movie.id}
+              movie={movie}
+              selected={selected}
+              setSelected={setSelected}
+            />
+          ))}
+        </div>
+      </div>
+      <div class="flex-initial h-14 text-right m-5">
+        {selected != null && (
+          <button
+            class="w-40 md:w-52 xl:w-2/12 py-3 text-lg rounded-lg bg-gray-200 text-gray-500 font-bold"
+            type="submit"
+            onClick={goNext}
+          >
+            다음
+          </button>
+        )}
+      </div>
     </div>
   );
   function goNext() {

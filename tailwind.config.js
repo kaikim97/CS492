@@ -1,7 +1,15 @@
 module.exports = {
+  mode: "jit",
   purge: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
   darkMode: false, // or 'media' or 'class'
   theme: {
+    backgroundColor: (theme) => ({
+      ...theme("colors"),
+      R: "#F4AB67",
+      S: "#86CA67",
+      A: "#DFC66E",
+      selected: "#3C68D8",
+    }),
     fontFamily: {
       sans: ["Noto Sans KR"],
       body: ["Noto Sans KR"],
@@ -10,16 +18,39 @@ module.exports = {
     extend: {
       width: {
         "1/4.5": "23%",
+        "97/100": "97%",
       },
       height: {
         "5screen": "5vh",
         "95screen": "95vh",
         "9/10": "90%",
+        "7/10": "70%",
+        "5/10": "50%",
+        "1/10": "10%",
+        "mobile-seat": "calc(-80px + 100%)",
       },
       spacing: {
         poster: "2%",
         table: "17vh",
         "1/10": "20%",
+        "1.9/3": "65%",
+        "35p": "35%",
+        "20p": "20%",
+        "60p": "60%",
+        "65p": "65%",
+        76: "76px",
+        "1vw": "1vw",
+        "2vw": "2vw",
+        "3vw": "3vw",
+        "4vw": "4vw",
+        "1vh": "1vh",
+        "2vh": "2vh",
+        "3vh": "3vh",
+        "4vh": "4vh",
+        "7vh": "7vh",
+        "8vh": "8vh",
+        "12vh": "12vh",
+        "80vh": "80vh",
       },
       inset: {
         "1/3": "33%",
