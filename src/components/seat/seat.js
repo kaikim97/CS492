@@ -199,7 +199,7 @@ function Seat() {
           </div>
         ))}
       </div>
-      <div class="w-full h-full justify-items-center text-center items-center m-10 p-10 ">
+      <div class="w-full h-full justify-items-center text-center items-center m-10  ">
         <TransformWrapper
           doubleClick={{ disabled: true }}
           maxScale={3}

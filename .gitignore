@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 node_modules/.cache
 node_modules/.cache/.eslintcache
-=======
->>>>>>> 31f3767d2994ec22ce7d6fcaad46338c733e0f41
 .DS_Store
 src/.DS_Store
 src/features/.DS_Store

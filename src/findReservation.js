@@ -111,52 +111,56 @@ export default function FindReservation() {
   };
 
   return (
-    <div>
-      <div id="header">예약 조회</div>
-      <div id="upperHalf">
-        <p className="label">예약 번호로 조회하기</p>
-        <div id="upperTextfield">
+    <div class="text-gray-600">
+      <div class="mt-8vh text-bigletter font-bold text-center">예약 조회</div>
+      <div class="mx-24vw text-left mt-12vh mb-8vh">
+        <p class="text-letter mb-2vh font-semibold">예약 번호로 조회하기</p>
+        <div class="flex justify-between">
           <TextField
             id="resNum"
             onChange={handleChange}
             value={resNum}
-            style={{ width: "90%" }}
+            style={{ width: "80%" }}
             fullWidth
             placeholder="예약번호"
           />
-          <Button onClick={resNumClick}>조회</Button>
+          <Button onClick={resNumClick} class="bg-gray-200 w-19p">
+            조회
+          </Button>
         </div>
       </div>
 
-      <div id="lowerHalf">
-        <p className="label">이름과 휴대폰번호로 조회하기</p>
-        <div id="fieldRoot">
-          <div id="upperLine">
-            <TextField
-              id="birth"
-              onChange={handleChange}
-              value={birth}
-              style={{ width: "37%" }}
-              placeholder="생년월일(6자리)"
-            />
-            <TextField
-              id="phone"
-              onChange={handleChange}
-              value={phone}
-              style={{ width: "60%" }}
-              placeholder="휴대폰 번호"
-            />
-          </div>
-          <div id="lowerLine">
-            <TextField
-              id="pwd"
-              onChange={handleChange}
-              value={pwd}
-              style={{ width: "90%" }}
-              placeholder="비밀번호(4자리)"
-            />
-            <Button onClick={resQuery}>조회</Button>
-          </div>
+      <div class="mx-24vw text-left ">
+        <p class="text-letter mb-2vh font-semibold">
+          이름과 휴대폰번호로 조회하기
+        </p>
+        <div class="w-80p flex justify-between mb-2vh">
+          <TextField
+            id="birth"
+            onChange={handleChange}
+            value={birth}
+            style={{ width: "37%" }}
+            placeholder="생년월일(6자리)"
+          />
+          <TextField
+            id="phone"
+            onChange={handleChange}
+            value={phone}
+            style={{ width: "60%" }}
+            placeholder="휴대폰 번호"
+          />
+        </div>
+        <div class="flex justify-between">
+          <TextField
+            id="pwd"
+            onChange={handleChange}
+            value={pwd}
+            style={{ width: "80%" }}
+            placeholder="비밀번호(4자리)"
+          />
+          <Button onClick={resQuery} class="bg-gray-200 w-19p">
+            조회
+          </Button>
         </div>
       </div>
       {data == null ? null : (

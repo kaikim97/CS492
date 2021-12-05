@@ -30,7 +30,7 @@ const DateAndTimeTable = () => {
       </div>
       <div class="flex-1 xl:flex ">
         <div class="w-screen xl:w-1/3 h-60 flex  xl:block bg-white font-bold  xl:h-screen xl:flex-auto mt-14">
-          <div class="w-80  xl:w-full h-full xl:h-1/4 relative bg-gradient-to-t bg-gray-300 from-black to-transparent ">
+          <div class="w-80 xl:w-full h-full xl:h-1/4 relative bg-gradient-to-t bg-gray-300 from-black to-transparent ">
             <div class="h-full mix-blend-multiply ">
               <img
                 src={require(`../../components/movies/${title}.jpg`).default}

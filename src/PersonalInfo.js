@@ -115,22 +115,20 @@ export default function PersonalInfo() {
   return done ? (
     <div>
       <Modal open={open}>
-        <div class="bg-white rounded-2xl text-gray-500 m-auto mt-8vh mb-12vh w-10/12 sm:w-6/12 h-80vh">
-          <div class="h-35p px-3vw pt-7vh ">
+        <div class="overflow-y-scroll bg-white rounded-2xl text-gray-500 m-auto mt-8vh mb-12vh w-10/12 sm:w-6/12 h-80vh">
+          <div class="h-40p px-4vw pt-8vh ">
             <div class="px-2vw flex flex-col justify-between h-5/6 mb-3vh">
-              <div class="text-lg md:text-2xl xl:text-4xl font-bold ">
-                {context.title}
-              </div>
+              <div class="text-title font-bold ">{context.title}</div>
 
-              <div class="text-sm md:text-lg xl:text-2xl font-semibold  flex w-10/12 xl:w-1/2 justify-between">
+              <div class="text-datetime font-semibold  flex w-10/12 xl:w-1/2 justify-between">
                 <p> {parseDate(context.date)}</p>
                 <p> {parseTime(context.time)}</p>
               </div>
               <div class="  flex w-full justify-between">
-                <p class="text-sm md:text-lg xl:text-2xl font-semibold ">
+                <p class="text-seat font-semibold ">
                   {context.seats.join(", ")}
                 </p>
-                <p class="text-xs md:text-xl xl:text-3xl font-medium ">
+                <p class="text-price font-medium ">
                   {parseInt(context.price / 1000) + ",000"}원
                 </p>
               </div>
@@ -138,27 +136,26 @@ export default function PersonalInfo() {
             <hr class="w-full  m-auto " />
           </div>
 
-          <div class="h-65p relative px-3vw py-2vh ">
-            <div class="text-xs md:text-lg xl:text-2xl font-medium flex flex-col h-1/6 justify-between my-2vh px-2vw ">
+          <div class="h-45p relative px-4vw py-2vh ">
+            <div class="text-seat font-medium flex flex-col h-35p justify-between my-2vh px-2vw ">
               <p>예약이 완료되었습니다.</p>
               <p>예약번호 &nbsp;&nbsp;&nbsp;&nbsp; {context.id}</p>
             </div>
-
-            <div class="absolute bottom-0 left-4vw w-10/12  h-20p text-center ">
-              <div class="text-xs md:text-sm xl:text-md font-semibold text-gray-400 mb-2">
-                예약 조회는 ‘예약 번호로 조회' 또는 ‘생년월일과 휴대폰 번호로
-                조회' 모두 가능합니다
-              </div>
-              <div class="w-full text-center m-auto">
-                <Button
-                  class="w-full text-center py-1vh rounded-lg text-md xl:text-2xl font-bold 
+          </div>
+          <div class="w-full h-15p">
+            <div class="text-smallletter text-center w-85p m-auto  font-semibold text-gray-400 mb-2">
+              예약 조회는 ‘예약 번호로 조회' 또는 ‘생년월일과 휴대폰 번호로
+              조회' 모두 가능합니다
+            </div>
+            <div class="w-full text-center m-auto">
+              <Button
+                class="w-85p text-center py-1p rounded-lg text-seat font-bold 
                       bg-gray-200 text-gray-500"
-                >
-                  <Link to="/" style={{ textDecoration: "none" }}>
-                    돌아가기
-                  </Link>
-                </Button>
-              </div>
+              >
+                <Link to="/" style={{ textDecoration: "none" }}>
+                  돌아가기
+                </Link>
+              </Button>
             </div>
           </div>
         </div>
@@ -167,22 +164,20 @@ export default function PersonalInfo() {
   ) : (
     <div>
       <Modal open={open}>
-        <div class="bg-white rounded-2xl text-gray-500 m-auto mt-8vh mb-12vh w-10/12 sm:w-6/12 h-80vh">
-          <div class="h-35p px-3vw pt-7vh ">
+        <div class="overflow-y-scroll bg-white rounded-2xl text-gray-500 m-auto mt-8vh mb-12vh w-7/12 sm:w-6/12 h-80vh">
+          <div class="h-40p px-4vw pt-8vh ">
             <div class="px-2vw flex flex-col justify-between h-5/6 mb-3vh">
-              <div class="text-lg md:text-2xl xl:text-4xl font-bold ">
-                {context.title}
-              </div>
+              <div class="text-title font-bold ">{context.title}</div>
 
-              <div class="text-sm md:text-lg xl:text-2xl font-semibold  flex w-10/12 xl:w-1/2 justify-between">
+              <div class="text-datetime font-semibold  flex w-10/12 xl:w-1/2 justify-between">
                 <p> {parseDate(context.date)}</p>
                 <p> {parseTime(context.time)}</p>
               </div>
               <div class="  flex w-full justify-between">
-                <p class="text-sm md:text-lg xl:text-2xl font-semibold ">
+                <p class="text-seat font-semibold ">
                   {context.seats.join(", ")}
                 </p>
-                <p class="text-md md:text-xl xl:text-3xl font-medium ">
+                <p class="text-price font-medium ">
                   {parseInt(context.price / 1000) + ",000"}원
                 </p>
               </div>
@@ -190,12 +185,13 @@ export default function PersonalInfo() {
             <hr class="w-full  m-auto " />
           </div>
 
-          <div class="h-65p relative px-3vw py-2vh ">
-            <div class="text-sm md:text-lg xl:text-2xl font-semibold flex flex-col h-60p justify-between my-2vh px-2vw ">
+          <div class="h-45p relative px-4vw py-4vh ">
+            <div class="text-label font-semibold flex flex-col h-80p  justify-between my-2vh px-2vw ">
               <div class="flex w-full items-center justify-between ">
                 <p class="">생년월일(6자리)</p>
                 <TextField
                   id="birthday"
+                  placeholder="980918"
                   value={birthday}
                   onChange={handleChange}
                   inputProps={{ maxLength: 11, style: { marginLeft: "1vw" } }}
@@ -210,6 +206,7 @@ export default function PersonalInfo() {
                 <p class="">휴대폰 번호</p>
                 <TextField
                   id="phone"
+                  placeholder="01000000000"
                   value={phone}
                   onChange={handleChange}
                   inputProps={{ maxLength: 11, style: { marginLeft: "1vw" } }}
@@ -224,6 +221,7 @@ export default function PersonalInfo() {
                 <p class="">비밀번호(4자리)</p>
                 <TextField
                   id="pwd"
+                  placeholder="0000"
                   type="password"
                   value={pwd}
                   onChange={handleChange}
@@ -239,6 +237,7 @@ export default function PersonalInfo() {
                 <p class="">비밀번호 확인</p>
                 <TextField
                   id="pwdConfirm"
+                  placeholder="0000"
                   type="password"
                   value={pwdConfirm}
                   onChange={handleChange}
@@ -251,24 +250,24 @@ export default function PersonalInfo() {
                 />
               </div>
             </div>
-            <div class="absolute bottom-0 left-4vw w-10/12  h-20p text-center ">
-              <div class="text-xs md:text-sm xl:text-md font-semibold text-gray-400 mb-2">
-                예약 내역이 맞으시면 생년월일과 휴대폰 번호, 비밀번호를 입력 한
-                후 결제를 완료해주세요
-              </div>
-              <div class="w-full text-center m-auto">
-                <Button
-                  disabled={buttonDisabled}
-                  onClick={handleConfirm}
-                  class={`w-full text-center py-1vh rounded-lg text-md xl:text-2xl font-bold ${
-                    buttonDisabled
-                      ? "bg-gray-100 text-gray-200"
-                      : "bg-gray-200 text-gray-500"
-                  }`}
-                >
-                  결제하기
-                </Button>
-              </div>
+          </div>
+          <div class="w-full h-15p">
+            <div class="text-smallletter text-center w-85p m-auto  font-semibold text-gray-400 mb-1p">
+              예약 내역이 맞으시면 생년월일과 휴대폰 번호, 비밀번호를 입력 한 후
+              결제를 완료해주세요
+            </div>
+            <div class="w-full text-center m-auto">
+              <Button
+                disabled={buttonDisabled}
+                onClick={handleConfirm}
+                class={`w-85p text-center py-1p rounded-lg text-seat font-bold ${
+                  buttonDisabled
+                    ? "bg-gray-100 text-gray-200"
+                    : "bg-gray-200 text-gray-500"
+                }`}
+              >
+                결제하기
+              </Button>
             </div>
           </div>
         </div>

@@ -70,14 +70,14 @@ export default function MovieTable() {
 
 const Movie = ({ movie, selected, setSelected }) => {
   const { id, name, poster } = movie;
-  const [hover, setHover] = useState(null);
   const [userRating, setUserRating] = useState(null);
   const [director, setDirector] = useState(null);
   const [actor, setActor] = useState(null);
+  console.log(selected);
   return (
     <div
       class={`w-72 flex-grow-0 flex-shrink-0 xl:flex-grow xl:flex-shrink  mr-poster pt-12 pb-6 px-poster border-2 
-      ${selected === id ? "border-black" : "border-white"} rounded-lg bg-white 
+      ${selected === id ? "border-black " : "border-white"} rounded-lg bg-white 
        focus:border-black `}
       onClick={mouseClick}
     >
@@ -107,9 +107,10 @@ const Movie = ({ movie, selected, setSelected }) => {
 
   function mouseClick(e) {
     setSelected(id);
+    console.log(id);
   }
   function movieHover(e) {
-    setHover(id);
+    // setHover(id);
     const data = api.searchMovie(`query=${name}`).then((response) => {
       const director_before_parse = response.data.items[0].director;
       const actor_before_parse = response.data.items[0].actor;
