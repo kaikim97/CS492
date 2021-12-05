@@ -115,7 +115,7 @@ export default function PersonalInfo() {
   return done ? (
     <div>
       <Modal open={open}>
-        <div class="bg-white rounded-2xl text-gray-500 m-auto mt-8vh mb-12vh w-6/12 h-80vh">
+        <div class="bg-white rounded-2xl text-gray-500 m-auto mt-8vh mb-12vh w-10/12 sm:w-6/12 h-80vh">
           <div class="h-35p px-3vw pt-7vh ">
             <div class="px-2vw flex flex-col justify-between h-5/6 mb-3vh">
               <div class="text-lg md:text-2xl xl:text-4xl font-bold ">
@@ -167,7 +167,7 @@ export default function PersonalInfo() {
   ) : (
     <div>
       <Modal open={open}>
-        <div class="bg-white rounded-2xl text-gray-500 m-auto mt-8vh mb-12vh w-10/12 md:w-6/12 h-80vh">
+        <div class="bg-white rounded-2xl text-gray-500 m-auto mt-8vh mb-12vh w-10/12 sm:w-6/12 h-80vh">
           <div class="h-35p px-3vw pt-7vh ">
             <div class="px-2vw flex flex-col justify-between h-5/6 mb-3vh">
               <div class="text-lg md:text-2xl xl:text-4xl font-bold ">
