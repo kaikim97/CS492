@@ -3,7 +3,7 @@ import api from "./api";
 import { Link } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import { Button, Modal } from "@mui/material";
-import "./FindReservation.css";
+// import "./FindReservation.css";
 
 export default function FindReservation() {
   const [resNum, setResNum] = useState("");
@@ -113,7 +113,7 @@ export default function FindReservation() {
   return (
     <div class="text-gray-600">
       <div class="mt-8vh text-bigletter font-bold text-center">예약 조회</div>
-      <div class="mx-24vw text-left mt-12vh mb-8vh">
+      <div class="mx-28vw text-left mt-12vh mb-8vh">
         <p class="text-letter mb-2vh font-semibold">예약 번호로 조회하기</p>
         <div class="flex justify-between">
           <TextField
@@ -130,11 +130,11 @@ export default function FindReservation() {
         </div>
       </div>
 
-      <div class="mx-24vw text-left ">
+      <div class="mx-28vw text-left ">
         <p class="text-letter mb-2vh font-semibold">
           이름과 휴대폰번호로 조회하기
         </p>
-        <div class="w-80p flex justify-between mb-2vh">
+        <div class="w-80p flex justify-between mb-1vh">
           <TextField
             id="birth"
             onChange={handleChange}
@@ -165,34 +165,34 @@ export default function FindReservation() {
       </div>
       {data == null ? null : (
         <Modal open={open}>
-          <div id="modalRoot">
-            <div id="resInfo">
-              <p style={{ fontSize: "" }}>
-                예약번호 {data._id}의 예약 내역입니다.
+          <div class="overflow-y-scroll bg-white rounded-2xl text-gray-500 m-auto mt-20vh mb-15vh w-7/12 sm:w-6/12 h-65vh">
+            <div class="h-28p px-6vw pt-12vh font-semibold text-letter">
+              <p>
+                예약번호 &nbsp;&nbsp;{data._id}&nbsp;&nbsp; 의 예약 내역입니다.
               </p>
             </div>
-            <hr className="solid" />
-            <div id="resInfo">
-              <div id="title">{data.title}</div>
-              <div id="dateTime">
-                <p> {parseDate(data.date)}</p>
-                <p> {parseTime(data.time)}</p>
+            <div class="h-42p px-4vw  ">
+              <hr class="w-full  m-auto mb-3vh" />
+              <div class="px-2vw flex flex-col justify-between h-5/6 mb-3vh">
+                <div class="text-title font-bold ">{data.title}</div>
+
+                <div class="text-datetime font-semibold  flex w-10/12 xl:w-1/2 justify-between">
+                  <p> {parseDate(data.date)}</p>
+                  <p> {parseTime(data.time)}</p>
+                </div>
+                <div class=" flex w-full justify-between">
+                  <p class="text-seat font-semibold ">
+                    {data.seats.join(", ")}
+                  </p>
+                  <p class="text-price font-medium ">
+                    {parseInt(data.price / 1000) + ",000"}원
+                  </p>
+                </div>
               </div>
-              <div id="seatPrice">
-                <p>{data.seats.join(", ")}</p>
-              </div>
+              <hr class="w-full  m-auto " />
             </div>
-            <hr className="solid" />
-            <div id="backButton">
-              <Button
-                style={{
-                  backgroundColor: "lightGray",
-                  fontSize: "min(2.8vh, 1.7vw)",
-                  color: "white",
-                  width: "85%",
-                }}
-              >
-                {" "}
+            <div class="h-30p text-center m-auto grid place-items-center">
+              <Button class="w-85p text-center py-1p rounded-lg text-seat font-bold bg-gray-200 text-gray-500">
                 <Link to="/" style={{ textDecoration: "none" }}>
                   예약으로 돌아가기
                 </Link>

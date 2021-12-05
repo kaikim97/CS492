@@ -143,7 +143,7 @@ export default function PersonalInfo() {
             </div>
           </div>
           <div class="w-full h-15p">
-            <div class="text-smallletter text-center w-85p m-auto  font-semibold text-gray-400 mb-2">
+            <div class="text-smallletter text-center w-85p m-auto  font-semibold text-gray-400 mb-1p">
               예약 조회는 ‘예약 번호로 조회' 또는 ‘생년월일과 휴대폰 번호로
               조회' 모두 가능합니다
             </div>
