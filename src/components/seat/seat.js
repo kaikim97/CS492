@@ -26,6 +26,12 @@ function Seat() {
     apis.deleteReservation(ctx.id);
   };
 
+  const handleEvent = () => {
+    if (open) {
+      closeModal();
+    }
+  };
+
   const goNext = () => {
     ctx.setSeats(selectedSeat);
     ctx.setPrice(totalPrice);
@@ -152,6 +158,12 @@ function Seat() {
       false
     );
   }, []);
+
+  // Delete preoccupied seats when press BACK button
+  useEffect(() => {
+    window.addEventListener("popstate", handleEvent);
+    return () => window.removeEventListener("popstate", handleEvent);
+  });
 
   return (
     <div class="flex flex-col">
