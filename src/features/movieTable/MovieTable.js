@@ -35,7 +35,7 @@ export default function MovieTable() {
         <TopBar function={findReservation} />
       </div>
       <div class="flex-1 justify-items-center">
-        <div class="overflow-x-scroll flex text-gray-500 mt-17vh">
+        <div class="overflow-x-scroll flex text-gray-500 mt-20vh">
           {movies.map((movie) => (
             <Movie
               key={movie.id}
