@@ -1,17 +1,20 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const { createServer } = require("http");
+const { ApolloServer, gql } = require("apollo-server-express");
+const { execute, subscribe } = require("graphql");
+const { SubscriptionServer } = require("subscriptions-transport-ws");
+const { PubSub } = require("graphql-subscriptions");
+const { makeExecutableSchema } = require("@graphql-tools/schema");
 
-const app = express();
+const typeDefs = require("./graphql/typeDefs");
+const resolvers = require("./graphql/resolvers");
 
 const PORT = 80;
+
 const MONGO_URI =
   "mongodb+srv://admin:admin12345@cluster0.pzm0h.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
-
-app.use(express.static("public"));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(cors());
 
 mongoose.Promise = global.Promise;
 
@@ -20,12 +23,42 @@ mongoose
   .then(() => console.log("Successfully connected to mongodb"))
   .catch((e) => console.error(e));
 
-app.get("/", (req, res) => {
-  res.send("Server is running");
-});
+async function initServer() {
+  const app = express();
 
-app.use("/reservations", require("./routes/reservations"));
-app.use("/halls", require("./routes/halls"));
-app.use("/movies", require("./routes/movies"));
+  app.use(express.static("public"));
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
+  app.use(cors());
 
-app.listen(PORT, () => console.log("Server is Running..."));
+  app.use("/reservations", require("./routes/reservations"));
+  app.use("/halls", require("./routes/halls"));
+
+  const schema = makeExecutableSchema({ typeDefs, resolvers });
+
+  const apolloServer = new ApolloServer({ schema: schema });
+
+  await apolloServer.start();
+
+  apolloServer.applyMiddleware({ app });
+
+  const server = createServer(app);
+
+  server.listen(PORT, function () {
+    new SubscriptionServer(
+      {
+        execute,
+        subscribe,
+        schema: schema,
+      },
+      {
+        server: server,
+        path: "/graphql",
+      }
+    );
+    console.log(`server running on port ${PORT}`);
+    console.log(`gql path is ${apolloServer.graphqlPath}`);
+  });
+}
+
+initServer();
