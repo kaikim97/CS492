@@ -34,8 +34,8 @@ export default function MovieTable() {
       <div>
         <TopBar function={findReservation} />
       </div>
-      <div class="flex-1 ">
-        <div class="overflow-x-scroll flex text-gray-500 mt-table">
+      <div class="flex-1 justify-items-center">
+        <div class="overflow-x-scroll flex text-gray-500 mt-17vh">
           {movies.map((movie) => (
             <Movie
               key={movie.id}
@@ -76,7 +76,7 @@ const Movie = ({ movie, selected, setSelected }) => {
   console.log(selected);
   return (
     <div
-      class={`w-72 flex-grow-0 flex-shrink-0 xl:flex-grow xl:flex-shrink  mr-poster pt-12 pb-6 px-poster border-2 
+      class={`w-72 flex-grow-0 flex-shrink-0 xl:flex-grow xl:flex-shrink  ml-1p mr-1p pt-12 pb-6 px-2p border-2 
       ${selected === id ? "border-black " : "border-white"} rounded-lg bg-white 
        focus:border-black `}
       onClick={mouseClick}

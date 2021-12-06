@@ -46,8 +46,7 @@ module.exports = {
       },
       spacing: {
         rectangle: "min(2vw, 2vh)",
-        poster: "2%",
-        table: "17vh",
+
         "1/10": "20%",
         "1p": "1%",
         "2p": "2%",
@@ -89,6 +88,7 @@ module.exports = {
         "10vh": "10vh",
         "12vh": "12vh",
         "15vh": "15vh",
+        "17vh": "17vh",
         "20vh": "20vh",
         "25vh": "25vh",
         "50vh": "50vh",
