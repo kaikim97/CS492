@@ -14,6 +14,8 @@ function Seat() {
   const seatInfo = seatData.seats;
 
   const [selectedSeat, setSeat] = useState([]);
+  const [reservedSeat, modSeat] = useState([]);
+  const [upload, setLoad] = useState(false);
   const [totalPrice, setPrice] = useState(0);
   const [open, setOpen] = useState(false);
 
@@ -23,7 +25,9 @@ function Seat() {
 
   const closeModal = () => {
     setOpen(false);
-    apis.deleteReservation(ctx.id);
+    apis.deleteReservation(ctx.id).then((response) => {
+      if (response) console.log("선택한 좌석이 취소되었습니다");
+    });
   };
 
   const handleEvent = () => {
@@ -72,9 +76,23 @@ function Seat() {
   useEffect(() => {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
-
+    const params = `title=${ctx.title}&date=${ctx.date}&time=${makeTimeNum(
+      ctx.time.time
+    )}`;
+    // Initialize
     setSeat((selectedSeat) => []);
     setPrice(0);
+    setLoad(false);
+
+    apis.getHallsByInfo(params).then((response) => {
+      console.log(response.data);
+      const occupied = response.data.occupied;
+      const resSeat = Object.entries(occupied)
+        .filter((s) => s[1] !== false)
+        .map((entrie, idx) => entrie[0]);
+      modSeat((reservedSeat) => resSeat);
+      setLoad(true);
+    });
 
     if (seatInfo != "undefined" && seatInfo != null) {
       seatInfo.forEach((seatgroup) => {
@@ -91,6 +109,7 @@ function Seat() {
         });
       });
     }
+
     for (var i = 0; i < 19; i++) {
       context.font = "bold 12pt Calibri";
       context.fillStyle = "black";
@@ -102,6 +121,22 @@ function Seat() {
       context.fillText(String(i), 30 * i - 12, 12);
     }
   }, [ctx.time]);
+
+  // Draw reserved seats
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const context = canvas.getContext("2d");
+
+    if (upload) {
+      // console.log(reservedSeat);
+      reservedSeat.forEach((seat) => {
+        var x = (seat.slice(1) - 1) * 30 + 17;
+        var y = (seat.slice(0, 1).charCodeAt(0) - 65) * 30 + 11;
+        context.fillStyle = "black";
+        context.fillRect(x, y, 20, 20);
+      });
+    }
+  }, [upload]);
 
   // Manage click event
   useEffect(() => {
