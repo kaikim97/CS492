@@ -2,14 +2,14 @@ const mongoose = require('mongoose');
 
 // Define Schemes
 const reservationSchema = new mongoose.Schema({
-  birth: { type: String, required: true },
-  phone: { type: String, required: true },
-  password: {type: String, required: true },
-  title: { type: String, require: true },
+  birth: { type: String, required: false, default: "" },
+  phone: { type: String, required: false, default: "" },
+  password: {type: String, required: false, default: "" },
+  title: { type: String, required: true },
   date: { type: String, required: true },
   time: { type: String, required: true },
   seats: { type: [String], required: true },
-  price: { type: Number, required: true }
+  price: { type: Number, required: false }
 },
 {
   timestamps: true
@@ -34,10 +34,10 @@ reservationSchema.statics.findQuery = function (birth, phone, password) {
 reservationSchema.statics.findOneById = function(_id) {
   return this.findOne({_id});
 }
-  
+
 // Delete reservation 
 reservationSchema.statics.deleteById = function (_id) {
-  return this.remove({_id});
+  return this.deleteOne({_id});
 }
 
 // Create Model & Export
