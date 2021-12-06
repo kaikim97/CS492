@@ -12,6 +12,10 @@ function Seat() {
   const seatMap = seatData.map;
   const seatInfo = seatData.seats;
 
+  seatInfo.forEach((seatgroup) => {
+    console.log(seatgroup.color, seatgroup.price);
+  });
+
   const [selectedSeat, setSeat] = useState([]);
   const [totalPrice, setPrice] = useState(0);
 
@@ -22,13 +26,13 @@ function Seat() {
   const goNext = () => {
     ctx.setSeats(selectedSeat);
     ctx.setPrice(totalPrice);
-    // console.log(ctx.title, ctx.date, makeTimeNum(ctx.time.time), selectedSeat);
+    console.log(ctx.title, ctx.date, makeTimeNum(ctx.time), selectedSeat);
 
     const createReservation = apis
       .preoccupySeat({
         title: ctx.title,
         date: ctx.date,
-        time: makeTimeNum(ctx.time.time),
+        time: makeTimeNum(ctx.time),
         seats: selectedSeat,
       })
       .then((response) => {
@@ -43,23 +47,27 @@ function Seat() {
       });
   };
 
-  const getPrice = (row) => {
-    const num = row.charCodeAt(0) - 65;
-    var price;
-    if (num <= 5) {
-      price = 9000;
-    } else if (num <= 11) {
-      price = 10000;
-    } else {
-      price = 11000;
-    }
-    return price;
-  };
+  // const getPrice = (row) => {
+  //   const num = row.charCodeAt(0) - 65;
+  //   var price;
+  //   if (num <= 5) {
+  //     price = 9000;
+  //   } else if (num <= 11) {
+  //     price = 10000;
+  //   } else {
+  //     price = 11000;
+  //   }
+  //   return price;
+  // };
 
   // Draw seats
   useEffect(() => {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
+    canvas.style.width = "100%";
+    canvas.style.height = "100%";
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
 
     setSeat((selectedSeat) => []);
     setPrice(0);
@@ -69,12 +77,23 @@ function Seat() {
         seatgroup.rectangles.forEach((seat) => {
           // Add Seat availablity & id info
           seat.available = true;
+          context.strokeStyle = seatgroup.color;
           context.fillStyle = seatgroup.color;
+
+          const cornerRadius = 8;
+          context.lineJoin = "round";
+          context.lineWidth = cornerRadius;
+          context.strokeRect(
+            seat.lefttop.x + cornerRadius / 2,
+            seat.lefttop.y + cornerRadius / 2,
+            seat.size.width - cornerRadius,
+            seat.size.height - cornerRadius
+          );
           context.fillRect(
-            seat.lefttop.x,
-            seat.lefttop.y,
-            seat.size.width,
-            seat.size.height
+            seat.lefttop.x + cornerRadius / 2,
+            seat.lefttop.y + cornerRadius / 2,
+            seat.size.width - cornerRadius,
+            seat.size.height - cornerRadius
           );
         });
       });
@@ -121,23 +140,37 @@ function Seat() {
               var col = (seat.lefttop.x - 17) / 30 + 1;
               const seatNum = row + String(col);
               if (seat.available) {
-                context.fillStyle = "grey";
+                context.fillStyle = "#3C68D8";
+                context.strokeStyle = "#3C68D8";
                 seat.available = false;
                 setSeat((selectedSeat) => selectedSeat.concat(seatNum));
-                setPrice((totalPrice) => totalPrice + getPrice(row));
+                // setPrice((totalPrice) => totalPrice + getPrice(row));
+                setPrice((totalPrice) => totalPrice + seatgroup.price);
               } else {
                 context.fillStyle = seatgroup.color;
+                context.strokeStyle = seatgroup.color;
                 seat.available = true;
                 setSeat((selectedSeat) =>
                   selectedSeat.filter((s) => s !== seatNum)
                 );
-                setPrice((totalPrice) => totalPrice - getPrice(row));
+                // setPrice((totalPrice) => totalPrice - getPrice(row));
+                setPrice((totalPrice) => totalPrice - seatgroup.price);
               }
+              const cornerRadius = 8;
+              context.lineJoin = "round";
+              context.lineWidth = cornerRadius;
+
+              context.strokeRect(
+                seat.lefttop.x + cornerRadius / 2,
+                seat.lefttop.y + cornerRadius / 2,
+                seat.size.width - cornerRadius,
+                seat.size.height - cornerRadius
+              );
               context.fillRect(
-                seat.lefttop.x,
-                seat.lefttop.y,
-                seat.size.width,
-                seat.size.height
+                seat.lefttop.x + cornerRadius / 2,
+                seat.lefttop.y + cornerRadius / 2,
+                seat.size.width - cornerRadius,
+                seat.size.height - cornerRadius
               );
             }
           });
@@ -148,44 +181,84 @@ function Seat() {
   }, []);
 
   return (
-    <div class="flex flex-col">
-      <div class="self-center pt-52">
-        <TransformWrapper doubleClick={{ disabled: true }} maxScale={3}>
+    <div class=" flex flex-col h-full overflow-scroll">
+      <div class=" flex items-center flex-auto flex-shrink-0 my-2p">
+        <div class="text-sm font-medium ml-2vh   text-gray-500 flex-initial flex xl:block">
+          {seatInfo.map((seatgroup) => (
+            <div class="flex mb-1">
+              <div
+                class={`  w-5 h-5  rounded-sm flex-initial mr-5 ${
+                  seatgroup.name == "R" ? "bg-R" : ""
+                } ${seatgroup.name == "S" ? "bg-S" : ""} ${
+                  seatgroup.name == "A" ? "bg-A" : ""
+                }`}
+              ></div>
+              <div class="flex-initial mr-6">{seatgroup.name}석</div>
+              <div class="flex-initial mr-8">
+                {parseInt(seatgroup.price / 1000) + ",000"}원
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div class="w-full flex-auto my-2p items-center ml-10  overflow-scroll ">
+        {/* h-70p my-2p xl:my-4p */}
+        <TransformWrapper
+          doubleClick={{ disabled: true }}
+          maxScale={3}
+          minScale={0.9}
+        >
           <TransformComponent>
-            <div>
+            <div class="">
               <canvas
+                id="seats"
                 ref={canvasRef}
-                width={seatMap.size.width}
-                height={seatMap.size.height}
+                // width="1000"
+                // height="800"
+                width={window.innerWidth}
+                height={window.innerHeight}
+                // width={seatMap.size.width}
+                // height={seatMap.size.height}
                 color={seatMap.background}
+                // class="object-cover"
               ></canvas>
             </div>
           </TransformComponent>
         </TransformWrapper>
       </div>
-      <div class="">
-        <div class="text-xl text-center">
-          <b>선택된 좌석 &nbsp;&nbsp;&nbsp; 가격</b>
-        </div>
-        {selectedSeat.map((seat, index) => (
-          <div class="text-center" key={index}>
-            {seat} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {getPrice(seat[0])}원
+      <div class=" w-full flex-auto py-2p flex-shrink-0 flex-grow-0 flex  ">
+        {/* h-16p xl:h-10p  */}
+        <div class="w-97/100  mx-auto  py-1p h-full flex  bg-white font-bold rounded-lg items-center">
+          <div class="text-md md:text-xl text-left text-gray-500 w-4/12  overflow-x-scroll flex ml-10 mr-10 flex-initial">
+            {selectedSeat.map((seat) => (
+              <div>
+                <div class="mr-2 align-middle">{seat}</div>
+              </div>
+            ))}
           </div>
-        ))}
-        <div class="text-xl text-center">
-          <b>총 &nbsp;&nbsp;&nbsp; {totalPrice}원</b>
-        </div>
-      </div>
-      <div class="">
-        {selectedSeat.length != 0 && (
+          <div
+            class={`text-md md:text-xl flex-auto flex  ${
+              totalPrice == 0 ? " text-white" : "text-gray-500 "
+            }`}
+          >
+            {parseInt(totalPrice / 1000) + ",000"}원
+          </div>
+
+          {/* <div class="grid place-items-center "> */}
           <button
-            class="w-60 py-3 text-lg rounded-lg bg-gray-200 text-gray-500 absolute right-7 bottom-7"
+            class={`w-40 h-full py-1p text-sm md:text-lg font-bold rounded-lg flex-initial mr-5 ${
+              selectedSeat.length != 0
+                ? "bg-gray-200 text-gray-500"
+                : "bg-gray-100 text-gray-200"
+            } `}
             type="submit"
             onClick={goNext}
+            disabled={selectedSeat.length == 0}
           >
-            다음
+            예약하기
           </button>
-        )}
+          {/* </div> */}
+        </div>
       </div>
     </div>
   );
