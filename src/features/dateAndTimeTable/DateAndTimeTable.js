@@ -24,13 +24,13 @@ const DateAndTimeTable = () => {
 
   console.log("TITLE: ", title);
   return (
-    <div class="flex flex-col h-auto">
+    <div class="flex flex-col ">
       <div>
         <TopBar function={findReservation} />
       </div>
-      <div class="flex-1 xl:flex ">
-        <div class="w-screen xl:w-1/3 h-60 flex  xl:block bg-white font-bold  xl:h-screen xl:flex-auto mt-14">
-          <div class="w-80 xl:w-full h-full xl:h-1/4 relative bg-gradient-to-t bg-gray-300 from-black to-transparent ">
+      <div class="flex-initial xl:flex h-content">
+        <div class="w-screen xl:w-1/3 h-1/4 xl:h-full flex  xl:block bg-white font-bold mt-14 ">
+          <div class="w-80  xl:w-full h-full xl:h-1/4 relative bg-gradient-to-t bg-gray-300 from-black to-transparent ">
             <div class="h-full mix-blend-multiply ">
               <img
                 src={require(`../../components/movies/${title}.jpg`).default}
@@ -50,7 +50,7 @@ const DateAndTimeTable = () => {
             </div>
           </div>
         </div>
-        <div class="w-full xl:w-2/3 h-mobile-seat xl:h-full xl:mt-14  xl:flex-auto">
+        <div class="w-full xl:w-2/3 h-3/4 xl:h-full xl:mt-14  xl:flex-auto">
           {context.date != "" && context.time != "" && <Seat />}
           {/* <Seat /> */}
         </div>

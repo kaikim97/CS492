@@ -181,25 +181,28 @@ function Seat() {
   }, []);
 
   return (
-    <div class="h-mobile-seat xl:h-screen flex flex-col">
-      <div class="text-md font-medium ml-10 mt-10  text-gray-500 flex-initial ">
-        {seatInfo.map((seatgroup) => (
-          <div class="flex mb-1">
-            <div
-              class={`relative  w-5 h-5 rounded-sm flex-initial mr-5 ${
-                seatgroup.name == "R" ? "bg-R" : ""
-              } ${seatgroup.name == "S" ? "bg-S" : ""} ${
-                seatgroup.name == "A" ? "bg-A" : ""
-              }`}
-            ></div>
-            <div class="flex-initial mr-6">{seatgroup.name}석</div>
-            <div class="flex-initial">
-              {parseInt(seatgroup.price / 1000) + ",000"}원
+    <div class=" flex flex-col h-full overflow-scroll">
+      <div class=" flex items-center flex-auto flex-shrink-0 my-2p">
+        <div class="text-sm font-medium ml-2vh   text-gray-500 flex-initial flex xl:block">
+          {seatInfo.map((seatgroup) => (
+            <div class="flex mb-1">
+              <div
+                class={`  w-5 h-5  rounded-sm flex-initial mr-5 ${
+                  seatgroup.name == "R" ? "bg-R" : ""
+                } ${seatgroup.name == "S" ? "bg-S" : ""} ${
+                  seatgroup.name == "A" ? "bg-A" : ""
+                }`}
+              ></div>
+              <div class="flex-initial mr-6">{seatgroup.name}석</div>
+              <div class="flex-initial mr-8">
+                {parseInt(seatgroup.price / 1000) + ",000"}원
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-      <div class="w-full h-full justify-items-center text-center items-center m-10  ">
+      <div class="w-full flex-auto my-2p items-center ml-10  overflow-scroll ">
+        {/* h-70p my-2p xl:my-4p */}
         <TransformWrapper
           doubleClick={{ disabled: true }}
           maxScale={3}
@@ -212,10 +215,10 @@ function Seat() {
                 ref={canvasRef}
                 // width="1000"
                 // height="800"
-                // width={window.innerWidth}
-                // height={window.innerHeight}
-                width={seatMap.size.width}
-                height={seatMap.size.height}
+                width={window.innerWidth}
+                height={window.innerHeight}
+                // width={seatMap.size.width}
+                // height={seatMap.size.height}
                 color={seatMap.background}
                 // class="object-cover"
               ></canvas>
@@ -223,9 +226,10 @@ function Seat() {
           </TransformComponent>
         </TransformWrapper>
       </div>
-      <div class="flex-initial  w-full justify-items-center ">
-        <div class="absolute bottom-3 w-97/100 xl:w-1.9/3 ml-3  h-16 flex bg-white font-bold rounded-lg ">
-          <div class="text-md md:text-xl text-left text-gray-500 w-4/12 mr-10 overflow-x-scroll  flex mt-5 ml-10 ">
+      <div class=" w-full flex-auto py-2p flex-shrink-0 flex-grow-0 flex  ">
+        {/* h-16p xl:h-10p  */}
+        <div class="w-97/100  mx-auto  py-1p h-full flex  bg-white font-bold rounded-lg items-center">
+          <div class="text-md md:text-xl text-left text-gray-500 w-4/12  overflow-x-scroll flex ml-10 mr-10 flex-initial">
             {selectedSeat.map((seat) => (
               <div>
                 <div class="mr-2 align-middle">{seat}</div>
@@ -233,26 +237,27 @@ function Seat() {
             ))}
           </div>
           <div
-            class={`text-md md:text-xl flex-initial text-gray-500 flex mt-5 ${
-              totalPrice == 0 ? "hidden" : ""
+            class={`text-md md:text-xl flex-auto flex  ${
+              totalPrice == 0 ? " text-white" : "text-gray-500 "
             }`}
           >
             {parseInt(totalPrice / 1000) + ",000"}원
           </div>
 
-          <div class="grid place-items-center ">
-            <button
-              class={`w-40 h-12 py-2 text-sm md:text-lg font-bold rounded-lg absolute right-2  ${
-                selectedSeat.length != 0
-                  ? "bg-gray-200 text-gray-500"
-                  : "bg-gray-100 text-gray-200"
-              } `}
-              type="submit"
-              onClick={goNext}
-            >
-              예약하기
-            </button>
-          </div>
+          {/* <div class="grid place-items-center "> */}
+          <button
+            class={`w-40 h-full py-1p text-sm md:text-lg font-bold rounded-lg flex-initial mr-5 ${
+              selectedSeat.length != 0
+                ? "bg-gray-200 text-gray-500"
+                : "bg-gray-100 text-gray-200"
+            } `}
+            type="submit"
+            onClick={goNext}
+            disabled={selectedSeat.length == 0}
+          >
+            예약하기
+          </button>
+          {/* </div> */}
         </div>
       </div>
     </div>

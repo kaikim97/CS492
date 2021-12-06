@@ -251,12 +251,12 @@ export default function PersonalInfo() {
               </div>
             </div>
           </div>
-          <div class="w-full h-15p">
-            <div class="text-smallletter text-center w-85p m-auto  font-semibold text-gray-400 mb-1p">
+          <div class="w-full h-15p text-center m-auto ">
+            <div class="text-smallletter w-85p m-auto  font-semibold text-gray-400 mb-1p">
               예약 내역이 맞으시면 생년월일과 휴대폰 번호, 비밀번호를 입력 한 후
               결제를 완료해주세요
             </div>
-            <div class="w-full text-center m-auto">
+            <div class="w-full m-auto">
               <Button
                 disabled={buttonDisabled}
                 onClick={handleConfirm}
