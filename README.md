@@ -16,15 +16,15 @@ Real-time reservation service
 ##### hall (공연장)
 ```bash
 const hallSchema = new mongoose.Schema({
-    title: {type: String, required: true},        
-    date: {type: String, required: true},         
+    title: {type: String, required: true},
+    date: {type: String, required: true},
     time: {type: String, required: true},
-    available: {type: Number, required: true },   // Number of available seats
-    occupied: {                                   // Map of preoccupied or reserved seats
-        type: Map,                                // Key: seatID
-        of: {type: Boolean},                      // Value: true(reserved), false(preoccupied)
+    available: {type: Number, required: true }, // Number of available seats
+    occupied: {     // Map of preoccupied or reserved seats
+        type: Map,      // Key: seatID
+        of: {type: Boolean},     // Value: true(reserved), false(preoccupied)
         default: {},
-        required: true
+        required: false
      }
 }
 ```
@@ -32,14 +32,14 @@ const hallSchema = new mongoose.Schema({
 ##### reservation (예약내역)
 ```bash
 const reservationSchema = new mongoose.Schema({
-  birth: { type: String, required: true },
-  phone: { type: String, required: true },
-  password: {type: String, required: true },
-  title: { type: String, require: true },
+  birth: { type: String, required: false, default: "" },
+  phone: { type: String, required: false, default: "" },
+  password: {type: String, required: false, default: "" },
+  title: { type: String, required: true },
   date: { type: String, required: true },
   time: { type: String, required: true },
   seats: { type: [String], required: true },
-  price: { type: Number, required: true }
+  price: { type: Number, required: false }
 }
 ```
   
