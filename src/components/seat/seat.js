@@ -2,8 +2,8 @@ import React, { useRef, useEffect, useContext, useState } from "react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { AuthContext } from "../../context.js";
 import seatData from "./seats-kaist.json";
-import "./seat.css";
 import { useNavigate } from "react-router-dom";
+import apis from "../../api";
 
 function Seat() {
   const ctx = useContext(AuthContext);
@@ -13,6 +13,48 @@ function Seat() {
   const seatInfo = seatData.seats;
 
   const [selectedSeat, setSeat] = useState([]);
+  const [totalPrice, setPrice] = useState(0);
+
+  const makeTimeNum = (time) => {
+    return time.split(":").join("");
+  };
+
+  const goNext = () => {
+    ctx.setSeats(selectedSeat);
+    ctx.setPrice(totalPrice);
+    // console.log(ctx.title, ctx.date, makeTimeNum(ctx.time.time), selectedSeat);
+
+    const createReservation = apis
+      .preoccupySeat({
+        title: ctx.title,
+        date: ctx.date,
+        time: makeTimeNum(ctx.time.time),
+        seats: selectedSeat,
+      })
+      .then((response) => {
+        console.log(response.data);
+        if (response.data) {
+          ctx.setId(response.data._id);
+          navigate("/personalInfo");
+        } else {
+          // TODO: 이후 별도 창으로 띄워야함
+          console.log("이미 선택된 좌석입니다");
+        }
+      });
+  };
+
+  const getPrice = (row) => {
+    const num = row.charCodeAt(0) - 65;
+    var price;
+    if (num <= 5) {
+      price = 9000;
+    } else if (num <= 11) {
+      price = 10000;
+    } else {
+      price = 11000;
+    }
+    return price;
+  };
 
   // Draw seats
   useEffect(() => {
@@ -20,6 +62,7 @@ function Seat() {
     const context = canvas.getContext("2d");
 
     setSeat((selectedSeat) => []);
+    setPrice(0);
 
     if (seatInfo != "undefined" && seatInfo != null) {
       seatInfo.forEach((seatgroup) => {
@@ -73,20 +116,22 @@ function Seat() {
               // Format : "Alphabet + Number" ex) "A10"
               // Alphabet : A ~ S
               // Number   : 1 ~ 29
-              var rownum = (seat.lefttop.y - 11) / 30;
-              var row = String.fromCharCode(rownum + 65);
+              var rownum = (seat.lefttop.y - 11) / 30 + 65;
+              var row = String.fromCharCode(rownum);
               var col = (seat.lefttop.x - 17) / 30 + 1;
               const seatNum = row + String(col);
               if (seat.available) {
                 context.fillStyle = "grey";
                 seat.available = false;
                 setSeat((selectedSeat) => selectedSeat.concat(seatNum));
+                setPrice((totalPrice) => totalPrice + getPrice(row));
               } else {
                 context.fillStyle = seatgroup.color;
                 seat.available = true;
                 setSeat((selectedSeat) =>
                   selectedSeat.filter((s) => s !== seatNum)
                 );
+                setPrice((totalPrice) => totalPrice - getPrice(row));
               }
               context.fillRect(
                 seat.lefttop.x,
@@ -120,11 +165,16 @@ function Seat() {
       </div>
       <div class="">
         <div class="text-xl text-center">
-          <b>선택된 좌석</b>
+          <b>선택된 좌석 &nbsp;&nbsp;&nbsp; 가격</b>
         </div>
-        {selectedSeat.map((seat) => (
-          <div class="text-center">{seat}</div>
+        {selectedSeat.map((seat, index) => (
+          <div class="text-center" key={index}>
+            {seat} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {getPrice(seat[0])}원
+          </div>
         ))}
+        <div class="text-xl text-center">
+          <b>총 &nbsp;&nbsp;&nbsp; {totalPrice}원</b>
+        </div>
       </div>
       <div class="">
         {selectedSeat.length != 0 && (
@@ -139,11 +189,6 @@ function Seat() {
       </div>
     </div>
   );
-
-  function goNext() {
-    ctx.setSeats(selectedSeat);
-    navigate("/personalInfo");
-  }
 }
 
 export default Seat;

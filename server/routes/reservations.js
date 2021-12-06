@@ -48,7 +48,12 @@ router.post("/", (req, res) => {
         });
 
       req.body.seats.forEach(function (seatID) {
-        if (hall.occupied.has(seatID) && hall.occupied.get(seatID) == true) {
+        if (hall.occupied.has(seatID) && hall.occupied.get(seatID) == false) {
+          return res.status(404).send({ err: "Already preoccupied seat" });
+        } else if (
+          hall.occupied.has(seatID) &&
+          hall.occupied.get(seatID) == true
+        ) {
           return res.status(404).send({ err: "Already reserved seat" });
         }
       });
@@ -57,7 +62,8 @@ router.post("/", (req, res) => {
         .then((reservation) => {
           hall.available = hall.available - req.body.seats.length;
           req.body.seats.forEach(function (seatID) {
-            hall.occupied.set(seatID, true);
+            // Create : FALSE (Preoccupied)
+            hall.occupied.set(seatID, false);
           });
           hall.save();
           res.send(reservation);
@@ -65,6 +71,48 @@ router.post("/", (req, res) => {
         .catch((err) => res.status(500).send(err));
     })
     .catch((err) => res.status(500).send(err));
+});
+
+// Update reservation
+router.put("/:reservationId", (req, res) => {
+  Reservation.findOneById(req.params.reservationId)
+    .then((reservation) => {
+      if (!reservation)
+        return res.status(404).send({ err: "Reservation not found" });
+      reservation.birth = req.body.birth;
+      reservation.phone = req.body.phone;
+      reservation.password = req.body.password;
+      reservation.price = req.body.price;
+
+      Hall.findOneByInfo(reservation.title, reservation.date, reservation.time)
+        .then((hall) => {
+          reservation.seats.forEach(function (seatID) {
+            // Update : TRUE  (Reserved)
+            hall.occupied.set(seatID, true);
+          });
+          hall.save();
+        })
+        .catch((err) => res.status(500).send(err));
+
+      reservation.save();
+      res.send(reservation);
+    })
+    .catch((err) => res.status(500).send(err));
+});
+
+// Update reservation
+router.put('/:reservationId', (req, res) => {
+  Reservation.findOneById(req.params.reservationId)
+    .then((reservation) => {
+      if (!reservation) return res.status(404).send({ err: 'Reservation not found' });
+      reservation.birth = req.body.birth;
+      reservation.phone = req.body.phone;
+      reservation.password = req.body.password;
+      reservation.price = req.body.price;
+      reservation.save();
+      res.send(reservation);
+    })
+    .catch(err => res.status(500).send(err));
 });
 
 // Delete reservation by ID
