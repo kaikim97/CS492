@@ -78,7 +78,9 @@ $ node server
             GET /halls/hall?title=:title&date=:date&time:time : 특정 공연 조회 (title, date, time query로 입력)
             GET /halls/available?title=:title&date=:date : 해당 제목, 날짜의 모든 공연의 (시간, 잔여좌석) 정보 조회 (title, date query로 입력)
             POST /halls : 새로운 공연 정보 DB에 등록 (title, date, time, available body로 입력)
-            DELETE /halls/hall?title=:title&date=:date&time:time : 특정 공연 DB에서 삭제 (title, date, time query로 입력)
+            DELETE /halls/hall?title=:title&date=:date&time:time : 특정 공연 DB에서 삭제 (title, date, time query로 입력)            
+            POST /preoccupy : 공연장 및 좌석을 body로 받아 선점, 선점 후 개인정보 미등록시 5분뒤 삭제
+            PUT /clear : body로 공연장 정보 받아 해당 공연장의 예약/선점정보 모두 삭제
    
       📓 reservation.js : 예약 내역 생성, 조회를 위한 API
       
