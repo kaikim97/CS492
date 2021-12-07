@@ -1,4 +1,4 @@
-import "./PersonalInfo.css";
+// import "./PersonalInfo.css";
 import { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import TextField from "@mui/material/TextField";
@@ -13,18 +13,15 @@ export default function PersonalInfo() {
 
   const context = useContext(AuthContext);
 
-  // const [date, setDate] = useState("20211201");
-  // const [title, setTitle] = useState("Dune");
-  // const [time, setTime] = useState("2200");
-  // const [seat, setSeat] = useState(["F16", "F17"]);
   const [birthday, setBirthday] = useState("");
   const [phone, setPhone] = useState("");
   const [pwd, setPwd] = useState("");
   const [pwdConfirm, setPwdConfirm] = useState("");
   const [done, setDone] = useState(false);
-  const [open, setOpen] = useState(true);
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const [id, setId] = useState("");
+
+  const { open, setClose } = props;
 
   useEffect(() => {
     if (phone.length >= 10 && pwd.length == 4 && pwdConfirm.length == 4) {
@@ -63,10 +60,16 @@ export default function PersonalInfo() {
           price: context.price,
         })
         .then((response) => {
-          console.log(response.data);
+          if (response) {
+            // console.log(response.data);
+            console.log("예약이 완료되었습니다.");
+            setDone(true);
+          }
+        })
+        .catch((error) => {
+          alert("예약 시간 초과");
+          window.location.href = "/movieInfo";
         });
-      console.log("예약이 완료되었습니다.");
-      setDone(true);
     } else {
       console.log("비밀번호가 일치하지 않습니다.");
     }
@@ -107,62 +110,66 @@ export default function PersonalInfo() {
     return result;
   };
 
+  const changeTimeForm = (time) => {
+    if (time.slice(0, 2) * 1 > 12) {
+      return time.slice(0, 2) * 1 - 12 + ":00";
+    } else {
+      return time;
+    }
+  };
+
   const parseTime = (time) => {
+    const time_change =
+      time.slice(0, 2) * 1 > 12 ? time.slice(0, 2) * 1 - 12 + ":00" : time;
     const amPm = time.slice(0, 2) * 1 >= 12 ? "PM" : "AM";
-    const temp = time + amPm;
-    return temp;
+    return time_change + amPm;
   };
 
   return done ? (
     <div>
       <Modal open={open}>
-        <div id="modalRoot">
-          <div id="firstHalf">
-            <div id="title">{context.title}</div>
+        <div class="overflow-y-scroll bg-white rounded-2xl text-gray-500 m-auto mt-8vh mb-12vh w-10/12 sm:w-6/12 h-80vh">
+          <div class="h-40p px-4vw pt-8vh ">
+            <div class="px-2vw flex flex-col justify-between h-5/6 mb-3vh">
+              <div class="text-title font-bold ">{context.title}</div>
 
-            <div id="dateTime">
-              <p> {parseDate(context.date)}</p>
-              <p> {parseTime(context.time.time)}</p>
+              <div class="text-datetime font-semibold  flex w-10/12 xl:w-1/2 justify-between">
+                <p> {parseDate(context.date)}</p>
+                <p> {parseTime(context.time)}</p>
+              </div>
+              <div class="  flex w-full justify-between">
+                <p class="text-seat font-semibold ">
+                  {context.seats.join(", ")}
+                </p>
+                <p class="text-price font-medium ">
+                  {parseInt(context.price / 1000) + ",000"}원
+                </p>
+              </div>
             </div>
-            <div id="seatPrice">
-              <p>{context.seats.join(", ")}</p>
-              <p>{context.price}원</p>
-            </div>
-          </div>
-          <hr className="solid" />
-          <div id="bottomHalf">
-            <p className="subtitle">예약이 완료되었습니다.</p>
-            <p className="subtitle">
-              예약번호 &nbsp;&nbsp;&nbsp;&nbsp; {context.id}
-            </p>
+            <hr class="w-full  m-auto " />
           </div>
 
-          <div
-            style={{
-              width: "85%",
-              marginTop: "20vh",
-              marginLeft: "7.5%",
-              marginBottom: "1.5vh",
-              textAlign: "center",
-              fontSize: "min(1vw, 1.6vh)",
-            }}
-          >
-            예약 조회는 ‘예약 번호로 조회' 또는 ‘생년월일과 휴대폰 번호로 조회'
-            모두 가능합니다
+          <div class="h-45p relative px-4vw py-2vh ">
+            <div class="text-seat font-medium flex flex-col h-35p justify-between my-2vh px-2vw ">
+              <p>예약이 완료되었습니다.</p>
+              <p>예약번호 &nbsp;&nbsp;&nbsp;&nbsp; {context.id}</p>
+            </div>
           </div>
-          <div id="payButton">
-            <Button
-              style={{
-                backgroundColor: "lightGray",
-                fontSize: "min(2.8vh, 1.7vw)",
-                color: "white",
-                width: "85%",
-              }}
-            >
-              <Link to="/" style={{ textDecoration: "none" }}>
-                돌아가기
-              </Link>
-            </Button>
+          <div class="w-full h-15p">
+            <div class="text-smallletter text-center w-85p m-auto  font-semibold text-gray-400 mb-1p">
+              예약 조회는 ‘예약 번호로 조회' 또는 ‘생년월일과 휴대폰 번호로
+              조회' 모두 가능합니다
+            </div>
+            <div class="w-full text-center m-auto">
+              <Button
+                class="w-85p text-center py-1p rounded-lg text-seat font-bold 
+                      bg-gray-200 text-gray-500"
+              >
+                <Link to="/" style={{ textDecoration: "none" }}>
+                  돌아가기
+                </Link>
+              </Button>
+            </div>
           </div>
         </div>
       </Modal>
@@ -170,27 +177,41 @@ export default function PersonalInfo() {
   ) : (
     <div>
       <Modal open={open}>
-        <div id="modalRoot">
-          <div id="firstHalf">
-            <div id="title">{context.title}</div>
+        <div class="overflow-y-scroll bg-white rounded-2xl text-gray-500 m-auto mt-8vh mb-12vh w-7/12 sm:w-6/12 h-80vh">
+          <div class="h-40p px-4vw pt-8vh relative">
+            <button
+              class="w-30 py-3 text-lg rounded-lg bg-gray-100 text-gray-500 absolute top-0 right-0 h-16 w-16"
+              type="submit"
+              onClick={setClose}
+            >
+              X
+            </button>
+            <div class="px-2vw flex flex-col justify-between h-5/6 mb-3vh">
+              <div class="text-title font-bold ">{context.title}</div>
 
-            <div id="dateTime">
-              <p> {parseDate(context.date)}</p>
-              <p> {parseTime(context.time.time)}</p>
+              <div class="text-datetime font-semibold  flex w-10/12 xl:w-1/2 justify-between">
+                <p> {parseDate(context.date)}</p>
+                <p> {parseTime(context.time)}</p>
+              </div>
+              <div class="  flex w-full justify-between">
+                <p class="text-seat font-semibold ">
+                  {context.seats.join(", ")}
+                </p>
+                <p class="text-price font-medium ">
+                  {parseInt(context.price / 1000) + ",000"}원
+                </p>
+              </div>
             </div>
-            <div id="seatPrice">
-              <p>{context.seats.join(", ")}</p>
-              <p>{context.price}원</p>
-            </div>
+            <hr class="w-full  m-auto " />
           </div>
-          <hr className="solid" />
 
-          <div id="bottomHalf">
-            <div id="enterInfo">
-              <div className="textfield">
-                <p className="subtitle">생년월일(6자리)</p>
+          <div class="h-45p relative px-4vw py-4vh ">
+            <div class="text-label font-semibold flex flex-col h-80p  justify-between my-2vh px-2vw ">
+              <div class="flex w-full items-center justify-between ">
+                <p class="">생년월일(6자리)</p>
                 <TextField
                   id="birthday"
+                  placeholder="980918"
                   value={birthday}
                   onChange={handleChange}
                   inputProps={{ maxLength: 11, style: { marginLeft: "1vw" } }}
@@ -201,10 +222,11 @@ export default function PersonalInfo() {
                   style={{ width: "60%" }}
                 />
               </div>
-              <div className="textfield">
-                <p className="subtitle">휴대폰 번호</p>
+              <div class="flex w-full items-center justify-between ">
+                <p class="">휴대폰 번호</p>
                 <TextField
                   id="phone"
+                  placeholder="01000000000"
                   value={phone}
                   onChange={handleChange}
                   inputProps={{ maxLength: 11, style: { marginLeft: "1vw" } }}
@@ -215,10 +237,11 @@ export default function PersonalInfo() {
                   style={{ width: "60%" }}
                 />
               </div>
-              <div className="textfield">
-                <p className="subtitle">비밀번호(4자리)</p>
+              <div class="flex w-full items-center justify-between ">
+                <p class="">비밀번호(4자리)</p>
                 <TextField
                   id="pwd"
+                  placeholder="0000"
                   type="password"
                   value={pwd}
                   onChange={handleChange}
@@ -230,10 +253,11 @@ export default function PersonalInfo() {
                   style={{ width: "60%" }}
                 />
               </div>
-              <div className="textfield">
-                <p className="subtitle">비밀번호 확인</p>
+              <div class="flex w-full items-center justify-between ">
+                <p class="">비밀번호 확인</p>
                 <TextField
                   id="pwdConfirm"
+                  placeholder="0000"
                   type="password"
                   value={pwdConfirm}
                   onChange={handleChange}
@@ -247,31 +271,24 @@ export default function PersonalInfo() {
               </div>
             </div>
           </div>
-          <div
-            style={{
-              width: "85%",
-              marginLeft: "7.5%",
-              marginBottom: "1.5vh",
-              textAlign: "center",
-              fontSize: "min(1vw, 1.6vh)",
-            }}
-          >
-            예약 내역이 맞으시면 생년월일과 휴대폰 번호, 비밀번호를 입력 한 후
-            결제를 완료해주세요
-          </div>
-          <div id="payButton">
-            <Button
-              disabled={buttonDisabled}
-              onClick={handleConfirm}
-              style={{
-                backgroundColor: buttonDisabled ? "lightGray" : "#1899F9",
-                fontSize: "min(2.8vh, 1.7vw)",
-                color: "white",
-                width: "85%",
-              }}
-            >
-              결제하기
-            </Button>
+          <div class="w-full h-15p text-center m-auto ">
+            <div class="text-smallletter w-85p m-auto  font-semibold text-gray-400 mb-1p">
+              예약 내역이 맞으시면 생년월일과 휴대폰 번호, 비밀번호를 입력 한 후
+              결제를 완료해주세요
+            </div>
+            <div class="w-full m-auto">
+              <Button
+                disabled={buttonDisabled}
+                onClick={handleConfirm}
+                class={`w-85p text-center py-1p rounded-lg text-seat font-bold ${
+                  buttonDisabled
+                    ? "bg-gray-100 text-gray-200"
+                    : "bg-gray-200 text-gray-500"
+                }`}
+              >
+                결제하기
+              </Button>
+            </div>
           </div>
         </div>
       </Modal>

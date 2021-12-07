@@ -25,33 +25,35 @@ const DateAndTimeTable = () => {
 
   console.log("TITLE: ", title);
   return (
-    <div>
-      <TopBar function={findReservation} />
-      <div class="flex">
-        <div class="w-1/3 h-95screen bg-white font-bold">
-          <div class="h-1/4 relative bg-gradient-to-t bg-gray-300 from-black to-transparent ">
+    <div class="flex flex-col ">
+      <div>
+        <TopBar function={findReservation} />
+      </div>
+      <div class="flex-initial xl:flex h-content">
+        <div class="w-screen xl:w-1/3 h-1/4 xl:h-full flex  xl:block bg-white font-bold mt-14 ">
+          <div class="w-80  xl:w-full h-full xl:h-1/4 relative bg-gradient-to-t bg-gray-300 from-black to-transparent ">
             <div class="h-full mix-blend-multiply ">
               <img
                 src={require(`../../components/movies/${title}.jpg`).default}
-                class="w-1/3 h-full object-cover w-full"
+                class=" h-full object-cover w-full"
               ></img>
             </div>
-            <div class="text-white text-3xl font-bold absolute bottom-10 left-20">
+            <div class="text-white text-xl xl:text-3xl font-bold absolute bottom-10 left-20">
               <p>{title}</p>
             </div>
           </div>
-
-          <div class="flex h-3/4">
-            <div class="flex-auto h-5/6 overflow-y-scroll">
+          <div class="flex flex-auto h-full xl:h-3/4">
+            <div class=" w-1/3 h-9/10 overflow-y-scroll">
               <DateTable />
             </div>
-            <div class="flex-auto h-full overflow-y-scroll">
+            <div class="w-2/3 h-full overflow-y-scroll">
               <TimeTable />
             </div>
           </div>
         </div>
-        <div class="w-1/3 flex-1">
+        <div class="w-full xl:w-2/3 h-3/4 xl:h-full xl:mt-14  xl:flex-auto">
           {context.date != "" && context.time != "" && <Seat />}
+          {/* <Seat /> */}
         </div>
       </div>
     </div>
