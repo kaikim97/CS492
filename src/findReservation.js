@@ -42,9 +42,6 @@ export default function FindReservation() {
 
   const resNumClick = () => {
     const data = api.getReservationById(resNum).then((response) => {
-      console.log("data", response.data);
-      console.log("length", Object.keys(response.data).length);
-      console.log(response.data == "");
       setOpen(true);
       if (response.data != "") {
         setData(response.data);
@@ -59,12 +56,9 @@ export default function FindReservation() {
       password: pwd,
     });
     const data = api.getReservationQuery(queryString).then((response) => {
-      console.log(response.data);
-      if (response.data) {
-        console.log(response.data);
-        console.log("length", response.data.length);
+      setOpen(true);
+      if (response.data != "") {
         setData(response.data);
-        setOpen(true);
       }
     });
   };
@@ -80,6 +74,9 @@ export default function FindReservation() {
   function goBack() {
     setOpen(false);
     setResNum("");
+    setBirth("");
+    setPhone("");
+    setPwd("");
   }
   return (
     <div class="text-gray-600">

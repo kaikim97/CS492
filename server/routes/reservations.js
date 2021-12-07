@@ -12,17 +12,30 @@ router.get("/", (req, res) => {
 });
 
 // Find One by Birth, Phone
+// router.get("/search", (req, res) => {
+//   const birth = req.query.birth;
+//   const phone = req.query.phone;
+//   const password = req.query.password;
+//   Reservation.findQuery(birth, phone, password)
+//     .then((reservations) => {
+//       if (reservations.length == 0)
+//         return res
+//           .status(404)
+//           .send({ err: "Reservation not found or invalid password" });
+//       res.send(reservations);
+//     })
+//     .catch((err) => res.status(500).send(err));
+// });
+
+// Find One by Birth, Phone
 router.get("/search", (req, res) => {
   const birth = req.query.birth;
   const phone = req.query.phone;
   const password = req.query.password;
   Reservation.findQuery(birth, phone, password)
-    .then((reservations) => {
-      if (reservations.length == 0)
-        return res
-          .status(404)
-          .send({ err: "Reservation not found or invalid password" });
-      res.send(reservations);
+    .then((reservation) => {
+      if (!reservation) return res.send(null);
+      res.send(reservation);
     })
     .catch((err) => res.status(500).send(err));
 });

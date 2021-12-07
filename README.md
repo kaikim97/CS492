@@ -1,6 +1,6 @@
 # CS492
 
-실시간 좌석 예약 서비스를 구현한 프로젝트입니다.
+실시간 좌석 예약 시스템을 구현한 프로젝트입니다.
 사용자는 영화, 날짜, 시간, 좌석을 선택한 후 간단한 개인정보 입력으로 예약을 생성할 수 있고, 예약 완료 시 발급되는 예약 번호 또는 예약 시 입력했던 개인정보로 예약을 조회할 수 있습니다.
 한 사용자가 특정 좌석을 선택한 후 예약 확인 단계로 넘어가면 그 좌석은 선점 상태가 되어 선택이 비활성화되고, 선점 후 5분이 지난 시점에 예약이 완료되지 않으면 좌석은 선점이 최소되어 예약 가능 상태가 됩니다.
 
@@ -78,7 +78,8 @@
 │   ├── PersonalInfo.js
 │   └── FindReservation.js
 └── library
-    └── CustomButton.js
+    ├── CustomButton.js
+    └── Ticket.js
 ```
 
 📁 data : 이미지 또는 dummy data, json 파일을 저장하는 디렉토리
@@ -116,6 +117,8 @@
 📁 library : 반복되어 사용되는 기능의 라이브러리화
 
       📓 CustomButton.js : 버튼 컴포넌트. width, name, disabled, onclick 를 props로 받는다.
+
+      📓 Ticket.js : 예약 내역을 일정한 형태로 보여주는 컴포넌트. title, date, time, seats, price 을 props로 받는다.
 
 #### MovieTable.js
 
