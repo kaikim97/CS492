@@ -87,7 +87,7 @@ export default function PersonalInfo() {
             <Ticket
               title={context.title}
               date={context.date}
-              time={context.time}
+              time={context.time.substring(0, 2) + context.time.substring(3, 5)}
               seats={context.seats}
               price={context.price}
             />
@@ -125,7 +125,7 @@ export default function PersonalInfo() {
             <Ticket
               title={context.title}
               date={context.date}
-              time={context.time}
+              time={context.time.substring(0, 2) + context.time.substring(3, 5)}
               seats={context.seats}
               price={context.price}
             />
