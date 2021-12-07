@@ -43,6 +43,7 @@ export default function FindReservation() {
   const resNumClick = () => {
     const data = api.getReservationById(resNum).then((response) => {
       console.log("data", response.data);
+      console.log("length", Object.keys(response.data).length);
       console.log(response.data == "");
       setOpen(true);
       if (response.data != "") {
@@ -60,7 +61,9 @@ export default function FindReservation() {
     const data = api.getReservationQuery(queryString).then((response) => {
       console.log(response.data);
       if (response.data) {
-        setData(response.data[0]);
+        console.log(response.data);
+        console.log("length", response.data.length);
+        setData(response.data);
         setOpen(true);
       }
     });
@@ -167,15 +170,35 @@ export default function FindReservation() {
               )}
             </div>
             <div class="h-42p px-4vw  ">
-              <hr class="w-full  m-auto mb-3vh" />
-              <Ticket
-                title={data.title}
-                date={data.date}
-                time={data.time}
-                seats={data.seats}
-                price={data.price}
-              />
-              <hr class="w-full  m-auto " />
+              {resNum != "" && (
+                <div class="h-full">
+                  <hr class="w-full  m-auto mb-3vh" />
+                  <Ticket
+                    title={data.title}
+                    date={data.date}
+                    time={data.time}
+                    seats={data.seats}
+                    price={data.price}
+                  />
+                  <hr class="w-full  m-auto " />
+                </div>
+              )}
+              <div class="h-full overflow-y-scroll">
+                {phone != "" &&
+                  data.map((ticket) => (
+                    <div>
+                      <hr class="w-full  m-auto mb-3vh" />
+                      <Ticket
+                        title={ticket.title}
+                        date={ticket.date}
+                        time={ticket.time}
+                        seats={ticket.seats}
+                        price={ticket.price}
+                      />
+                      <hr class="w-full  m-auto " />
+                    </div>
+                  ))}
+              </div>
             </div>
             <div class="h-20p mt-10p w-full text-center m-auto place-items-center">
               <CustomButton
