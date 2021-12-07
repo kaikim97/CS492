@@ -11,7 +11,7 @@ router.get("/", (req, res) => {
     .catch((err) => res.status(500).send(err));
 });
 
-// Find one by time
+// Find one by (title, date, time)
 router.get("/hall", (req, res) => {
   const title = req.query.title;
   const date = req.query.date;
@@ -39,7 +39,6 @@ router.get("/available", (req, res) => {
           err: "Hall not found",
         });
       res.send(halls);
-      console.log(halls.length);
     })
     .catch((err) => res.status(500).send(err));
 });
@@ -130,6 +129,75 @@ router.get("/available", (req, res) => {
     .catch((err) => res.status(500).send(err));
 });
 
+// Preoccupy a seat
+router.post("/preoccupy", (req, res) => {
+  const title = req.body.title;
+  const date = req.body.date;
+  const time = req.body.time;
+  const seats = req.body.seats;
+  let rv_id;
+
+  Hall.findOneByInfo(title, date, time)
+    .then((hall) => {
+      if (!hall)
+        return res.status(404).send({
+          err: "Hall not found",
+        });
+      //Check if any of the selected seats are preoccupied or reserved.
+      seats.forEach(function (seatID) {
+        if (hall.occupied.has(seatID)) {
+          return res.status(404).send({ err: "Preoccupied or reserved seat" });
+        }
+      });
+      //Create reservation object and append to occupied map.
+      Reservation.create(req.body)
+        .then((reservation) => {
+          rv_id = reservation._id;
+          hall.available = hall.available - req.body.seats.length;
+          req.body.seats.forEach(function (seatID) {
+            hall.occupied.set(seatID, false);
+          });
+          hall
+            .save()
+            .then((savedHall) => {
+              res.send(reservation);
+            })
+            .catch((err) => {
+              res.status(500).send({ err: "failed to save hall" });
+            });
+          //  res.send(reservation);
+        })
+        .catch((err) => {
+          res.status(500).send({ err: "failed to create reservation" });
+        });
+      //Cancel preoccupancy if the seats are not reserved within 5 min.
+      setTimeout(async function () {
+        Reservation.findOneById(rv_id)
+          .then((rv) => {
+            if (!rv)
+              return res.status(404).send({ err: "Reservation not found" });
+            if (rv.birth === "") {
+              hall.available = hall.available + req.body.seats.length;
+              req.body.seats.forEach(function (seatID) {
+                hall.occupied.delete(seatID);
+              });
+              hall.save();
+              //Delete reservation obj
+              Reservation.deleteById(rv_id).catch((err) =>
+                res.status(500).send({ err: "failed to delete reservation" })
+              );
+            }
+          })
+          .catch((err) => res.status(500).send(err));
+      }, 5 * 60 * 1000);
+    })
+    .catch((err) => {
+      res.status(500).send({ err: "failed to find hall" });
+    });
+});
+
+// [DB management]
+
 // Create new hall
 router.post("/", (req, res) => {
   Hall.create(req.body)
@@ -148,10 +216,10 @@ router.delete("/hall", (req, res) => {
 });
 
 // Clear occupied map of the hall object for (title, date, time).
-router.get("/clear", (req, res) => {
-  const title = req.query.title;
-  const date = req.query.date;
-  const time = req.query.time;
+router.put("/clear", (req, res) => {
+  const title = req.body.title;
+  const date = req.body.date;
+  const time = req.body.time;
   Hall.findOneByInfo(title, date, time)
     .then((hall) => {
       if (!hall)

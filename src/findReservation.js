@@ -17,7 +17,6 @@ export default function FindReservation() {
   const [data, setData] = useState(null);
   const [open, setOpen] = useState(false);
 
-  console.log("data", data);
   // const temp = api.getAllReservations().then((response) => {
   //   console.log(response.data);
   // });
@@ -43,9 +42,10 @@ export default function FindReservation() {
 
   const resNumClick = () => {
     const data = api.getReservationById(resNum).then((response) => {
-      console.log(response.data);
-      if (response.data != null) {
-        setOpen(true);
+      console.log("data", response.data);
+      console.log(response.data == "");
+      setOpen(true);
+      if (response.data != "") {
         setData(response.data);
       }
     });
@@ -74,7 +74,10 @@ export default function FindReservation() {
   function goHome() {
     navigate("/");
   }
-
+  function goBack() {
+    setOpen(false);
+    setResNum("");
+  }
   return (
     <div class="text-gray-600">
       <div class="mt-8vh text-bigletter font-bold text-center">예약 조회</div>
@@ -137,9 +140,9 @@ export default function FindReservation() {
 
             <div class="h-20p mt-10p w-full text-center m-auto place-items-center">
               <CustomButton
-                name="예약으로 돌아가기"
+                name="다시 조회하기"
                 disabled={false}
-                onClick={goHome}
+                onClick={goBack}
                 width="w-85p"
               />
             </div>
