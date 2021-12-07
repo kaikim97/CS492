@@ -1,26 +1,60 @@
 # CS492
 
-본 프로젝트는 실시간 좌석 예약 서비스입니다.
-사용자는 영화, 날짜, 시간, 좌석 선택 후 간단한 개인정보로 예약을 생성할 수 있습니다. 예약 완료 시 발급되는 예약 번호 또는 예약 시 입력했던 개인정보로 예약을 조회할 수 있습니다.
+실시간 좌석 예약 서비스를 구현한 프로젝트입니다.
+사용자는 영화, 날짜, 시간, 좌석을 선택한 후 간단한 개인정보 입력으로 예약을 생성할 수 있습니다. 예약 완료 시 발급되는 예약 번호 또는 예약 시 입력했던 개인정보로 예약을 조회할 수 있습니다.
+한 사용자가 특정 좌석 선택을 한 후 예약 확인 단계로 넘어가면 선점 상태가 되어 다른 사용자는 그 좌석을 선택할 수 없고, 선점 후 5분이 지난 시점에 예약이 완료되지 않으면 좌석은 선점이 최소되고 예약 가능 상태가 됩니다.
 
 ## Table of Content
 
-- [Download and Installation](#download-and-installation)
+- [다운로드 및 실행](#다운로드-및-실행)
 
-- Client
+- [Client](#client)
 
+  - [기술 스택](#클라이언트-기술-스택)
   - [클라이언트 구성](#클라이언트-구성)
+  - [package](#)
 
-- Server
+- [Server](#server)
+  - [기술 스택](#서버-기술-스택)
   - [데이터베이스](#데이터베이스)
   - [서버 실행](#서버-실행)
   - [서버 구성](#서버-구성)
 
-## Download and Installation
+## 다운로드 및 실행
+
+1. clone the repository
+
+```bash
+ git clone https://github.com/kaikim97/CS492.git
+```
+
+2. npm 패키지 설치
+
+```bash
+ npm install
+```
+
+3. 리액트 실행
+
+```bash
+ npm start
+```
+
+3. 서버 실행
+
+```bash
+ cd server
+ node server
+```
 
 ## Client
 
-React를 이용하여 작성했습니다.
+### 클라이언트 기술 스택
+
+- 뷰 레이어 : React
+- 라우팅 : React router
+- 스타일 요소 : tailwindcss
+- 상태 관리 : Context API
 
 ### 클라이언트 구성
 
@@ -38,12 +72,12 @@ React를 이용하여 작성했습니다.
     │   │   ├── DateTable.js
     │   │   ├── TimeTable.js
     │   │   └── Seat.js
-    │   └── DateTimeSeatTable
+    │   └── DateTimeSeatTable.js
     ├── PersonalInfo.js
     └── FindReservation.js
 ```
 
-📁 data : 이미지 또는 dummy data, json 파일 저장
+📁 data : 이미지 또는 dummy data, json 파일을 저장하는 디렉토리
 
       📁 movies : 영화 포스터 이미지 저장
 
@@ -53,19 +87,43 @@ React를 이용하여 작성했습니다.
 
       📓 Topbar.js : "예약 조회" 버튼이 있는 상단바 컴포넌트
 
-      📁 movieTable : 영화 선택 화면에 관한 컴포넌트
+      📁 movieTable : 영화 선택 화면에 관한 디렉토리
 
-      📁 dateTimeSeatTable : 영화 선택 후 날짜, 시간, 좌석 선택 화면에 관한 컴포넌트
+            📓 MovieRating.js : 영화의 평점을 별로 나타내기 위한 컴포넌트 5개에 대한 비율로 나타남.
+
+            📓 MovieTable.js : 영화 선택 화면 컴포넌트
+
+      📁 dateTimeSeatTable : 영화 선택 후 날짜, 시간, 좌석 선택 화면에 관한 디렉토리
+
+            📁 components : DateTimeSeatTable.js 에 렌더되는 부속 컴포넌트 디렉토리
+
+                  📓 DateTable.js : 날짜 선택을 위한 컴포넌트
+
+                  📓 TimeTable.js : 시간 선택을 위한 컴포넌트
+
+                  📓 Seat.js : 좌석 선택을 위한 컴포넌트
+
+            📓 DateTimeSeatTable.js : 날짜, 시간, 좌석 선택 화면 컴포넌트
 
       📓 PersonalInfo.js : 영화, 날짜, 시간, 좌석 선택 후 예약을 위해 사용자의 개인정보를 입력받는 컴포넌트
 
       📓 FindReservation.js : 상단바의 "예약조회" 버튼을 누르면 나오는 화면에 관한 컴포넌트
+
+![movieTable](./readme_image/movieTable.png)
+![movieInfo](./readme_image/movieInfo.png)
+![personalInfo](./readme_image/personalInfo.png)
+![findReservation](./readme_image/findReservation.png)
 
 ## Server
 
 실시간 좌석 예약 시스템을 지원하는 서버입니다.
 
 해당 서버는 Javascript 기반의 node.js express framework를 이용하여 작성되었습니다.
+
+### 서버 기술 스택
+
+- node.js
+- framework: express
 
 ### 데이터베이스
 
@@ -121,7 +179,8 @@ $ node server
 │   └── reservation.js
 ├── routes
 │   ├── halls.js
-│   └── reservations.js
+│   ├── reservations.js
+│   └── movies.js
 ├── server.js
 └── createData.js
 ```
@@ -151,6 +210,8 @@ $ node server
             GET /reservations/:reservationId : 예약번호로 예약내역 조회 (예약번호 param으로 입력)
             POST /reservations : 새로운 예약 생성 및 생성된 예약 내역 반환 (개인정보 및 비밀번호 body로 전송)
             DELETE /reservations/:reservationId : 예약번호로 예약내역 삭제
+
+      📓 movies.js : 영화 정보 표시를 위한 네이버 오픈 API 연동
 
 📓 server.js : 서버 주소 설정, DB연결 등을 담당하는 서버 실행을 위한 가장 기본 Javascript 파일
 
