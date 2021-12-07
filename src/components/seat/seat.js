@@ -355,6 +355,20 @@ function Seat() {
             </div>
           ))}
         </div>
+        <div class="text-sm font-medium ml-2vh   text-gray-500 flex-initial flex xl:block">
+          <div class="flex mb-1">
+            <div
+              class={`  w-5 h-5  rounded-sm flex-initial mr-5 ${"bg-reserved"}`}
+            ></div>
+            <div class="flex-initial mr-6">예약좌석</div>
+          </div>
+          <div class="flex mb-1">
+            <div
+              class={`  w-5 h-5  rounded-sm flex-initial mr-5 ${"bg-preoccupied"}`}
+            ></div>
+            <div class="flex-initial mr-6">선점좌석</div>
+          </div>
+        </div>
       </div>
       <div class="w-full flex-auto my-2p items-center ml-10  overflow-scroll ">
         {/* h-70p my-2p xl:my-4p */}
