@@ -19,8 +19,8 @@ const resolvers = {
   },
 
   Subscription: {
-    reservationCreated: {
-      subscribe: () => pubsub.asyncIterator("NEW_RESERVATION"),
+    reservationUpdated: {
+      subscribe: () => pubsub.asyncIterator("NEW_UPDATE"),
     },
   },
   Mutation: {
@@ -32,8 +32,26 @@ const resolvers = {
         seats: args.seats,
       })
         .then((reservation) => {
-          pubsub.publish("NEW_RESERVATION", {
-            reservationCreated: reservation,
+          pubsub.publish("NEW_UPDATE", {
+            reservationUpdated: {
+              type: "create",
+              info: reservation,
+            },
+          });
+          return reservation;
+        })
+        .catch((err) => {
+          throw err;
+        });
+    },
+    deleteReservation: async (_, id) => {
+      return Reservation.findByIdAndDelete(id)
+        .then((reservation) => {
+          pubsub.publish("NEW_UPDATE", {
+            reservationUpdated: {
+              type: "delete",
+              info: reservation,
+            },
           });
           return reservation;
         })

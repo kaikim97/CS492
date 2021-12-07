@@ -5,6 +5,7 @@ import DateTable from "./components/DateTable";
 import TimeTable from "./components/TimeTable";
 import Seat from "../../components/seat/seat";
 import TopBar from "../TopBar";
+import TestSubscription from "../../testSubscription";
 
 import { useContext } from "react";
 import { AuthContext } from "../../context";
@@ -22,7 +23,6 @@ const DateAndTimeTable = () => {
     context.setTitle(title);
   }, []);
 
-  console.log("TITLE: ", title);
   return (
     <div class="flex flex-col ">
       <div>
@@ -52,7 +52,6 @@ const DateAndTimeTable = () => {
         </div>
         <div class="w-full xl:w-2/3 h-3/4 xl:h-full xl:mt-14  xl:flex-auto">
           {context.date != "" && context.time != "" && <Seat />}
-          {/* <Seat /> */}
         </div>
       </div>
     </div>

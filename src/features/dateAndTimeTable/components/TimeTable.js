@@ -33,7 +33,6 @@ export default function TimeTable({}) {
 
   useEffect(() => {
     if (date != "") {
-      console.log("date선택", date);
       const data = api
         .getAvailable(`title=${title}&date=${date}`)
         .then((response) => {
@@ -48,7 +47,6 @@ export default function TimeTable({}) {
         });
     }
   }, [date]);
-  console.log(timeSeats);
   return (
     <div class={`font-sans mt-10 mx-auto  font-medium`}>
       <table>
@@ -66,7 +64,6 @@ const TimeRow = ({ section, context }) => {
   const ifDateSelected = context.date != "";
   const { time, seat } = section;
   const seatWithTotal = seat + "/551";
-  console.log(context.time);
   return (
     <tr>
       <td
