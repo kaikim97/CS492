@@ -9,6 +9,7 @@ import api from "./api";
 import { AuthContext } from "./context.js";
 import CustomButton from "./library/CustomButton";
 import { useNavigate } from "react-router-dom";
+import Ticket from "./library/Ticket";
 
 export default function PersonalInfo() {
   const navigate = useNavigate();
@@ -70,47 +71,6 @@ export default function PersonalInfo() {
     }
   };
 
-  const parseDate = (date) => {
-    const temp =
-      date.slice(0, 4) + "," + date.slice(4, 6) + "," + date.slice(6);
-
-    const dateString = new Date(temp);
-    const dayInt = dateString.getDay();
-
-    const dayString =
-      dayInt == 0
-        ? "일"
-        : dayInt == 1
-        ? "월"
-        : dayInt == 2
-        ? "화"
-        : dayInt == 3
-        ? "수"
-        : dayInt == 4
-        ? "목"
-        : dayInt == 5
-        ? "금"
-        : "토";
-
-    const result =
-      date.slice(0, 4) +
-      "." +
-      date.slice(4, 6) +
-      "." +
-      date.slice(6) +
-      "(" +
-      dayString +
-      ")";
-
-    return result;
-  };
-
-  const parseTime = (time) => {
-    const time_change =
-      time.slice(0, 2) * 1 > 12 ? time.slice(0, 2) * 1 - 12 + ":00" : time;
-    const amPm = time.slice(0, 2) * 1 >= 12 ? "PM" : "AM";
-    return time_change + amPm;
-  };
   function goHome() {
     navigate("/");
   }
@@ -119,22 +79,13 @@ export default function PersonalInfo() {
       <Modal open={open}>
         <div class="overflow-y-scroll outline-none bg-white rounded-2xl text-gray-500 m-auto mt-8vh mb-12vh w-10/12 sm:w-6/12 h-80vh">
           <div class="h-40p px-4vw pt-8vh ">
-            <div class="px-2vw flex flex-col justify-between h-5/6 mb-3vh">
-              <div class="text-title font-bold ">{context.title}</div>
-
-              <div class="text-datetime font-semibold  flex w-10/12 xl:w-1/2 justify-between">
-                <p> {parseDate(context.date)}</p>
-                <p> {parseTime(context.time)}</p>
-              </div>
-              <div class="  flex w-full justify-between">
-                <p class="text-seat font-semibold ">
-                  {context.seats.join(", ")}
-                </p>
-                <p class="text-price font-medium ">
-                  {parseInt(context.price / 1000) + ",000"}원
-                </p>
-              </div>
-            </div>
+            <Ticket
+              title={context.title}
+              date={context.date}
+              time={context.time}
+              seats={context.seats}
+              price={context.price}
+            />
             <hr class="w-full  m-auto " />
           </div>
 
@@ -166,22 +117,13 @@ export default function PersonalInfo() {
       <Modal open={open}>
         <div class="overflow-y-scroll outline-none bg-white rounded-2xl text-gray-500 m-auto mt-8vh mb-12vh w-7/12 sm:w-6/12 h-80vh">
           <div class="h-40p px-4vw pt-8vh ">
-            <div class="px-2vw flex flex-col justify-between h-5/6 mb-3vh">
-              <div class="text-title font-bold ">{context.title}</div>
-
-              <div class="text-datetime font-semibold  flex w-10/12 xl:w-1/2 justify-between">
-                <p> {parseDate(context.date)}</p>
-                <p> {parseTime(context.time)}</p>
-              </div>
-              <div class="  flex w-full justify-between">
-                <p class="text-seat font-semibold ">
-                  {context.seats.join(", ")}
-                </p>
-                <p class="text-price font-medium ">
-                  {parseInt(context.price / 1000) + ",000"}원
-                </p>
-              </div>
-            </div>
+            <Ticket
+              title={context.title}
+              date={context.date}
+              time={context.time}
+              seats={context.seats}
+              price={context.price}
+            />
             <hr class="w-full  m-auto " />
           </div>
 
