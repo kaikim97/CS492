@@ -7,43 +7,8 @@ import Modal from "@mui/material/Modal";
 import Paper from "@mui/material/Paper";
 import api from "./api";
 import { AuthContext } from "./context.js";
-import { useMutation } from "@apollo/client";
-import { gql } from "@apollo/client";
 
-export default function PersonalInfo(props) {
-  const createSubscription = gql`
-    subscription Subscription {
-      reservationCreated {
-        title
-        date
-        time
-        seats
-      }
-    }
-  `;
-  const createReservation = gql`
-    mutation Mutation(
-      $title: String
-      $date: String
-      $time: String
-      $seats: [String]
-    ) {
-      createReservation(
-        title: $title
-        date: $date
-        time: $time
-        seats: $seats
-      ) {
-        title
-        date
-        time
-        seats
-      }
-    }
-  `;
-
-  const [addReservation, { data, loading, error }] =
-    useMutation(createReservation);
+export default function PersonalInfo() {
   //name, phone, title, date, time, seats
 
   const context = useContext(AuthContext);

@@ -13,9 +13,12 @@ const typeDefs = gql`
       time: String
       seats: [String]
     ): Reservation
+
+    deleteReservation(_id: ID): Reservation
   }
 
   type Reservation {
+    _id: ID
     birth: String
     phone: String
     password: String
@@ -26,8 +29,13 @@ const typeDefs = gql`
     price: Int
   }
 
+  type Update {
+    type: String
+    info: Reservation
+  }
+
   type Subscription {
-    reservationCreated: Reservation
+    reservationUpdated: Update
   }
 `;
 

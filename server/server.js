@@ -4,14 +4,13 @@ const cors = require("cors");
 const { createServer } = require("http");
 const { ApolloServer, gql } = require("apollo-server-express");
 const { execute, subscribe } = require("graphql");
+const { WebSocketLink } = require("@apollo/client/link/ws");
 const { SubscriptionServer } = require("subscriptions-transport-ws");
 const { PubSub } = require("graphql-subscriptions");
 const { makeExecutableSchema } = require("@graphql-tools/schema");
 
 const typeDefs = require("./graphql/typeDefs");
 const resolvers = require("./graphql/resolvers");
-
-const PORT = 80;
 
 const MONGO_URI =
   "mongodb+srv://admin:admin12345@cluster0.pzm0h.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
@@ -35,22 +34,26 @@ async function initServer() {
   app.use("/halls", require("./routes/halls"));
   app.use("/movies", require("./routes/movies"));
 
+  const server = createServer(app);
+
   const schema = makeExecutableSchema({ typeDefs, resolvers });
 
-  const apolloServer = new ApolloServer({ schema: schema });
+  const apolloServer = new ApolloServer({
+    schema: schema,
+  });
 
   await apolloServer.start();
 
   apolloServer.applyMiddleware({ app });
 
-  const server = createServer(app);
+  const PORT = 80;
 
   server.listen(PORT, function () {
     new SubscriptionServer(
       {
         execute,
         subscribe,
-        schema: schema,
+        schema,
       },
       {
         server: server,

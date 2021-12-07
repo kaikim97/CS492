@@ -4,9 +4,34 @@ import { AuthContext } from "../../context.js";
 import seatData from "./seats-kaist.json";
 import { useNavigate } from "react-router-dom";
 import apis from "../../api";
-import PersonalInfo from "../../PersonalInfo.js";
+import { useSubscription } from "@apollo/client";
+import { gql } from "@apollo/client";
 
 function Seat() {
+  const createSubscription = gql`
+    subscription subscription {
+      reservationUpdated {
+        type
+        info {
+          _id
+          title
+          date
+          time
+          seats
+        }
+      }
+    }
+  `;
+
+  const { data, loading, error } = useSubscription(createSubscription);
+
+  if (data) {
+    console.log(data);
+  }
+  if (error) {
+    console.log(error.message);
+  }
+
   const ctx = useContext(AuthContext);
   const navigate = useNavigate();
   const canvasRef = useRef(null);
