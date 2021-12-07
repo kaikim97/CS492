@@ -1,6 +1,37 @@
 const router = require("express").Router();
 const Hall = require("../models/hall");
 const Reservation = require("../models/reservation");
+const { gql, useMutation } = require("@apollo/client");
+const { request } = require("graphql-request");
+
+const createReservation = gql`
+  mutation Mutation(
+    $title: String
+    $date: String
+    $time: String
+    $seats: [String]
+  ) {
+    createReservation(title: $title, date: $date, time: $time, seats: $seats) {
+      _id
+      title
+      date
+      time
+      seats
+    }
+  }
+`;
+
+const deleteReservation = gql`
+  mutation Mutation($id: ID) {
+    deleteReservation(_id: $id) {
+      _id
+      title
+      date
+      time
+      seats
+    }
+  }
+`;
 
 // Find all
 router.get("/", (req, res) => {
@@ -64,9 +95,16 @@ router.post("/preoccupy", (req, res) => {
         }
       });
       //Create reservation object and append to occupied map.
-      Reservation.create(req.body)
+
+      request("http://localhost:80/graphql", createReservation, {
+        title: title,
+        date: date,
+        time: time,
+        seats: seats,
+      })
         .then((reservation) => {
-          rv_id = reservation._id;
+          console.log(reservation.createReservation._id);
+          rv_id = reservation.createReservation._id;
           hall.available = hall.available - req.body.seats.length;
           req.body.seats.forEach(function (seatID) {
             hall.occupied.set(seatID, false);
@@ -74,17 +112,19 @@ router.post("/preoccupy", (req, res) => {
           hall
             .save()
             .then((savedHall) => {
-              res.send(reservation);
+              res.send(reservation.createReservation);
             })
             .catch((err) => {
               res.status(500).send({ err: "failed to save hall" });
             });
-          //  res.send(reservation);
+          //  res.send(reservation);*/
         })
         .catch((err) => {
           res.status(500).send({ err: "failed to create reservation" });
         });
+
       //Cancel preoccupancy if the seats are not reserved within 5 min.
+
       setTimeout(async function () {
         Reservation.findOneById(rv_id)
           .then((rv) => {
@@ -97,13 +137,15 @@ router.post("/preoccupy", (req, res) => {
               });
               hall.save();
               //Delete reservation obj
-              Reservation.deleteById(rv_id).catch((err) =>
-                res.status(500).send({ err: "failed to delete reservation" })
-              );
+              request("http://localhost:80/graphql", deleteReservation, {
+                id: rv_id,
+              })
+                .then((response) => console.log(response))
+                .catch((err) => console.log(err));
             }
           })
-          .catch((err) => res.status(500).send(err));
-      }, 5 * 60 * 1000);
+          .catch((err) => console.log(err));
+      }, 30 * 1000);
     })
     .catch((err) => {
       res.status(500).send({ err: "failed to find hall" });

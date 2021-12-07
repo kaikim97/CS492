@@ -21,9 +21,10 @@ export default function PersonalInfo() {
   const [pwd, setPwd] = useState("");
   const [pwdConfirm, setPwdConfirm] = useState("");
   const [done, setDone] = useState(false);
-  const [open, setOpen] = useState(true);
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const [id, setId] = useState("");
+
+  const { open, setClose } = props;
 
   useEffect(() => {
     if (
@@ -67,10 +68,16 @@ export default function PersonalInfo() {
           price: context.price,
         })
         .then((response) => {
-          console.log(response.data);
+          if (response) {
+            // console.log(response.data);
+            console.log("예약이 완료되었습니다.");
+            setDone(true);
+          }
+        })
+        .catch((error) => {
+          alert("예약 시간 초과");
+          window.location.href = "/movieInfo";
         });
-      console.log("예약이 완료되었습니다.");
-      setDone(true);
     } else {
       console.log("비밀번호가 일치하지 않습니다.");
     }

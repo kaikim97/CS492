@@ -5,6 +5,7 @@ import DateTable from "./components/DateTable";
 import TimeTable from "./components/TimeTable";
 import Seat from "../../components/seat/seat";
 import TopBar from "../TopBar";
+import TestSubscription from "../../testSubscription";
 
 import { useContext } from "react";
 import { AuthContext } from "../../context";
