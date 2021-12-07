@@ -14,10 +14,6 @@ function Seat() {
   const seatInfo = seatData.seats;
   const cornerRadius = 8;
 
-  seatInfo.forEach((seatgroup) => {
-    console.log(seatgroup.color, seatgroup.price);
-  });
-
   const [selectedSeat, setSeat] = useState([]);
   const [reservedSeat, modSeat] = useState([]);
   const [upload, setLoad] = useState(false);
@@ -44,7 +40,7 @@ function Seat() {
   };
 
   const goNext = () => {
-    ctx.setSeats(selectedSeat);
+    ctx.setSeats(selectedSeat.sort());
     ctx.setPrice(totalPrice);
 
     const createReservation = apis
@@ -60,7 +56,6 @@ function Seat() {
           ctx.setId(response.data._id);
           setOpen(true);
         } else {
-          // TODO: 이후 별도 창으로 띄워야함
           console.log("이미 선택된 좌석입니다");
         }
       });
@@ -299,7 +294,7 @@ function Seat() {
         {/* h-16p xl:h-10p  */}
         <div class="w-97/100  mx-auto  py-1p h-full flex  bg-white font-bold rounded-lg items-center">
           <div class="text-md md:text-xl text-left text-gray-500 w-4/12  overflow-x-scroll flex ml-10 mr-10 flex-initial">
-            {selectedSeat.map((seat) => (
+            {selectedSeat.sort().map((seat) => (
               <div>
                 <div class="mr-2 align-middle">{seat}</div>
               </div>
