@@ -14,6 +14,10 @@ function Seat() {
   const seatInfo = seatData.seats;
   const cornerRadius = 8;
 
+  seatInfo.forEach((seatgroup) => {
+    console.log(seatgroup.color, seatgroup.price);
+  });
+
   const [selectedSeat, setSeat] = useState([]);
   const [reservedSeat, modSeat] = useState([]);
   const [upload, setLoad] = useState(false);

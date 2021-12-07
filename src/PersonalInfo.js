@@ -213,7 +213,7 @@ export default function PersonalInfo(props) {
     <div>
       <Modal open={open}>
         <div class="overflow-y-scroll bg-white rounded-2xl text-gray-500 m-auto mt-8vh mb-12vh w-7/12 sm:w-6/12 h-80vh">
-          <div class="h-40p px-4vw pt-8vh ">
+          <div class="h-40p px-4vw pt-8vh relative">
             <button
               class="w-30 py-3 text-lg rounded-lg bg-gray-100 text-gray-500 absolute top-0 right-0 h-16 w-16"
               type="submit"
