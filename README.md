@@ -113,12 +113,13 @@
       📓 PersonalInfo.js : 영화, 날짜, 시간, 좌석 선택 후 예약을 위해 사용자의 개인정보를 입력받는 컴포넌트
 
       📓 FindReservation.js : 상단바의 "예약조회" 버튼을 누르면 나오는 화면에 관한 컴포넌트
+                              생년월일 / 휴대폰 번호 / 비밀번호 로 조회한 경우 모든 예약 내역을 보여줌.
 
 📁 library : 반복되어 사용되는 기능의 라이브러리화
 
-      📓 CustomButton.js : 버튼 컴포넌트. width, name, disabled, onclick 를 props로 받는다.
+      📓 CustomButton.js : 버튼 컴포넌트. width, name, disabled, onclick 를 props로 받는다. "예약조회" 를 제외한 모든 버튼에 이용됨.
 
-      📓 Ticket.js : 예약 내역을 일정한 형태로 보여주는 컴포넌트. title, date, time, seats, price 을 props로 받는다.
+      📓 Ticket.js : 예약 내역을 일정한 형태로 보여주는 컴포넌트. title, date, time, seats, price 을 props로 받는다. 예약 확인 및 개인정보 입력 화면, 예약 조회 화면에서 이용됨.
 
 #### MovieTable.js
 
@@ -132,9 +133,10 @@
 
 ![personalInfo](./readme_image/personalInfo.png)
 
-#### FIndReservation.js
+#### FindReservation.js
 
 ![findReservation](./readme_image/findReservation.png)
+![findReservationModal](./readme_image/findReservationModal.png)
 
 ## Server
 
@@ -243,7 +245,7 @@ $ node server
 
 <br>
 
-### Chrome
+#### Chrome
 
 <br>
 

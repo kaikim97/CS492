@@ -8,7 +8,6 @@ export default function Ticket(props) {
 
     const dateString = new Date(temp);
     const dayInt = dateString.getDay();
-    // console.log(dayInt);
 
     const dayString =
       dayInt == 0
@@ -24,8 +23,6 @@ export default function Ticket(props) {
         : dayInt == 5
         ? "금"
         : "토";
-
-    // console.log(dayString);
 
     const result =
       date.slice(0, 4) +

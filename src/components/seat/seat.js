@@ -49,19 +49,6 @@ function Seat() {
       });
   };
 
-  // const getPrice = (row) => {
-  //   const num = row.charCodeAt(0) - 65;
-  //   var price;
-  //   if (num <= 5) {
-  //     price = 9000;
-  //   } else if (num <= 11) {
-  //     price = 10000;
-  //   } else {
-  //     price = 11000;
-  //   }
-  //   return price;
-  // };
-
   // Draw seats
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -146,7 +133,6 @@ function Seat() {
                 context.strokeStyle = "#3C68D8";
                 seat.available = false;
                 setSeat((selectedSeat) => selectedSeat.concat(seatNum));
-                // setPrice((totalPrice) => totalPrice + getPrice(row));
                 setPrice((totalPrice) => totalPrice + seatgroup.price);
               } else {
                 context.fillStyle = seatgroup.color;
@@ -155,7 +141,6 @@ function Seat() {
                 setSeat((selectedSeat) =>
                   selectedSeat.filter((s) => s !== seatNum)
                 );
-                // setPrice((totalPrice) => totalPrice - getPrice(row));
                 setPrice((totalPrice) => totalPrice - seatgroup.price);
               }
               const cornerRadius = 8;
@@ -215,8 +200,6 @@ function Seat() {
               <canvas
                 id="seats"
                 ref={canvasRef}
-                // width="1000"
-                // height="800"
                 width={window.innerWidth}
                 height={window.innerHeight}
                 // width={seatMap.size.width}
@@ -245,18 +228,6 @@ function Seat() {
             {parseInt(totalPrice / 1000) + ",000"}원
           </div>
 
-          {/* <button
-            class={`w-40 h-full py-1p text-sm md:text-lg font-bold rounded-lg flex-initial mr-5 ${
-              selectedSeat.length != 0
-                ? "bg-gray-200 text-gray-500"
-                : "bg-gray-100 text-gray-200"
-            } `}
-            type="submit"
-            onClick={goNext}
-            disabled={selectedSeat.length == 0}
-          >
-            예약하기
-          </button> */}
           <CustomButton
             name="예약하기"
             disabled={selectedSeat.length == 0}

@@ -21,14 +21,12 @@ export default function MovieRating({ userRating }) {
 }
 
 const Star = ({ rate }) => {
-  // console.log("rate: ", rate);
   let ratio = 0;
   if (rate == 1) {
     ratio = 0;
   } else {
     ratio = 80 - rate * 60;
   }
-  // console.log("ratio: ", ratio);
   return (
     <div style={{ clipPath: `inset(0 ${ratio}% 0 0)` }}>
       <svg

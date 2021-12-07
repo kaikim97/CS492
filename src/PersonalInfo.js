@@ -193,6 +193,18 @@ export default function PersonalInfo() {
               </div>
             </div>
           </div>
+
+          <p
+            class={`text-smallletter font-medium  text-center ${
+              pwd.length == 4 && pwdConfirm.length == 4 && pwd !== pwdConfirm
+                ? "text-red-600"
+                : "text-white"
+            }`}
+          >
+            {" "}
+            비밀번호가 일치하지 않습니다. 비밀번호를 확인해주세요
+          </p>
+
           <div class="w-full h-15p text-center m-auto ">
             <div class="text-smallletter w-85p m-auto  font-semibold text-gray-400 mb-1p">
               예약 내역이 맞으시면 생년월일과 휴대폰 번호, 비밀번호를 입력 한 후

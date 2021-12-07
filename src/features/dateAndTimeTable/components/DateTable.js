@@ -6,29 +6,22 @@ const DateTable = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const context = useContext(AuthContext);
 
-  let today = new Date(2021, 11, 1);
-  console.log(dateToString(today).substring(0, 4));
+  const today = new Date(2021, 11, 1);
 
-  const [currentYear, setCurrentYear] = useState(
-    dateToString(today).substring(0, 4)
-  );
-  const [currentMonth, setCurrentMonth] = useState(
-    dateToString(today).substring(4, 6)
-  );
-
-  const [yearChanged, setYearChanged] = useState(false);
+  const currentYear = dateToString(today).substring(0, 4);
+  const currentMonth = dateToString(today).substring(4, 6);
 
   const dates = [dateToString(today)];
   for (let i = 0; i < 20; i++) {
     today.setDate(today.getDate() + 1);
     dates.push(dateToString(today));
   }
-  // console.log(dates);
+
   function dateToString(date1) {
-    let year = date1.getFullYear(); // 년도
-    let month = ("" + (date1.getMonth() + 1)).padStart(2, "0"); // 월
-    let date = ("" + date1.getDate()).padStart(2, "0"); // 날짜
-    let day = date1.getDay(); // 요일
+    const year = date1.getFullYear(); // 년도
+    const month = ("" + (date1.getMonth() + 1)).padStart(2, "0"); // 월
+    const date = ("" + date1.getDate()).padStart(2, "0"); // 날짜
+    const day = date1.getDay(); // 요일
     const days = ["일", "월", "화", "수", "목", "금", "토"];
     return "" + year + month + date + days[day];
   }

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./MovieTable.css";
 import MovieRating from "./MovieRating";
 import CustomButton from "../../library/CustomButton";
 
@@ -48,14 +47,6 @@ export default function MovieTable() {
         </div>
       </div>
       <div class="flex-initial h-14 text-right m-5">
-        {/* {selected != null && (
-          <button
-            class="w-40 md:w-52 xl:w-2/12 py-3 text-lg rounded-lg bg-gray-200 text-gray-500 font-bold"
-            type="submit"
-            onClick={goNext}
-          >
-            다음
-          </button> */}
         <CustomButton
           name="다음"
           disabled={selected == null}
@@ -80,7 +71,6 @@ const Movie = ({ movie, selected, setSelected }) => {
   const [userRating, setUserRating] = useState(null);
   const [director, setDirector] = useState(null);
   const [actor, setActor] = useState(null);
-  console.log(selected);
   return (
     <div
       class={`w-72 flex-grow-0 flex-shrink-0 xl:flex-grow xl:flex-shrink  ml-1p mr-1p pt-12 pb-6 px-2p border-2 
@@ -114,10 +104,8 @@ const Movie = ({ movie, selected, setSelected }) => {
 
   function mouseClick(e) {
     setSelected(id);
-    console.log(id);
   }
   function movieHover(e) {
-    // setHover(id);
     const data = api.searchMovie(`query=${name}`).then((response) => {
       const director_before_parse = response.data.items[0].director;
       const actor_before_parse = response.data.items[0].actor;
