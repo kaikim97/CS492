@@ -337,7 +337,12 @@ function Seat() {
             {parseInt(totalPrice / 1000) + ",000"}원
           </div>
 
-          <CustomButton name="예약하기" disabled={selectedSeat.length == 0} />
+          <CustomButton
+            name="예약하기"
+            disabled={selectedSeat.length == 0}
+            onClick={goNext}
+            width="w-40 "
+          />
 
           <PersonalInfo open={open} setClose={closeModal} />
         </div>
