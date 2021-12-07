@@ -10,7 +10,7 @@ import { AuthContext } from "./context.js";
 import { useMutation } from "@apollo/client";
 import { gql } from "@apollo/client";
 
-export default function PersonalInfo() {
+export default function PersonalInfo(props) {
   const createSubscription = gql`
     subscription Subscription {
       reservationCreated {
@@ -53,9 +53,10 @@ export default function PersonalInfo() {
   const [pwd, setPwd] = useState("");
   const [pwdConfirm, setPwdConfirm] = useState("");
   const [done, setDone] = useState(false);
-  const [open, setOpen] = useState(true);
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const [id, setId] = useState("");
+
+  const { open, setClose } = props;
 
   useEffect(() => {
     if (phone.length >= 10 && pwd.length == 4 && pwdConfirm.length == 4) {
@@ -94,10 +95,16 @@ export default function PersonalInfo() {
           price: context.price,
         })
         .then((response) => {
-          console.log(response.data);
+          if (response) {
+            // console.log(response.data);
+            console.log("예약이 완료되었습니다.");
+            setDone(true);
+          }
+        })
+        .catch((error) => {
+          alert("예약 시간 초과");
+          window.location.href = "/movieInfo";
         });
-      console.log("예약이 완료되었습니다.");
-      setDone(true);
     } else {
       console.log("비밀번호가 일치하지 않습니다.");
     }
@@ -136,6 +143,14 @@ export default function PersonalInfo() {
       ")";
 
     return result;
+  };
+
+  const changeTimeForm = (time) => {
+    if (time.slice(0, 2) * 1 > 12) {
+      return time.slice(0, 2) * 1 - 12 + ":00";
+    } else {
+      return time;
+    }
   };
 
   const parseTime = (time) => {
@@ -198,7 +213,14 @@ export default function PersonalInfo() {
     <div>
       <Modal open={open}>
         <div class="overflow-y-scroll bg-white rounded-2xl text-gray-500 m-auto mt-8vh mb-12vh w-7/12 sm:w-6/12 h-80vh">
-          <div class="h-40p px-4vw pt-8vh ">
+          <div class="h-40p px-4vw pt-8vh relative">
+            <button
+              class="w-30 py-3 text-lg rounded-lg bg-gray-100 text-gray-500 absolute top-0 right-0 h-16 w-16"
+              type="submit"
+              onClick={setClose}
+            >
+              X
+            </button>
             <div class="px-2vw flex flex-col justify-between h-5/6 mb-3vh">
               <div class="text-title font-bold ">{context.title}</div>
 

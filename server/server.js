@@ -33,6 +33,7 @@ async function initServer() {
 
   app.use("/reservations", require("./routes/reservations"));
   app.use("/halls", require("./routes/halls"));
+  app.use("/movies", require("./routes/movies"));
 
   const schema = makeExecutableSchema({ typeDefs, resolvers });
 
