@@ -1,8 +1,8 @@
 # CS492
 
 실시간 좌석 예약 서비스를 구현한 프로젝트입니다.
-사용자는 영화, 날짜, 시간, 좌석을 선택한 후 간단한 개인정보 입력으로 예약을 생성할 수 있습니다. 예약 완료 시 발급되는 예약 번호 또는 예약 시 입력했던 개인정보로 예약을 조회할 수 있습니다.
-한 사용자가 특정 좌석 선택을 한 후 예약 확인 단계로 넘어가면 선점 상태가 되어 다른 사용자는 그 좌석을 선택할 수 없고, 선점 후 5분이 지난 시점에 예약이 완료되지 않으면 좌석은 선점이 최소되고 예약 가능 상태가 됩니다.
+사용자는 영화, 날짜, 시간, 좌석을 선택한 후 간단한 개인정보 입력으로 예약을 생성할 수 있고, 예약 완료 시 발급되는 예약 번호 또는 예약 시 입력했던 개인정보로 예약을 조회할 수 있습니다.
+한 사용자가 특정 좌석을 선택한 후 예약 확인 단계로 넘어가면 그 좌석은 선점 상태가 되어 선택이 비활성화되고, 선점 후 5분이 지난 시점에 예약이 완료되지 않으면 좌석은 선점이 최소되어 예약 가능 상태가 됩니다.
 
 ## Table of Content
 
@@ -10,15 +10,17 @@
 
 - [Client](#client)
 
-  - [기술 스택](#클라이언트-기술-스택)
+  - [클라이언트 기술 스택](#클라이언트-기술-스택)
   - [클라이언트 구성](#클라이언트-구성)
-  - [package](#)
 
 - [Server](#server)
-  - [기술 스택](#서버-기술-스택)
+
+  - [서버 기술 스택](#서버-기술-스택)
   - [데이터베이스](#데이터베이스)
   - [서버 실행](#서버-실행)
   - [서버 구성](#서버-구성)
+
+- [Browser Support](#browser-support)
 
 ## 다운로드 및 실행
 
@@ -109,9 +111,20 @@
 
       📓 FindReservation.js : 상단바의 "예약조회" 버튼을 누르면 나오는 화면에 관한 컴포넌트
 
+#### MovieTable.js
+
 ![movieTable](./readme_image/movieTable.png)
+
+#### DateTimeSeat.js
+
 ![movieInfo](./readme_image/movieInfo.png)
+
+#### PersonalInfo.js
+
 ![personalInfo](./readme_image/personalInfo.png)
+
+#### FIndReservation.js
+
 ![findReservation](./readme_image/findReservation.png)
 
 ## Server
@@ -216,3 +229,13 @@ $ node server
 📓 server.js : 서버 주소 설정, DB연결 등을 담당하는 서버 실행을 위한 가장 기본 Javascript 파일
 
 📓 createData.js : DB에 초기 공연장 정보 저장을 위한 Javascript 파일, 서버 실행과는 별개로 작동
+
+## Browser Support
+
+<br>
+
+### Chrome
+
+<br>
+
+<img src="./readme_image/chrome.png" width="100"/>

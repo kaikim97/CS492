@@ -115,7 +115,7 @@ export default function PersonalInfo() {
   return done ? (
     <div>
       <Modal open={open}>
-        <div class="overflow-y-scroll bg-white rounded-2xl text-gray-500 m-auto mt-8vh mb-12vh w-10/12 sm:w-6/12 h-80vh">
+        <div class="overflow-y-scroll outline-white bg-white rounded-2xl text-gray-500 m-auto mt-8vh mb-12vh w-10/12 sm:w-6/12 h-80vh">
           <div class="h-40p px-4vw pt-8vh ">
             <div class="px-2vw flex flex-col justify-between h-5/6 mb-3vh">
               <div class="text-title font-bold ">{context.title}</div>
@@ -164,7 +164,7 @@ export default function PersonalInfo() {
   ) : (
     <div>
       <Modal open={open}>
-        <div class="overflow-y-scroll bg-white rounded-2xl text-gray-500 m-auto mt-8vh mb-12vh w-7/12 sm:w-6/12 h-80vh">
+        <div class="overflow-y-scroll outline-white bg-white rounded-2xl text-gray-500 m-auto mt-8vh mb-12vh w-7/12 sm:w-6/12 h-80vh">
           <div class="h-40p px-4vw pt-8vh ">
             <div class="px-2vw flex flex-col justify-between h-5/6 mb-3vh">
               <div class="text-title font-bold ">{context.title}</div>
