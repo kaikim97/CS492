@@ -84,6 +84,16 @@ router.put("/:reservationId", (req, res) => {
     .then((reservation) => {
       if (!reservation)
         return res.status(404).send({ err: "Reservation not found" });
+      Hall.findOneByInfo(
+        reservation.title,
+        reservation.date,
+        reservation.time
+      ).then((hall) => {
+        reservation.seats.forEach(function (seatID) {
+          hall.occupied.set(seatID, true);
+        });
+        hall.save();
+      });
       reservation.birth = req.body.birth;
       reservation.phone = req.body.phone;
       reservation.password = req.body.password;
