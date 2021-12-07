@@ -3,9 +3,12 @@ import api from "./api";
 import { Link } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import { Button, Modal } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import CustomButton from "./library/CustomButton";
 // import "./FindReservation.css";
 
 export default function FindReservation() {
+  const navigate = useNavigate();
   const [resNum, setResNum] = useState("");
   const [birth, setBirth] = useState("");
   const [phone, setPhone] = useState("");
@@ -110,6 +113,10 @@ export default function FindReservation() {
     setData(null);
   };
 
+  function goHome() {
+    navigate("/");
+  }
+
   return (
     <div class="text-gray-600">
       <div class="mt-8vh text-bigletter font-bold text-center">예약 조회</div>
@@ -191,12 +198,13 @@ export default function FindReservation() {
               </div>
               <hr class="w-full  m-auto " />
             </div>
-            <div class="h-30p text-center m-auto grid place-items-center">
-              <Button class="w-85p text-center py-1p rounded-lg text-seat font-bold bg-gray-200 text-gray-500">
-                <Link to="/" style={{ textDecoration: "none" }}>
-                  예약으로 돌아가기
-                </Link>
-              </Button>
+            <div class="h-20p mt-10p w-full text-center m-auto place-items-center">
+              <CustomButton
+                name="예약으로 돌아가기"
+                disabled={false}
+                onClick={goHome}
+                width="w-85p"
+              />
             </div>
           </div>
         </Modal>

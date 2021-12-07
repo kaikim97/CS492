@@ -64,19 +64,21 @@
 ├── data
 │   ├── movies
 │   └── seats-kaist.json
-└── features
-    ├── Topbar.js
-    ├── movieTable
-    │   ├── MovieRating.js
-    │   └── MovieTable.js
-    ├── dateTimeSeatTable
-    │   ├── components
-    │   │   ├── DateTable.js
-    │   │   ├── TimeTable.js
-    │   │   └── Seat.js
-    │   └── DateTimeSeatTable.js
-    ├── PersonalInfo.js
-    └── FindReservation.js
+├── features
+│   ├── Topbar.js
+│   ├── movieTable
+│   │   ├── MovieRating.js
+│   │   └── MovieTable.js
+│   ├── dateTimeSeatTable
+│   │   ├── components
+│   │   │   ├── DateTable.js
+│   │   │   ├── TimeTable.js
+│   │   │   └── Seat.js
+│   │   └── DateTimeSeatTable.js
+│   ├── PersonalInfo.js
+│   └── FindReservation.js
+└── library
+    └── CustomButton.js
 ```
 
 📁 data : 이미지 또는 dummy data, json 파일을 저장하는 디렉토리

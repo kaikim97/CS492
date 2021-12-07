@@ -112,7 +112,6 @@ export default function PersonalInfo() {
     return time_change + amPm;
   };
   function goHome() {
-    context.setTime("");
     navigate("/");
   }
   return done ? (
@@ -151,14 +150,6 @@ export default function PersonalInfo() {
               조회' 모두 가능합니다
             </div>
             <div class="w-full text-center m-auto">
-              {/* <Button
-                class="w-85p text-center py-1p rounded-lg text-seat font-bold 
-                      bg-gray-200 text-gray-500"
-              >
-                <Link to="/" style={{ textDecoration: "none" }}>
-                  돌아가기
-                </Link>
-              </Button> */}
               <CustomButton
                 name="돌아가기"
                 disabled={buttonDisabled}
@@ -266,17 +257,6 @@ export default function PersonalInfo() {
               결제를 완료해주세요
             </div>
             <div class="w-full m-auto">
-              {/* <Button
-                disabled={buttonDisabled}
-                onClick={handleConfirm}
-                class={`w-85p text-center py-1p rounded-lg text-seat font-bold ${
-                  buttonDisabled
-                    ? "bg-gray-100 text-gray-200"
-                    : "bg-gray-200 text-gray-500"
-                }`}
-              >
-                결제하기
-              </Button> */}
               <CustomButton
                 name="결제하기"
                 disabled={buttonDisabled}
