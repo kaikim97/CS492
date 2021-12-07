@@ -12,16 +12,15 @@ function Seat() {
   const canvasRef = useRef(null);
   const seatMap = seatData.map;
   const seatInfo = seatData.seats;
-
-  seatInfo.forEach((seatgroup) => {
-    console.log(seatgroup.color, seatgroup.price);
-  });
+  const cornerRadius = 8;
 
   const [selectedSeat, setSeat] = useState([]);
   const [reservedSeat, modSeat] = useState([]);
   const [upload, setLoad] = useState(false);
   const [totalPrice, setPrice] = useState(0);
   const [open, setOpen] = useState(false);
+
+  const resSeatRef = useRef(reservedSeat);
 
   const makeTimeNum = (time) => {
     return time.split(":").join("");
@@ -63,18 +62,18 @@ function Seat() {
       });
   };
 
-  // const getPrice = (row) => {
-  //   const num = row.charCodeAt(0) - 65;
-  //   var price;
-  //   if (num <= 5) {
-  //     price = 9000;
-  //   } else if (num <= 11) {
-  //     price = 10000;
-  //   } else {
-  //     price = 11000;
-  //   }
-  //   return price;
-  // };
+  const numToCode = (x, y) => {
+    var rownum = (y - 11) / 30 + 65;
+    var row = String.fromCharCode(rownum);
+    var col = (x - 17) / 30 + 1;
+    return row + String(col);
+  };
+
+  const codeToNum = (seat) => {
+    const x = (seat.slice(1) - 1) * 30 + 17;
+    const y = (seat.slice(0, 1).charCodeAt(0) - 65) * 30 + 11;
+    return [x, y];
+  };
 
   // Draw seats
   useEffect(() => {
@@ -94,11 +93,12 @@ function Seat() {
     setLoad(false);
 
     apis.getHallsByInfo(params).then((response) => {
-      console.log(response.data);
+      // console.log(response.data);
       const occupied = response.data.occupied;
       const resSeat = Object.entries(occupied)
         .filter((s) => s[1] !== false)
         .map((entrie, idx) => entrie[0]);
+      resSeatRef.current = resSeat;
       modSeat((reservedSeat) => resSeat);
       setLoad(true);
     });
@@ -148,12 +148,26 @@ function Seat() {
     const context = canvas.getContext("2d");
 
     if (upload) {
-      // console.log(reservedSeat);
       reservedSeat.forEach((seat) => {
-        var x = (seat.slice(1) - 1) * 30 + 17;
-        var y = (seat.slice(0, 1).charCodeAt(0) - 65) * 30 + 11;
-        context.fillStyle = "black";
-        context.fillRect(x, y, 20, 20);
+        context.lineJoin = "round";
+        context.lineWidth = cornerRadius;
+        context.fillStyle = "grey";
+        context.strokeStyle = "grey";
+
+        const [x, y] = codeToNum(seat);
+
+        context.strokeRect(
+          x + cornerRadius / 2,
+          y + cornerRadius / 2,
+          20 - cornerRadius,
+          20 - cornerRadius
+        );
+        context.fillRect(
+          x + cornerRadius / 2,
+          y + cornerRadius / 2,
+          20 - cornerRadius,
+          20 - cornerRadius
+        );
       });
     }
   }, [upload]);
@@ -166,6 +180,7 @@ function Seat() {
     canvas.addEventListener(
       "click",
       function (e) {
+        const resSeat = resSeatRef.current;
         // Get x, y coordinates
         var x = e.offsetX;
         var y = e.offsetY;
@@ -183,43 +198,39 @@ function Seat() {
               // Format : "Alphabet + Number" ex) "A10"
               // Alphabet : A ~ S
               // Number   : 1 ~ 29
-              var rownum = (seat.lefttop.y - 11) / 30 + 65;
-              var row = String.fromCharCode(rownum);
-              var col = (seat.lefttop.x - 17) / 30 + 1;
-              const seatNum = row + String(col);
-              if (seat.available) {
-                context.fillStyle = "#3C68D8";
-                context.strokeStyle = "#3C68D8";
-                seat.available = false;
-                setSeat((selectedSeat) => selectedSeat.concat(seatNum));
-                // setPrice((totalPrice) => totalPrice + getPrice(row));
-                setPrice((totalPrice) => totalPrice + seatgroup.price);
-              } else {
-                context.fillStyle = seatgroup.color;
-                context.strokeStyle = seatgroup.color;
-                seat.available = true;
-                setSeat((selectedSeat) =>
-                  selectedSeat.filter((s) => s !== seatNum)
-                );
-                // setPrice((totalPrice) => totalPrice - getPrice(row));
-                setPrice((totalPrice) => totalPrice - seatgroup.price);
-              }
-              const cornerRadius = 8;
-              context.lineJoin = "round";
-              context.lineWidth = cornerRadius;
+              const seatNum = numToCode(seat.lefttop.x, seat.lefttop.y);
+              if (!resSeat.includes(seatNum)) {
+                if (seat.available) {
+                  context.fillStyle = "#3C68D8";
+                  context.strokeStyle = "#3C68D8";
+                  seat.available = false;
+                  setSeat((selectedSeat) => selectedSeat.concat(seatNum));
+                  setPrice((totalPrice) => totalPrice + seatgroup.price);
+                } else {
+                  context.fillStyle = seatgroup.color;
+                  context.strokeStyle = seatgroup.color;
+                  seat.available = true;
+                  setSeat((selectedSeat) =>
+                    selectedSeat.filter((s) => s !== seatNum)
+                  );
+                  setPrice((totalPrice) => totalPrice - seatgroup.price);
+                }
+                context.lineJoin = "round";
+                context.lineWidth = cornerRadius;
 
-              context.strokeRect(
-                seat.lefttop.x + cornerRadius / 2,
-                seat.lefttop.y + cornerRadius / 2,
-                seat.size.width - cornerRadius,
-                seat.size.height - cornerRadius
-              );
-              context.fillRect(
-                seat.lefttop.x + cornerRadius / 2,
-                seat.lefttop.y + cornerRadius / 2,
-                seat.size.width - cornerRadius,
-                seat.size.height - cornerRadius
-              );
+                context.strokeRect(
+                  seat.lefttop.x + cornerRadius / 2,
+                  seat.lefttop.y + cornerRadius / 2,
+                  seat.size.width - cornerRadius,
+                  seat.size.height - cornerRadius
+                );
+                context.fillRect(
+                  seat.lefttop.x + cornerRadius / 2,
+                  seat.lefttop.y + cornerRadius / 2,
+                  seat.size.width - cornerRadius,
+                  seat.size.height - cornerRadius
+                );
+              }
             }
           });
         });
