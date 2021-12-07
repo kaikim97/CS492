@@ -149,9 +149,19 @@ export default function FindReservation() {
         <Modal open={open}>
           <div class="overflow-y-scroll bg-white rounded-2xl text-gray-500 m-auto mt-20vh mb-15vh w-7/12 sm:w-6/12 h-65vh">
             <div class="h-28p px-6vw pt-12vh font-semibold text-letter">
-              <p>
-                예약번호 &nbsp;&nbsp;{data._id}&nbsp;&nbsp; 의 예약 내역입니다.
-              </p>
+              {phone == "" && (
+                <p>
+                  예약번호 &nbsp;&nbsp;{data._id}&nbsp;&nbsp; 의 예약
+                  내역입니다.
+                </p>
+              )}
+              {phone != "" && (
+                <p>
+                  휴대폰 번호 &nbsp;&nbsp;{phone.substring(0, 3)}-
+                  {phone.substring(3, 7)}-{phone.substring(7, 11)}&nbsp;&nbsp;
+                  의 예약 내역입니다.
+                </p>
+              )}
             </div>
             <div class="h-42p px-4vw  ">
               <hr class="w-full  m-auto mb-3vh" />
