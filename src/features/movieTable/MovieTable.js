@@ -30,27 +30,33 @@ export default function MovieTable() {
   };
 
   return (
-    <div>
-      <TopBar function={findReservation} />
-      <div class="flex justify-center mt-60 ml-10 text-gray-500 overflow-x-auto ">
-        {movies.map((movie) => (
-          <Movie
-            key={movie.id}
-            movie={movie}
-            selected={selected}
-            setSelected={setSelected}
-          />
-        ))}
+    <div class="flex flex-col h-screen">
+      <div>
+        <TopBar function={findReservation} />
       </div>
-      {selected != null && (
-        <button
-          class="w-60 py-3 text-lg rounded-lg bg-gray-200 text-gray-500 absolute right-7 bottom-7"
-          type="submit"
-          onClick={goNext}
-        >
-          다음
-        </button>
-      )}
+      <div class="flex-1 justify-items-center">
+        <div class="overflow-x-scroll flex text-gray-500 mt-20vh">
+          {movies.map((movie) => (
+            <Movie
+              key={movie.id}
+              movie={movie}
+              selected={selected}
+              setSelected={setSelected}
+            />
+          ))}
+        </div>
+      </div>
+      <div class="flex-initial h-14 text-right m-5">
+        {selected != null && (
+          <button
+            class="w-40 md:w-52 xl:w-2/12 py-3 text-lg rounded-lg bg-gray-200 text-gray-500 font-bold"
+            type="submit"
+            onClick={goNext}
+          >
+            다음
+          </button>
+        )}
+      </div>
     </div>
   );
   function goNext() {
@@ -64,14 +70,14 @@ export default function MovieTable() {
 
 const Movie = ({ movie, selected, setSelected }) => {
   const { id, name, poster } = movie;
-  const [hover, setHover] = useState(null);
   const [userRating, setUserRating] = useState(null);
   const [director, setDirector] = useState(null);
   const [actor, setActor] = useState(null);
+  console.log(selected);
   return (
     <div
-      class={` w-1/4 mr-poster pt-12 pb-6 px-poster border-2 
-      ${selected === id ? "border-black" : "border-white"} rounded-lg bg-white 
+      class={`w-72 flex-grow-0 flex-shrink-0 xl:flex-grow xl:flex-shrink  ml-1p mr-1p pt-12 pb-6 px-2p border-2 
+      ${selected === id ? "border-black " : "border-white"} rounded-lg bg-white 
        focus:border-black `}
       onClick={mouseClick}
     >
@@ -101,9 +107,10 @@ const Movie = ({ movie, selected, setSelected }) => {
 
   function mouseClick(e) {
     setSelected(id);
+    console.log(id);
   }
   function movieHover(e) {
-    setHover(id);
+    // setHover(id);
     const data = api.searchMovie(`query=${name}`).then((response) => {
       const director_before_parse = response.data.items[0].director;
       const actor_before_parse = response.data.items[0].actor;

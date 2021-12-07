@@ -1,8 +1,21 @@
 #header {
   font-size: min(1.7vw, 2.8vh);
   margin-top: 8vh;
+  text-align: center;
 }
-
+#modalRoot {
+  margin-top: 8vh;
+  margin-bottom: 12vh;
+  margin-left: auto;
+  margin-right: auto;
+  height: 80vh;
+  width: 58vw;
+  background-color: white;
+  border-color: white;
+  border-radius: 1.5vw;
+  color: #6c6c6c;
+  outline: none;
+}
 #upperHalf {
   text-align: left;
   width: 52vw;

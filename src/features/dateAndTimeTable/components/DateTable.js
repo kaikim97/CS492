@@ -34,13 +34,13 @@ const DateTable = () => {
   }
 
   return (
-    <div class="font-sans ml-20 mt-10 mx-auto text-gray-500 ">
+    <div class="font-sans ml-1/10 mt-10 mx-auto text-gray-500 ">
       <table>
         <tbody>
           <div class="font-sans text-center mx-auto text-md ">
             {currentYear}
           </div>
-          <div class="font-sans text-center mx-auto text-4xl mb-5">
+          <div class="font-sans text-center mx-auto text-4xl mb-5 ">
             {currentMonth}
           </div>
           {dates.map((date) => (
