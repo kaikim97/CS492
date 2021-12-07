@@ -25,7 +25,7 @@ function Seat() {
 
   const { data, loading, error } = useSubscription(createSubscription);
 
-  if (!loading) {
+  if (data) {
     console.log(data);
   }
   if (error) {
