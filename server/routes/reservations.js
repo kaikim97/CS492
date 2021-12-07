@@ -28,10 +28,10 @@ router.get('/search', (req, res) => {
 router.get('/:reservationId', (req, res) => {
   Reservation.findOneById(req.params.reservationId)
     .then((reservation) => {
-      if (!reservation) return res.status(404).send({ err: 'Reservation not found' });
+      if (!reservation) return res.send(null);
       res.send(reservation);
     })
-    .catch(err => res.status(500).send(err));
+    .catch(err => res.send(null));
 });
 
 // Create new reservation
