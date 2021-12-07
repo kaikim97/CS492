@@ -39,6 +39,7 @@ function Seat() {
         console.log(response.data);
         if (response.data) {
           ctx.setId(response.data._id);
+          console.log("예약하기");
           navigate("/personalInfo");
         } else {
           // TODO: 이후 별도 창으로 띄워야함

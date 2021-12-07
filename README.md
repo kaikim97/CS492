@@ -6,11 +6,15 @@
 ## Table of Content
 
 - [Download and Installation](#download-and-installation)
+
 - Client
 
   - [클라이언트 구성](#클라이언트-구성)
 
 - Server
+  - [데이터베이스](#데이터베이스)
+  - [서버 실행](#서버-실행)
+  - [서버 구성](#서버-구성)
 
 ## Download and Installation
 
@@ -39,7 +43,7 @@ React를 이용하여 작성했습니다.
     └── FindReservation.js
 ```
 
-📁 data : 오브젝트 스키마 및 필요한 함수 생성
+📁 data : 이미지 또는 dummy data, json 파일 저장
 
       📁 movies : 영화 포스터 이미지 저장
 
