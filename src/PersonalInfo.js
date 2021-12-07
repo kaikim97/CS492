@@ -11,7 +11,7 @@ import CustomButton from "./library/CustomButton";
 import { useNavigate } from "react-router-dom";
 import Ticket from "./library/Ticket";
 
-export default function PersonalInfo() {
+export default function PersonalInfo(props) {
   const navigate = useNavigate();
 
   const context = useContext(AuthContext);

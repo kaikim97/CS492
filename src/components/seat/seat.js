@@ -7,6 +7,7 @@ import apis from "../../api";
 import CustomButton from "../../library/CustomButton.js";
 import { useSubscription } from "@apollo/client";
 import { gql } from "@apollo/client";
+import PersonalInfo from "../../PersonalInfo.js";
 
 function Seat() {
   const createSubscription = gql`
