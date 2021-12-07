@@ -26,7 +26,12 @@ export default function PersonalInfo() {
   const [id, setId] = useState("");
 
   useEffect(() => {
-    if (phone.length >= 10 && pwd.length == 4 && pwdConfirm.length == 4) {
+    if (
+      phone.length >= 10 &&
+      pwd.length == 4 &&
+      pwdConfirm.length == 4 &&
+      pwd == pwdConfirm
+    ) {
       setButtonDisabled(false);
     } else {
       setButtonDisabled(true);
