@@ -92,12 +92,9 @@ function Seat() {
     setLoad(false);
 
     apis.getHallsByInfo(params).then((response) => {
-      // console.log(response.data);
       const occupied = response.data.occupied;
-      const resSeat = Object.entries(occupied)
-        .filter((s) => s[1] !== false)
-        .map((entrie, idx) => entrie[0]);
-      resSeatRef.current = resSeat;
+      const resSeat = Object.entries(occupied);
+      resSeatRef.current = resSeat.map((entrie, idx) => entrie[0]);
       modSeat((reservedSeat) => resSeat);
       setLoad(true);
     });
@@ -141,7 +138,7 @@ function Seat() {
     }
   }, [ctx.time]);
 
-  // Draw reserved seats
+  // Draw occupied & reserved seats
   useEffect(() => {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
@@ -150,10 +147,15 @@ function Seat() {
       reservedSeat.forEach((seat) => {
         context.lineJoin = "round";
         context.lineWidth = cornerRadius;
-        context.fillStyle = "grey";
-        context.strokeStyle = "grey";
+        if (seat[1] == true) {
+          context.fillStyle = "#808080";
+          context.strokeStyle = "#808080";
+        } else {
+          context.fillStyle = "#c0c0c0";
+          context.strokeStyle = "#c0c0c0";
+        }
 
-        const [x, y] = codeToNum(seat);
+        const [x, y] = codeToNum(seat[0]);
 
         context.strokeRect(
           x + cornerRadius / 2,
