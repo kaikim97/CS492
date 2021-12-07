@@ -7,9 +7,12 @@ import Modal from "@mui/material/Modal";
 import Paper from "@mui/material/Paper";
 import api from "./api";
 import { AuthContext } from "./context.js";
+import CustomButton from "./library/CustomButton";
+import { useNavigate } from "react-router-dom";
+import Ticket from "./library/Ticket";
 
-export default function PersonalInfo() {
-  //name, phone, title, date, time, seats
+export default function PersonalInfo(props) {
+  const navigate = useNavigate();
 
   const context = useContext(AuthContext);
 
@@ -24,7 +27,12 @@ export default function PersonalInfo() {
   const { open, setClose } = props;
 
   useEffect(() => {
-    if (phone.length >= 10 && pwd.length == 4 && pwdConfirm.length == 4) {
+    if (
+      phone.length >= 10 &&
+      pwd.length == 4 &&
+      pwdConfirm.length == 4 &&
+      pwd == pwdConfirm
+    ) {
       setButtonDisabled(false);
     } else {
       setButtonDisabled(true);
@@ -75,77 +83,21 @@ export default function PersonalInfo() {
     }
   };
 
-  const parseDate = (date) => {
-    const temp =
-      date.slice(0, 4) + "," + date.slice(4, 6) + "," + date.slice(6);
-
-    const dateString = new Date(temp);
-    const dayInt = dateString.getDay();
-
-    const dayString =
-      dayInt == 0
-        ? "일"
-        : dayInt == 1
-        ? "월"
-        : dayInt == 2
-        ? "화"
-        : dayInt == 3
-        ? "수"
-        : dayInt == 4
-        ? "목"
-        : dayInt == 5
-        ? "금"
-        : "토";
-
-    const result =
-      date.slice(0, 4) +
-      "." +
-      date.slice(4, 6) +
-      "." +
-      date.slice(6) +
-      "(" +
-      dayString +
-      ")";
-
-    return result;
-  };
-
-  const changeTimeForm = (time) => {
-    if (time.slice(0, 2) * 1 > 12) {
-      return time.slice(0, 2) * 1 - 12 + ":00";
-    } else {
-      return time;
-    }
-  };
-
-  const parseTime = (time) => {
-    const time_change =
-      time.slice(0, 2) * 1 > 12 ? time.slice(0, 2) * 1 - 12 + ":00" : time;
-    const amPm = time.slice(0, 2) * 1 >= 12 ? "PM" : "AM";
-    return time_change + amPm;
-  };
-
+  function goHome() {
+    navigate("/");
+  }
   return done ? (
     <div>
       <Modal open={open}>
-        <div class="overflow-y-scroll bg-white rounded-2xl text-gray-500 m-auto mt-8vh mb-12vh w-10/12 sm:w-6/12 h-80vh">
+        <div class="overflow-y-scroll outline-none bg-white rounded-2xl text-gray-500 m-auto mt-8vh mb-12vh w-10/12 sm:w-6/12 h-80vh">
           <div class="h-40p px-4vw pt-8vh ">
-            <div class="px-2vw flex flex-col justify-between h-5/6 mb-3vh">
-              <div class="text-title font-bold ">{context.title}</div>
-
-              <div class="text-datetime font-semibold  flex w-10/12 xl:w-1/2 justify-between">
-                <p> {parseDate(context.date)}</p>
-                <p> {parseTime(context.time)}</p>
-              </div>
-              <div class="  flex w-full justify-between">
-                <p class="text-seat font-semibold ">
-                  {context.seats.join(", ")}
-                </p>
-                <p class="text-price font-medium ">
-                  {parseInt(context.price / 1000) + ",000"}원
-                </p>
-              </div>
-            </div>
+            <Ticket
+              title={context.title}
+              date={context.date}
+              time={context.time.substring(0, 2) + context.time.substring(3, 5)}
+              seats={context.seats}
+              price={context.price}
+            />
             <hr class="w-full  m-auto " />
           </div>
 
@@ -161,14 +113,12 @@ export default function PersonalInfo() {
               조회' 모두 가능합니다
             </div>
             <div class="w-full text-center m-auto">
-              <Button
-                class="w-85p text-center py-1p rounded-lg text-seat font-bold 
-                      bg-gray-200 text-gray-500"
-              >
-                <Link to="/" style={{ textDecoration: "none" }}>
-                  돌아가기
-                </Link>
-              </Button>
+              <CustomButton
+                name="돌아가기"
+                disabled={buttonDisabled}
+                onClick={goHome}
+                width="w-85p "
+              />
             </div>
           </div>
         </div>
@@ -177,31 +127,15 @@ export default function PersonalInfo() {
   ) : (
     <div>
       <Modal open={open}>
-        <div class="overflow-y-scroll bg-white rounded-2xl text-gray-500 m-auto mt-8vh mb-12vh w-7/12 sm:w-6/12 h-80vh">
-          <div class="h-40p px-4vw pt-8vh relative">
-            <button
-              class="w-30 py-3 text-lg rounded-lg bg-gray-100 text-gray-500 absolute top-0 right-0 h-16 w-16"
-              type="submit"
-              onClick={setClose}
-            >
-              X
-            </button>
-            <div class="px-2vw flex flex-col justify-between h-5/6 mb-3vh">
-              <div class="text-title font-bold ">{context.title}</div>
-
-              <div class="text-datetime font-semibold  flex w-10/12 xl:w-1/2 justify-between">
-                <p> {parseDate(context.date)}</p>
-                <p> {parseTime(context.time)}</p>
-              </div>
-              <div class="  flex w-full justify-between">
-                <p class="text-seat font-semibold ">
-                  {context.seats.join(", ")}
-                </p>
-                <p class="text-price font-medium ">
-                  {parseInt(context.price / 1000) + ",000"}원
-                </p>
-              </div>
-            </div>
+        <div class="overflow-y-scroll outline-none bg-white rounded-2xl text-gray-500 m-auto mt-8vh mb-12vh w-7/12 sm:w-6/12 h-80vh">
+          <div class="h-40p px-4vw pt-8vh ">
+            <Ticket
+              title={context.title}
+              date={context.date}
+              time={context.time.substring(0, 2) + context.time.substring(3, 5)}
+              seats={context.seats}
+              price={context.price}
+            />
             <hr class="w-full  m-auto " />
           </div>
 
@@ -271,23 +205,30 @@ export default function PersonalInfo() {
               </div>
             </div>
           </div>
+
+          <p
+            class={`text-smallletter font-medium  text-center ${
+              pwd.length == 4 && pwdConfirm.length == 4 && pwd !== pwdConfirm
+                ? "text-red-600"
+                : "text-white"
+            }`}
+          >
+            {" "}
+            비밀번호가 일치하지 않습니다. 비밀번호를 확인해주세요
+          </p>
+
           <div class="w-full h-15p text-center m-auto ">
             <div class="text-smallletter w-85p m-auto  font-semibold text-gray-400 mb-1p">
               예약 내역이 맞으시면 생년월일과 휴대폰 번호, 비밀번호를 입력 한 후
               결제를 완료해주세요
             </div>
             <div class="w-full m-auto">
-              <Button
+              <CustomButton
+                name="결제하기"
                 disabled={buttonDisabled}
                 onClick={handleConfirm}
-                class={`w-85p text-center py-1p rounded-lg text-seat font-bold ${
-                  buttonDisabled
-                    ? "bg-gray-100 text-gray-200"
-                    : "bg-gray-200 text-gray-500"
-                }`}
-              >
-                결제하기
-              </Button>
+                width="w-85p "
+              />
             </div>
           </div>
         </div>

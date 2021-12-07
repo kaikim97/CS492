@@ -4,8 +4,10 @@ import { AuthContext } from "../../context.js";
 import seatData from "./seats-kaist.json";
 import { useNavigate } from "react-router-dom";
 import apis from "../../api";
+import CustomButton from "../../library/CustomButton.js";
 import { useSubscription } from "@apollo/client";
 import { gql } from "@apollo/client";
+import PersonalInfo from "../../PersonalInfo.js";
 
 function Seat() {
   const createSubscription = gql`
@@ -307,8 +309,6 @@ function Seat() {
               <canvas
                 id="seats"
                 ref={canvasRef}
-                // width="1000"
-                // height="800"
                 width={window.innerWidth}
                 height={window.innerHeight}
                 // width={seatMap.size.width}
@@ -321,7 +321,6 @@ function Seat() {
         </TransformWrapper>
       </div>
       <div class=" w-full flex-auto py-2p flex-shrink-0 flex-grow-0 flex  ">
-        {/* h-16p xl:h-10p  */}
         <div class="w-97/100  mx-auto  py-1p h-full flex  bg-white font-bold rounded-lg items-center">
           <div class="text-md md:text-xl text-left text-gray-500 w-4/12  overflow-x-scroll flex ml-10 mr-10 flex-initial">
             {selectedSeat.map((seat) => (
@@ -338,19 +337,8 @@ function Seat() {
             {parseInt(totalPrice / 1000) + ",000"}원
           </div>
 
-          {/* <div class="grid place-items-center "> */}
-          <button
-            class={`w-40 h-full py-1p text-sm md:text-lg font-bold rounded-lg flex-initial mr-5 ${
-              selectedSeat.length != 0
-                ? "bg-gray-200 text-gray-500"
-                : "bg-gray-100 text-gray-200"
-            } `}
-            type="submit"
-            onClick={goNext}
-            disabled={selectedSeat.length == 0}
-          >
-            예약하기
-          </button>
+          <CustomButton name="예약하기" disabled={selectedSeat.length == 0} />
+
           <PersonalInfo open={open} setClose={closeModal} />
         </div>
       </div>

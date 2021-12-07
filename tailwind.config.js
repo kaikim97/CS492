@@ -25,6 +25,7 @@ module.exports = {
         seat: "min(2.6vh, 1.6vw)",
         price: "min(2.8vh, 1.8vw)",
         label: "min(1.4vw, 2.3vh)",
+        button: "min(1.6vw, 1.6vh)",
       },
       width: {
         "1/4.5": "23%",
