@@ -10,6 +10,24 @@ import { gql } from "@apollo/client";
 import PersonalInfo from "../../PersonalInfo.js";
 
 function Seat() {
+  const ctx = useContext(AuthContext);
+  const navigate = useNavigate();
+  const canvasRef = useRef(null);
+  const seatMap = seatData.map;
+  const seatInfo = seatData.seats;
+  const cornerRadius = 8;
+
+  // const [realTimeData, setRealData] = useState(null);
+  const [realTimeSeat, setRealSeat] = useState([]);
+  const [selectedSeat, setSeat] = useState([]);
+  const [reservedSeat, modSeat] = useState([]);
+  const [upload, setLoad] = useState(false);
+  const [totalPrice, setPrice] = useState(0);
+  const [open, setOpen] = useState(false);
+
+  const resSeatRef = useRef(reservedSeat);
+  const realSeatRef = useRef(realTimeSeat);
+
   const createSubscription = gql`
     subscription subscription {
       reservationUpdated {
@@ -24,30 +42,7 @@ function Seat() {
       }
     }
   `;
-
   const { data, loading, error } = useSubscription(createSubscription);
-
-  if (data) {
-    console.log(data);
-  }
-  if (error) {
-    console.log(error.message);
-  }
-
-  const ctx = useContext(AuthContext);
-  const navigate = useNavigate();
-  const canvasRef = useRef(null);
-  const seatMap = seatData.map;
-  const seatInfo = seatData.seats;
-  const cornerRadius = 8;
-
-  const [selectedSeat, setSeat] = useState([]);
-  const [reservedSeat, modSeat] = useState([]);
-  const [upload, setLoad] = useState(false);
-  const [totalPrice, setPrice] = useState(0);
-  const [open, setOpen] = useState(false);
-
-  const resSeatRef = useRef(reservedSeat);
 
   const makeTimeNum = (time) => {
     return time.split(":").join("");
@@ -99,6 +94,13 @@ function Seat() {
     const x = (seat.slice(1) - 1) * 30 + 17;
     const y = (seat.slice(0, 1).charCodeAt(0) - 65) * 30 + 11;
     return [x, y];
+  };
+
+  const codeToColor = (code) => {
+    const row = code.charCodeAt(0) - 65;
+    if (row < 6) return "#86CA67";
+    else if (row < 12) return "#F4AB67";
+    else return "#DFC66E";
   };
 
   // Draw seats
@@ -200,6 +202,61 @@ function Seat() {
     }
   }, [upload]);
 
+  // Draw realtime seats
+  useEffect(() => {
+    if (!loading) {
+      console.log(data.reservationUpdated);
+      const realTimeData = data.reservationUpdated;
+      if (
+        ctx.title === realTimeData.info.title &&
+        ctx.date === realTimeData.info.date &&
+        makeTimeNum(ctx.time) === realTimeData.info.time
+      ) {
+        const canvas = canvasRef.current;
+        const context = canvas.getContext("2d");
+        const seats = realTimeData.info.seats;
+
+        context.lineJoin = "round";
+        context.lineWidth = cornerRadius;
+        console.log(realTimeSeat);
+        seats.forEach((seat) => {
+          const seatColor = codeToColor(seat[0]);
+          if (realTimeData.type === "create") {
+            context.fillStyle = "#c0c0c0";
+            context.strokeStyle = "#c0c0c0";
+            setRealSeat((realTimeSeat) => realTimeSeat.concat(seat));
+            console.log(realTimeSeat);
+          }
+          if (realTimeData.type === "delete") {
+            context.fillStyle = seatColor;
+            context.strokeStyle = seatColor;
+            setRealSeat((realTimeSeat) =>
+              realTimeSeat.filter((s) => s !== seat)
+            );
+          }
+          const [x, y] = codeToNum(seat);
+          context.strokeRect(
+            x + cornerRadius / 2,
+            y + cornerRadius / 2,
+            20 - cornerRadius,
+            20 - cornerRadius
+          );
+          context.fillRect(
+            x + cornerRadius / 2,
+            y + cornerRadius / 2,
+            20 - cornerRadius,
+            20 - cornerRadius
+          );
+        });
+        // console.log(realTimeSeat);
+      }
+    }
+  }, [data]);
+
+  useEffect(() => {
+    realSeatRef.current = realTimeSeat;
+  }, [realTimeSeat]);
+
   // Manage click event
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -209,6 +266,7 @@ function Seat() {
       "click",
       function (e) {
         const resSeat = resSeatRef.current;
+        const realTimeSeat = realSeatRef.current;
         // Get x, y coordinates
         var x = e.offsetX;
         var y = e.offsetY;
@@ -227,7 +285,11 @@ function Seat() {
               // Alphabet : A ~ S
               // Number   : 1 ~ 29
               const seatNum = numToCode(seat.lefttop.x, seat.lefttop.y);
-              if (!resSeat.includes(seatNum)) {
+              console.log(realTimeSeat);
+              if (
+                !resSeat.includes(seatNum) &&
+                !realTimeSeat.includes(seatNum)
+              ) {
                 if (seat.available) {
                   context.fillStyle = "#3C68D8";
                   context.strokeStyle = "#3C68D8";
