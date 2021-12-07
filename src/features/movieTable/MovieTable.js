@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./MovieTable.css";
 import MovieRating from "./MovieRating";
+import CustomButton from "../../library/CustomButton";
 
 import movie1 from "../../components/movies/듄.jpg";
 import movie2 from "../../components/movies/이터널스.jpg";
@@ -47,15 +48,21 @@ export default function MovieTable() {
         </div>
       </div>
       <div class="flex-initial h-14 text-right m-5">
-        {selected != null && (
+        {/* {selected != null && (
           <button
             class="w-40 md:w-52 xl:w-2/12 py-3 text-lg rounded-lg bg-gray-200 text-gray-500 font-bold"
             type="submit"
             onClick={goNext}
           >
             다음
-          </button>
-        )}
+          </button> */}
+        <CustomButton
+          name="다음"
+          disabled={selected == null}
+          onClick={goNext}
+          width="w-40 md:w-52 xl:w-2/12"
+        />
+        {/* )} */}
       </div>
     </div>
   );

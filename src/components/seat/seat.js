@@ -4,6 +4,7 @@ import { AuthContext } from "../../context.js";
 import seatData from "./seats-kaist.json";
 import { useNavigate } from "react-router-dom";
 import apis from "../../api";
+import CustomButton from "../../library/CustomButton.js";
 
 function Seat() {
   const ctx = useContext(AuthContext);
@@ -228,7 +229,6 @@ function Seat() {
         </TransformWrapper>
       </div>
       <div class=" w-full flex-auto py-2p flex-shrink-0 flex-grow-0 flex  ">
-        {/* h-16p xl:h-10p  */}
         <div class="w-97/100  mx-auto  py-1p h-full flex  bg-white font-bold rounded-lg items-center">
           <div class="text-md md:text-xl text-left text-gray-500 w-4/12  overflow-x-scroll flex ml-10 mr-10 flex-initial">
             {selectedSeat.map((seat) => (
@@ -245,8 +245,7 @@ function Seat() {
             {parseInt(totalPrice / 1000) + ",000"}원
           </div>
 
-          {/* <div class="grid place-items-center "> */}
-          <button
+          {/* <button
             class={`w-40 h-full py-1p text-sm md:text-lg font-bold rounded-lg flex-initial mr-5 ${
               selectedSeat.length != 0
                 ? "bg-gray-200 text-gray-500"
@@ -257,8 +256,13 @@ function Seat() {
             disabled={selectedSeat.length == 0}
           >
             예약하기
-          </button>
-          {/* </div> */}
+          </button> */}
+          <CustomButton
+            name="예약하기"
+            disabled={selectedSeat.length == 0}
+            onClick={goNext}
+            width="w-40 "
+          />
         </div>
       </div>
     </div>

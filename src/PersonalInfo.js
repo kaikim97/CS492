@@ -7,11 +7,11 @@ import Modal from "@mui/material/Modal";
 import Paper from "@mui/material/Paper";
 import api from "./api";
 import { AuthContext } from "./context.js";
+import CustomButton from "./library/CustomButton";
+import { useNavigate } from "react-router-dom";
 
 export default function PersonalInfo() {
-  // const data = api.getAllReservations().then((response) => {
-  //   console.log(response.data);
-  // });
+  const navigate = useNavigate();
 
   const context = useContext(AuthContext);
 
@@ -111,11 +111,14 @@ export default function PersonalInfo() {
     const amPm = time.slice(0, 2) * 1 >= 12 ? "PM" : "AM";
     return time_change + amPm;
   };
-
+  function goHome() {
+    context.setTime("");
+    navigate("/");
+  }
   return done ? (
     <div>
       <Modal open={open}>
-        <div class="overflow-y-scroll outline-white bg-white rounded-2xl text-gray-500 m-auto mt-8vh mb-12vh w-10/12 sm:w-6/12 h-80vh">
+        <div class="overflow-y-scroll outline-none bg-white rounded-2xl text-gray-500 m-auto mt-8vh mb-12vh w-10/12 sm:w-6/12 h-80vh">
           <div class="h-40p px-4vw pt-8vh ">
             <div class="px-2vw flex flex-col justify-between h-5/6 mb-3vh">
               <div class="text-title font-bold ">{context.title}</div>
@@ -148,14 +151,20 @@ export default function PersonalInfo() {
               조회' 모두 가능합니다
             </div>
             <div class="w-full text-center m-auto">
-              <Button
+              {/* <Button
                 class="w-85p text-center py-1p rounded-lg text-seat font-bold 
                       bg-gray-200 text-gray-500"
               >
                 <Link to="/" style={{ textDecoration: "none" }}>
                   돌아가기
                 </Link>
-              </Button>
+              </Button> */}
+              <CustomButton
+                name="돌아가기"
+                disabled={buttonDisabled}
+                onClick={goHome}
+                width="w-85p "
+              />
             </div>
           </div>
         </div>
@@ -164,7 +173,7 @@ export default function PersonalInfo() {
   ) : (
     <div>
       <Modal open={open}>
-        <div class="overflow-y-scroll outline-white bg-white rounded-2xl text-gray-500 m-auto mt-8vh mb-12vh w-7/12 sm:w-6/12 h-80vh">
+        <div class="overflow-y-scroll outline-none bg-white rounded-2xl text-gray-500 m-auto mt-8vh mb-12vh w-7/12 sm:w-6/12 h-80vh">
           <div class="h-40p px-4vw pt-8vh ">
             <div class="px-2vw flex flex-col justify-between h-5/6 mb-3vh">
               <div class="text-title font-bold ">{context.title}</div>
@@ -257,7 +266,7 @@ export default function PersonalInfo() {
               결제를 완료해주세요
             </div>
             <div class="w-full m-auto">
-              <Button
+              {/* <Button
                 disabled={buttonDisabled}
                 onClick={handleConfirm}
                 class={`w-85p text-center py-1p rounded-lg text-seat font-bold ${
@@ -267,7 +276,13 @@ export default function PersonalInfo() {
                 }`}
               >
                 결제하기
-              </Button>
+              </Button> */}
+              <CustomButton
+                name="결제하기"
+                disabled={buttonDisabled}
+                onClick={handleConfirm}
+                width="w-85p "
+              />
             </div>
           </div>
         </div>
