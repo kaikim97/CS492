@@ -113,6 +113,10 @@
 
       📓 FindReservation.js : 상단바의 "예약조회" 버튼을 누르면 나오는 화면에 관한 컴포넌트
 
+📁 library : 반복되어 사용되는 기능의 라이브러리화
+
+      📓 CustomButton.js : 버튼 컴포넌트. width, name, disabled, onclick 를 props로 받는다.
+
 #### MovieTable.js
 
 ![movieTable](./readme_image/movieTable.png)
