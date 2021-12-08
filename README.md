@@ -89,7 +89,7 @@ src
 │   └── FindReservation.js
 ├── library
 │   ├── CustomButton.js
-│   ├── Ticket.js
+│   └── Ticket.js
 ├── api.js
 ├── context.js
 └── apolloSetup.js
