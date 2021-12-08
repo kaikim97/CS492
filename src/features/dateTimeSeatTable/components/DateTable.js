@@ -76,6 +76,7 @@ const DateRow = ({ date, selectedDate, setSelectedDate, context }) => {
   );
   function dateClick(e) {
     setSelectedDate(date);
+    console.log(date);
     context.setDate(date.substring(0, 8));
     context.setTime("");
   }

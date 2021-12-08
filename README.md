@@ -57,7 +57,6 @@
       port 3000에서 좌석 선택 후 예약하기 버튼 누르면 port 3001에서 해당 좌석 선택 비활성화
       5분 경과 후 port 3000에서 예약이 완료되지 않으면 port 3001에서 해당 좌석 선택 활성화
 
-
 ## Client
 
 ### 클라이언트 기술 스택
@@ -133,14 +132,13 @@ src
       📓 CustomButton.js : 버튼 컴포넌트. width, name, disabled, onclick 를 props로 받는다. "예약조회" 를 제외한 모든 버튼에 이용됨.
 
       📓 Ticket.js : 예약 내역을 일정한 형태로 보여주는 컴포넌트. title, date, time, seats, price 을 props로 받는다. 예약 확인 및 개인정보 입력 화면, 예약 조회 화면에서 이용됨.
-      
 
-  📓 api.js : server/routes에서 정의된 API들 및 네이버 OPEN API 호출 함수들을 정리함
 
-  📓 context.js: 전역 상태 관리에 이용됨. 
+📓 api.js : server/routes에서 정의된 API들 및 네이버 OPEN API 호출 함수들을 정리함
 
-  📓 apolloSetup.js: Apollo Client endpoint 설정, subscription을 호출했을 때만 WebSocket Link로 endpoint 설정 
+📓 context.js: 전역 상태 관리에 이용됨.
 
+📓 apolloSetup.js: Apollo Client endpoint 설정, subscription을 호출했을 때만 WebSocket Link로 endpoint 설정
 
 #### MovieTable.js
 
@@ -153,6 +151,7 @@ src
 #### PersonalInfo.js
 
 ![personalInfo](./readme_image/personalInfo.png)
+![personalInfo2](./readme_image/personalInfo2.png)
 
 #### FindReservation.js
 
@@ -231,41 +230,41 @@ $ node server
 ├── server.js
 └── createData.js
 ```
+
 📁 graphql : graphql 스키마 정의
-      📓 typeDefs.js : Reservation, Mutation, Subscription 타입 정의
-      
+📓 typeDefs.js : Reservation, Mutation, Subscription 타입 정의
+
       📓 resolver.js : 예약 생성 및 삭제, subscription 함수 정의
 
 📁 models : 오브젝트 스키마 및 필요한 함수 생성
 
       📓 hall.js : 특정 공연, 날짜, 시간에 해당하는 공연장의 정보를 나타내는 스키마
-   
+
       📓 reservation.js : 예약 내역 정보를 나타내는 스키마
-    
+
 📁 routes : router 이용하여 서버 API상의 데이터 송/수신
 
       📓 halls.js : 공연장 정보 조회를 위한 API
-      
+
             GET /halls : 전체 공연 list 조회
             GET /halls/hall?title=:title&date=:date&time:time : 특정 공연 조회 (title, date, time query로 입력)
             GET /halls/available?title=:title&date=:date : 해당 제목, 날짜의 모든 공연의 (시간, 잔여좌석) 정보 조회 (title, date query로 입력)
             POST /halls : 새로운 공연 정보 DB에 등록 (title, date, time, available body로 입력)
-            DELETE /halls/hall?title=:title&date=:date&time:time : 특정 공연 DB에서 삭제 (title, date, time query로 입력)            
+            DELETE /halls/hall?title=:title&date=:date&time:time : 특정 공연 DB에서 삭제 (title, date, time query로 입력)
             POST /preoccupy : 공연장 및 좌석을 body로 받아 선점, 선점 후 개인정보 미등록시 5분뒤 삭제
             PUT /clear : body로 공연장 정보 받아 해당 공연장의 예약/선점정보 모두 삭제
-   
+
       📓 reservation.js : 예약 내역 생성, 조회를 위한 API
-      
+
             GET /reservations : 전체 예약 내역 조회
             GET /reservations/search?birth=:birth&phone=:phone&password=:password : 개인정보 및 비밀번호로 예약내역 조회 (query로 개인정보 및 비밀번호 입력)
             GET /reservations/:reservationId : 예약번호로 예약내역 조회 (예약번호 param으로 입력)
             POST /reservations : 새로운 예약 생성 및 생성된 예약 내역 반환 (개인정보 및 비밀번호 body로 전송)
             DELETE /reservations/:reservationId : 예약번호로 예약내역 삭제
-   
+
 📓 server.js : 서버 주소 설정, DB연결, Apollo 서버 설정, Subscription 서버 설정 등을 담당하는 서버 실행을 위한 가장 기본 Javascript 파일
 
 📓 createData.js : DB에 초기 공연장 정보 저장을 위한 Javascript 파일, 서버 실행과는 별개로 작동
-
 
 ## Browser Support
 

@@ -90,7 +90,7 @@ export default function PersonalInfo(props) {
             <Ticket
               title={context.title}
               date={context.date}
-              time={context.time.substring(0, 2) + context.time.substring(3, 5)}
+              time={context.time}
               seats={context.seats}
               price={context.price}
             />
