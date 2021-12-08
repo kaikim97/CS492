@@ -52,6 +52,8 @@ function Seat() {
 
   const closeModal = () => {
     setOpen(false);
+    setSeat((selectedSeat) => []);
+    setPrice(0);
     apis.deleteReservation(ctx.id).then((response) => {
       if (response) console.log("선택한 좌석이 취소되었습니다");
     });
