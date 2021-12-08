@@ -1,4 +1,10 @@
-import React, { useRef, useEffect, useContext, useState } from "react";
+import React, {
+  useRef,
+  useEffect,
+  useContext,
+  useState,
+  useLayoutEffect,
+} from "react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { AuthContext } from "../../context.js";
 import seatData from "./seats-kaist.json";
@@ -17,13 +23,13 @@ function Seat() {
   const seatInfo = seatData.seats;
   const cornerRadius = 8;
 
-  // const [realTimeData, setRealData] = useState(null);
   const [realTimeSeat, setRealSeat] = useState([]);
   const [selectedSeat, setSeat] = useState([]);
   const [reservedSeat, modSeat] = useState([]);
   const [upload, setLoad] = useState(false);
   const [totalPrice, setPrice] = useState(0);
   const [open, setOpen] = useState(false);
+  const [size, setSize] = useState([window.innerWidth, window.innerHeight]);
 
   const resSeatRef = useRef(reservedSeat);
   const realSeatRef = useRef(realTimeSeat);
@@ -165,7 +171,7 @@ function Seat() {
       context.fillStyle = "black";
       context.fillText(String(i), 30 * i - 12, 12);
     }
-  }, [ctx.time]);
+  }, [size, ctx.time]);
 
   // Draw occupied & reserved seats
   useEffect(() => {
@@ -330,6 +336,16 @@ function Seat() {
     return () => window.removeEventListener("popstate", handleEvent);
   });
 
+  // Manage canvas size when window is resized
+  useLayoutEffect(() => {
+    function updateSize() {
+      setSize([window.innerWidth, window.innerHeight]);
+    }
+    window.addEventListener("resize", updateSize);
+    updateSize();
+    return () => window.removeEventListener("resize", updateSize);
+  }, []);
+
   return (
     <div class=" flex flex-col h-full overflow-scroll">
       <div class=" flex items-center flex-auto flex-shrink-0 my-2p">
@@ -350,6 +366,9 @@ function Seat() {
             </div>
           ))}
         </div>
+        <div>
+          {size[0]}x{size[1]}
+        </div>
       </div>
       <div class="w-full flex-auto my-2p items-center ml-10  overflow-scroll ">
         {/* h-70p my-2p xl:my-4p */}
@@ -363,8 +382,8 @@ function Seat() {
               <canvas
                 id="seats"
                 ref={canvasRef}
-                width={window.innerWidth}
-                height={window.innerHeight}
+                width={size[0]}
+                height={size[1]}
                 // width={seatMap.size.width}
                 // height={seatMap.size.height}
                 color={seatMap.background}
