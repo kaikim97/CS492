@@ -5,8 +5,8 @@ module.exports = {
   theme: {
     backgroundColor: (theme) => ({
       ...theme("colors"),
-      R: "#F4AB67",
-      S: "#86CA67",
+      R: "#86CA67",
+      S: "#F4AB67",
       A: "#DFC66E",
       selected: "#3C68D8",
       reserved: "#808080",

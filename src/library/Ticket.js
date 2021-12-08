@@ -39,8 +39,15 @@ export default function Ticket(props) {
 
   const parseTime = (time) => {
     const amPm = time > 1200 ? "PM" : "AM";
-    const temp = time.slice(0, 2) + ":" + time.slice(2) + amPm;
-    return temp;
+    // const temp = time.slice(0, 2) + ":" + time.slice(2) + amPm;
+    // return temp;
+    if (time.slice(0, 1) * 1 == 0) {
+      return time.slice(1, 2) + ":" + time.slice(2, 4) + amPm;
+    } else if (time.slice(0, 2) * 1 > 12) {
+      return time.slice(0, 2) * 1 - 12 + ":" + time.slice(2, 4) + amPm;
+    } else {
+      return time.slice(0, 2) + ":" + time.slice(2, 4) + amPm;
+    }
   };
 
   return (
