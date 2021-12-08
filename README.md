@@ -133,6 +133,14 @@ src
       📓 CustomButton.js : 버튼 컴포넌트. width, name, disabled, onclick 를 props로 받는다. "예약조회" 를 제외한 모든 버튼에 이용됨.
 
       📓 Ticket.js : 예약 내역을 일정한 형태로 보여주는 컴포넌트. title, date, time, seats, price 을 props로 받는다. 예약 확인 및 개인정보 입력 화면, 예약 조회 화면에서 이용됨.
+      
+      
+      📓 api.js : server/routes에서 정의된 API들 및 네이버 OPEN API 호출 함수들을 정리함
+      
+      📓 context.js: 전역 상태 관리에 이용됨. 
+      
+      📓 apolloSetup.js: Apollo Client endpoint 설정, subscription을 호출했을 때만 WebSocket Link로 endpoint 설정 
+      
 
 #### MovieTable.js
 
