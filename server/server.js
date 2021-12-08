@@ -4,10 +4,8 @@ const cors = require("cors");
 const { createServer } = require("http");
 const { ApolloServer, gql } = require("apollo-server-express");
 const { execute, subscribe } = require("graphql");
-const { WebSocketLink } = require("@apollo/client/link/ws");
 const { SubscriptionServer } = require("subscriptions-transport-ws");
 const { PubSub } = require("graphql-subscriptions");
-const { makeExecutableSchema } = require("@graphql-tools/schema");
 
 const typeDefs = require("./graphql/typeDefs");
 const resolvers = require("./graphql/resolvers");
