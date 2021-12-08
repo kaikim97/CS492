@@ -1,26 +1,35 @@
+import logo from "./logo.svg";
 import "./App.css";
-import TimeTable from "./time/timeTable";
+import { AuthContext, AuthProvider } from "./context";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
+import TopBar from "./features/TopBar";
+import MovieTable from "./features/movieTable/MovieTable";
+import DateAndTimeTable from "./features/dateAndTimeTable/DateAndTimeTable";
+import PersonalInfo from "./PersonalInfo";
+import FindReservation from "./findReservation";
 
 function App() {
-  return (
-    // <div className="App">
-    //   <header className="App-header">
-    //     <img src={logo} className="App-logo" alt="logo" />
-    //     <p>
-    //       Edit <code>src/App.js</code> and save to reload.
-    //     </p>
-    //     <a
-    //       className="App-link"
-    //       href="https://reactjs.org"
-    //       target="_blank"
-    //       rel="noopener noreferrer"
-    //     >
-    //       Learn React
-    //     </a>
-    //   </header>
-    // </div>
+  // const navigate = useNavigate();
+  // const findReservation = () => {
+  //   navigate("/findReservation");
+  // };
 
-    <TimeTable />
+  return (
+    <AuthProvider>
+      <div className="App">
+        {/* <TopBar /> */}
+        {/* <TopBar function={findReservation} /> */}
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" exact element={<MovieTable />} />
+            <Route path="/movieInfo" element={<DateAndTimeTable />} />
+            <Route path="/findReservation" element={<FindReservation />} />
+          </Routes>
+        </BrowserRouter>
+      </div>
+    </AuthProvider>
   );
 }
 

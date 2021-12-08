@@ -1,24 +1,54 @@
-import "./PersonalInfo.css";
-import { useState } from "react";
+// import "./PersonalInfo.css";
+import { useEffect, useState, useContext } from "react";
+import { Link } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import Modal from "@mui/material/Modal";
+import Paper from "@mui/material/Paper";
+import api from "./api";
+import { AuthContext } from "./context.js";
+import CustomButton from "./library/CustomButton";
+import { useNavigate } from "react-router-dom";
+import Ticket from "./library/Ticket";
 
-export default function PersonalInfo() {
-  const [time, setTime] = useState("1230");
-  const [seat, setSeat] = useState(["F11", "F12"]);
+export default function PersonalInfo(props) {
+  const navigate = useNavigate();
+
+  const context = useContext(AuthContext);
+
+  const [birthday, setBirthday] = useState("");
   const [phone, setPhone] = useState("");
   const [pwd, setPwd] = useState("");
   const [pwdConfirm, setPwdConfirm] = useState("");
   const [done, setDone] = useState(false);
+  const [buttonDisabled, setButtonDisabled] = useState(true);
+  const [id, setId] = useState("");
+
+  const { open, setClose } = props;
+
+  useEffect(() => {
+    if (
+      phone.length >= 10 &&
+      pwd.length == 4 &&
+      pwdConfirm.length == 4 &&
+      pwd == pwdConfirm
+    ) {
+      setButtonDisabled(false);
+    } else {
+      setButtonDisabled(true);
+    }
+  }, [phone, pwd, pwdConfirm]);
 
   const handleChange = (event) => {
     switch (event.target.id) {
+      case "birthday":
+        setBirthday(event.target.value);
+        break;
       case "phone":
         setPhone(event.target.value);
         break;
       case "pwd":
         setPwd(event.target.value);
-
         break;
       case "pwdConfirm":
         setPwdConfirm(event.target.value);
@@ -30,107 +60,186 @@ export default function PersonalInfo() {
 
   const handleConfirm = () => {
     if (pwd === pwdConfirm) {
-      console.log("예약이 완료되었습니다.");
-      setDone(true);
+      const updateReservation = api
+        .updateReservationById(context.id, {
+          birth: birthday,
+          phone: phone,
+          password: pwd,
+          price: context.price,
+        })
+        .then((response) => {
+          if (response) {
+            // console.log(response.data);
+            console.log("예약이 완료되었습니다.");
+            setDone(true);
+          }
+        })
+        .catch((error) => {
+          alert("예약 시간 초과");
+          window.location.href = "/movieInfo";
+        });
     } else {
       console.log("비밀번호가 일치하지 않습니다.");
     }
   };
 
-  const parseTime = (time) => {
-    const temp = time.slice(0, 2) + ":" + time.slice(2);
-    return temp;
-  };
-
+  function goHome() {
+    navigate("/");
+  }
   return done ? (
     <div>
-      <p>{phone}님의 예약이 완료되었습니다.</p>
-      <p>시간: {parseTime(time)}</p>
-      <p>좌석: {seat.join(", ")}</p>
-      <Button
-        style={{
-          margin: "2vh 0",
-          backgroundColor: "lightGray",
-          fontSize: "16px",
-          width: "6vw",
-        }}
-      >
-        돌아가기
-      </Button>
+      <Modal open={open}>
+        <div class="overflow-y-scroll outline-none bg-white rounded-2xl text-gray-500 m-auto mt-8vh mb-12vh w-10/12 sm:w-6/12 h-80vh">
+          <div class="h-40p px-4vw pt-8vh ">
+            <Ticket
+              title={context.title}
+              date={context.date}
+              time={context.time.substring(0, 2) + context.time.substring(3, 5)}
+              seats={context.seats}
+              price={context.price}
+            />
+            <hr class="w-full  m-auto " />
+          </div>
+
+          <div class="h-45p relative px-4vw py-2vh ">
+            <div class="text-seat font-medium flex flex-col h-35p justify-between my-2vh px-2vw ">
+              <p>예약이 완료되었습니다.</p>
+              <p>예약번호 &nbsp;&nbsp;&nbsp;&nbsp; {context.id}</p>
+            </div>
+          </div>
+          <div class="w-full h-15p">
+            <div class="text-smallletter text-center w-85p m-auto  font-semibold text-gray-400 mb-1p">
+              예약 조회는 ‘예약 번호로 조회' 또는 ‘생년월일과 휴대폰 번호로
+              조회' 모두 가능합니다
+            </div>
+            <div class="w-full text-center m-auto">
+              <CustomButton
+                name="돌아가기"
+                disabled={buttonDisabled}
+                onClick={goHome}
+                width="w-85p "
+              />
+            </div>
+          </div>
+        </div>
+      </Modal>
     </div>
   ) : (
     <div>
-      <h3>예약 내역을 확인하고 개인정보를 입력해 주세요.</h3>
+      <Modal open={open}>
+        <div class="overflow-y-scroll outline-none bg-white rounded-2xl text-gray-500 m-auto mt-8vh mb-12vh w-7/12 sm:w-6/12 h-80vh">
+          <div class="h-40p px-4vw pt-8vh relative">
+            <button
+              class="w-30 py-3 text-4xl rounded-lg bg-white text-gray-500 absolute top-0 right-0 h-16 w-16"
+              type="submit"
+              onClick={setClose}
+            >
+              X
+            </button>
+            <Ticket
+              title={context.title}
+              date={context.date}
+              time={context.time}
+              seats={context.seats}
+              price={context.price}
+            />
+            <hr class="w-full  m-auto " />
+          </div>
 
-      <div id="check">
-        <h3>예약확인</h3>
-        <p>시간: {parseTime(time)}</p>
-        <p>좌석: {seat.join(", ")}</p>
-      </div>
+          <div class="h-45p relative px-4vw py-4vh ">
+            <div class="text-label font-semibold flex flex-col h-80p  justify-between my-2vh px-2vw ">
+              <div class="flex w-full items-center justify-between ">
+                <p class="">생년월일(6자리)</p>
+                <TextField
+                  id="birthday"
+                  placeholder="980918"
+                  value={birthday}
+                  onChange={handleChange}
+                  inputProps={{ maxLength: 11, style: { marginLeft: "1vw" } }}
+                  InputProps={{
+                    style: { fontSize: "min(1.4vw, 2.3vh)" },
+                  }}
+                  variant="standard"
+                  style={{ width: "60%" }}
+                />
+              </div>
+              <div class="flex w-full items-center justify-between ">
+                <p class="">휴대폰 번호</p>
+                <TextField
+                  id="phone"
+                  placeholder="01000000000"
+                  value={phone}
+                  onChange={handleChange}
+                  inputProps={{ maxLength: 11, style: { marginLeft: "1vw" } }}
+                  InputProps={{
+                    style: { fontSize: "min(1.4vw, 2.3vh)" },
+                  }}
+                  variant="standard"
+                  style={{ width: "60%" }}
+                />
+              </div>
+              <div class="flex w-full items-center justify-between ">
+                <p class="">비밀번호(4자리)</p>
+                <TextField
+                  id="pwd"
+                  placeholder="0000"
+                  type="password"
+                  value={pwd}
+                  onChange={handleChange}
+                  inputProps={{ maxLength: 11, style: { marginLeft: "1vw" } }}
+                  InputProps={{
+                    style: { fontSize: "min(1.4vw, 2.3vh)" },
+                  }}
+                  variant="standard"
+                  style={{ width: "60%" }}
+                />
+              </div>
+              <div class="flex w-full items-center justify-between ">
+                <p class="">비밀번호 확인</p>
+                <TextField
+                  id="pwdConfirm"
+                  placeholder="0000"
+                  type="password"
+                  value={pwdConfirm}
+                  onChange={handleChange}
+                  inputProps={{ maxLength: 11, style: { marginLeft: "1vw" } }}
+                  InputProps={{
+                    style: { fontSize: "min(1.4vw, 2.3vh)" },
+                  }}
+                  variant="standard"
+                  style={{ width: "60%" }}
+                />
+              </div>
+            </div>
+          </div>
 
-      <div id="enterInfo">
-        <h3 className="subtitle">개인정보 입력</h3>
-        <div className="textfield">
-          <h4 className="subtitle">휴대폰 번호</h4>
-          <TextField
-            id="phone"
-            value={phone}
-            onChange={handleChange}
-            inputProps={{ maxLength: 11 }}
-            size="small"
-          />
-        </div>
-        <div className="textfield">
-          <h4 className="subtitle">비밀번호(숫자 4자리)</h4>
-          <TextField
-            id="pwd"
-            type="password"
-            value={pwd}
-            onChange={handleChange}
-            inputProps={{ maxLength: 4 }}
-            size="small"
-          />
-        </div>
-        <div className="textfield">
-          <h4 className="subtitle">비밀번호 확인</h4>
-          <TextField
-            id="pwdConfirm"
-            type="password"
-            value={pwdConfirm}
-            onChange={handleChange}
-            inputProps={{ maxLength: 4 }}
-            size="small"
-          />
-        </div>
-      </div>
+          <p
+            class={`text-smallletter font-medium  text-center ${
+              pwd.length == 4 && pwdConfirm.length == 4 && pwd !== pwdConfirm
+                ? "text-red-600"
+                : "text-white"
+            }`}
+          >
+            {" "}
+            비밀번호가 일치하지 않습니다. 비밀번호를 확인해주세요
+          </p>
 
-      <div id="buttons">
-        <Button
-          disabled={
-            phone.length < 10 || pwd.length !== 4 || pwdConfirm.length !== 4
-          }
-          onClick={handleConfirm}
-          color="info"
-          style={{
-            backgroundColor: "lightGray",
-            margin: "0 2vw",
-            fontSize: "16px",
-            width: "6vw",
-          }}
-        >
-          확인
-        </Button>
-        <Button
-          style={{
-            backgroundColor: "lightGray",
-            margin: "0 2vw",
-            fontSize: "16px",
-            width: "6vw",
-          }}
-        >
-          돌아가기
-        </Button>
-      </div>
+          <div class="w-full h-15p text-center m-auto ">
+            <div class="text-smallletter w-85p m-auto  font-semibold text-gray-400 mb-1p">
+              예약 내역이 맞으시면 생년월일과 휴대폰 번호, 비밀번호를 입력 한 후
+              결제를 완료해주세요
+            </div>
+            <div class="w-full m-auto">
+              <CustomButton
+                name="결제하기"
+                disabled={buttonDisabled}
+                onClick={handleConfirm}
+                width="w-85p "
+              />
+            </div>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }

@@ -1,0 +1,75 @@
+#header {
+  font-size: min(1.7vw, 2.8vh);
+  margin-top: 8vh;
+  text-align: center;
+}
+#modalRoot {
+  margin-top: 8vh;
+  margin-bottom: 12vh;
+  margin-left: auto;
+  margin-right: auto;
+  height: 80vh;
+  width: 58vw;
+  background-color: white;
+  border-color: white;
+  border-radius: 1.5vw;
+  color: #6c6c6c;
+  outline: none;
+}
+#upperHalf {
+  text-align: left;
+  width: 52vw;
+  margin-left: 24vw;
+  margin-right: 24vw;
+  margin-top: 12vh;
+  margin-bottom: 8vh;
+}
+
+.label {
+  font-size: min(1.2vw, 2.1vh);
+  margin-bottom: 2.5vh;
+}
+
+#lowerHalf {
+  text-align: left;
+  width: 52vw;
+  margin-left: 24vw;
+  margin-right: 24vw;
+}
+
+#upperTextfield {
+  display: flex;
+  justify-content: space-between;
+}
+
+#upperLine {
+  display: flex;
+  width: 90%;
+  justify-content: space-between;
+  margin-bottom: 1.8vh;
+}
+
+#lowerLine {
+  display: flex;
+  justify-content: space-between;
+}
+
+#resInfo {
+  padding-left: 6vw;
+  padding-right: 6vw;
+  padding-top: 7vh;
+  padding-bottom: 7vh;
+}
+
+#resHeader {
+  padding-left: 6vw;
+  padding-right: 6vw;
+  padding-top: 7vh;
+  padding-bottom: 7vh;
+}
+
+#backButton {
+  margin-top: 10vh;
+  display: flex;
+  justify-content: center;
+}
