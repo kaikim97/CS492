@@ -9,24 +9,24 @@ export default function TimeTable({}) {
   const title = window.localStorage.getItem("title");
 
   const temp = [
-    { time: "08:00", seat: "" },
-    { time: "10:00", seat: "" },
-    { time: "12:00", seat: "" },
-    { time: "14:00", seat: "" },
-    { time: "16:00", seat: "" },
-    { time: "18:00", seat: "" },
-    { time: "20:00", seat: "" },
-    { time: "22:00", seat: "" },
+    { time: "0800", seat: "" },
+    { time: "1000", seat: "" },
+    { time: "1200", seat: "" },
+    { time: "1400", seat: "" },
+    { time: "1600", seat: "" },
+    { time: "1800", seat: "" },
+    { time: "2000", seat: "" },
+    { time: "2200", seat: "" },
   ];
   const times = [
-    "08:00",
-    "10:00",
-    "12:00",
-    "14:00",
-    "16:00",
-    "18:00",
-    "20:00",
-    "22:00",
+    "0800",
+    "1000",
+    "1200",
+    "1400",
+    "1600",
+    "1800",
+    "2000",
+    "2200",
   ];
 
   const [timeSeats, setTimeSeats] = useState(temp);
@@ -97,10 +97,12 @@ const TimeRow = ({ section, context }) => {
 };
 
 function changeTimeForm(time) {
-  if (time.slice(0, 2) * 1 > 12) {
-    return time.slice(0, 2) * 1 - 12 + ":00";
+  if (time.slice(0, 1) * 1 == 0) {
+    return time.slice(1, 2) + ":" + time.slice(2, 4);
+  } else if (time.slice(0, 2) * 1 > 12) {
+    return time.slice(0, 2) * 1 - 12 + ":" + time.slice(2, 4);
   } else {
-    return time;
+    return time.slice(0, 2) + ":" + time.slice(2, 4);
   }
 }
 

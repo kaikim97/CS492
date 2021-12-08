@@ -50,10 +50,6 @@ function Seat() {
   `;
   const { data, loading, error } = useSubscription(createSubscription);
 
-  const makeTimeNum = (time) => {
-    return time.split(":").join("");
-  };
-
   const closeModal = () => {
     setOpen(false);
     apis.deleteReservation(ctx.id).then((response) => {
@@ -75,7 +71,7 @@ function Seat() {
       .preoccupySeat({
         title: ctx.title,
         date: ctx.date,
-        time: makeTimeNum(ctx.time),
+        time: ctx.time,
         seats: selectedSeat,
       })
       .then((response) => {
@@ -113,9 +109,7 @@ function Seat() {
   useEffect(() => {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
-    const params = `title=${ctx.title}&date=${ctx.date}&time=${makeTimeNum(
-      ctx.time
-    )}`;
+    const params = `title=${ctx.title}&date=${ctx.date}&time=${ctx.time}`;
     // Initialize
     canvas.style.width = "100%";
     canvas.style.height = "100%";
@@ -211,7 +205,7 @@ function Seat() {
       if (
         ctx.title === realTimeData.info.title &&
         ctx.date === realTimeData.info.date &&
-        makeTimeNum(ctx.time) === realTimeData.info.time
+        ctx.time === realTimeData.info.time
       ) {
         const canvas = canvasRef.current;
         const context = canvas.getContext("2d");
@@ -365,9 +359,6 @@ function Seat() {
               </div>
             </div>
           ))}
-        </div>
-        <div>
-          {size[0]}x{size[1]}
         </div>
       </div>
       <div class="w-full flex-auto my-2p items-center ml-10  overflow-scroll ">
