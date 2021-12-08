@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 
 import DateTable from "./components/DateTable";
 import TimeTable from "./components/TimeTable";
-import Seat from "../../components/seat/seat";
+import Seat from "./components/Seat";
 import TopBar from "../TopBar";
 
 import { useContext } from "react";
@@ -32,7 +32,7 @@ const DateAndTimeTable = () => {
           <div class="w-80  xl:w-full h-full xl:h-1/4 relative bg-gradient-to-t bg-gray-300 from-black to-transparent ">
             <div class="h-full mix-blend-multiply ">
               <img
-                src={require(`../../components/movies/${title}.jpg`).default}
+                src={require(`../../data/movies/${title}.jpg`).default}
                 class=" h-full object-cover w-full"
               ></img>
             </div>

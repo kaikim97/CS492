@@ -5,11 +5,11 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Paper from "@mui/material/Paper";
-import api from "./api";
-import { AuthContext } from "./context.js";
-import CustomButton from "./library/CustomButton";
+import api from "../api";
+import { AuthContext } from "../context.js";
+import CustomButton from "../library/CustomButton";
 import { useNavigate } from "react-router-dom";
-import Ticket from "./library/Ticket";
+import Ticket from "../library/Ticket";
 
 export default function PersonalInfo(props) {
   const navigate = useNavigate();

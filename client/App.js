@@ -6,9 +6,9 @@ import { useNavigate } from "react-router-dom";
 
 import TopBar from "./features/TopBar";
 import MovieTable from "./features/movieTable/MovieTable";
-import DateAndTimeTable from "./features/dateAndTimeTable/DateAndTimeTable";
-import PersonalInfo from "./PersonalInfo";
-import FindReservation from "./findReservation";
+import DateAndTimeTable from "./features/dateTimeSeatTable/DateTimeSeatTable";
+// import PersonalInfo from "./features/PersonalInfo";
+import FindReservation from "./features/findReservation";
 
 function App() {
   // const navigate = useNavigate();

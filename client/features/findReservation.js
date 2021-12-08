@@ -1,12 +1,12 @@
 import { useState } from "react";
-import api from "./api";
+import api from "../api";
 import { Link } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import { Button, Modal } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import CustomButton from "./library/CustomButton";
+import CustomButton from "../library/CustomButton";
 // import "./FindReservation.css";
-import Ticket from "./library/Ticket";
+import Ticket from "../library/Ticket";
 
 export default function FindReservation() {
   const navigate = useNavigate();

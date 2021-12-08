@@ -6,11 +6,11 @@ import React, {
   useLayoutEffect,
 } from "react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
-import { AuthContext } from "../../context.js";
-import seatData from "./seats-kaist.json";
+import { AuthContext } from "../../../context.js";
+import seatData from "../../../data/seats-kaist.json";
 import { useNavigate } from "react-router-dom";
-import apis from "../../api";
-import CustomButton from "../../library/CustomButton.js";
+import apis from "../../../api";
+import CustomButton from "../../../library/CustomButton.js";
 import { useSubscription } from "@apollo/client";
 import { gql } from "@apollo/client";
 import PersonalInfo from "../../PersonalInfo.js";

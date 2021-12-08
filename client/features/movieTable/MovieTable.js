@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import MovieRating from "./MovieRating";
 import CustomButton from "../../library/CustomButton";
 
-import movie1 from "../../components/movies/듄.jpg";
-import movie2 from "../../components/movies/이터널스.jpg";
-import movie3 from "../../components/movies/베놈2.jpg";
-import movie4 from "../../components/movies/강릉.jpg";
+import movie1 from "../../data/movies/듄.jpg";
+import movie2 from "../../data/movies/이터널스.jpg";
+import movie3 from "../../data/movies/베놈2.jpg";
+import movie4 from "../../data/movies/강릉.jpg";
 
 import { useNavigate } from "react-router-dom";
 import api from "../../api.js";
