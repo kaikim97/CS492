@@ -176,13 +176,8 @@ function Seat() {
       reservedSeat.forEach((seat) => {
         context.lineJoin = "round";
         context.lineWidth = cornerRadius;
-        if (seat[1] == true) {
-          context.fillStyle = "#808080";
-          context.strokeStyle = "#808080";
-        } else {
-          context.fillStyle = "#c0c0c0";
-          context.strokeStyle = "#c0c0c0";
-        }
+        context.fillStyle = "#808080";
+        context.strokeStyle = "#808080";
 
         const [x, y] = codeToNum(seat[0]);
 
@@ -222,8 +217,8 @@ function Seat() {
         seats.forEach((seat) => {
           const seatColor = codeToColor(seat[0]);
           if (realTimeData.type === "create") {
-            context.fillStyle = "#c0c0c0";
-            context.strokeStyle = "#c0c0c0";
+            context.fillStyle = "#808080";
+            context.strokeStyle = "#808080";
             setRealSeat((realTimeSeat) => realTimeSeat.concat(seat));
             console.log(realTimeSeat);
           }
@@ -354,20 +349,6 @@ function Seat() {
               </div>
             </div>
           ))}
-        </div>
-        <div class="text-sm font-medium ml-2vh   text-gray-500 flex-initial flex xl:block">
-          <div class="flex mb-1">
-            <div
-              class={`  w-5 h-5  rounded-sm flex-initial mr-5 ${"bg-reserved"}`}
-            ></div>
-            <div class="flex-initial mr-6">예약좌석</div>
-          </div>
-          <div class="flex mb-1">
-            <div
-              class={`  w-5 h-5  rounded-sm flex-initial mr-5 ${"bg-preoccupied"}`}
-            ></div>
-            <div class="flex-initial mr-6">선점좌석</div>
-          </div>
         </div>
       </div>
       <div class="w-full flex-auto my-2p items-center ml-10  overflow-scroll ">

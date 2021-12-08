@@ -1,6 +1,20 @@
 const router = require("express").Router();
 const Reservation = require("../models/reservation");
 const Hall = require("../models/hall");
+const { gql, useMutation } = require("@apollo/client");
+const { request } = require("graphql-request");
+
+const deleteReservation = gql`
+  mutation Mutation($id: ID) {
+    deleteReservation(_id: $id) {
+      _id
+      title
+      date
+      time
+      seats
+    }
+  }
+`;
 
 // Find All
 router.get("/", (req, res) => {
@@ -115,7 +129,13 @@ router.delete("/:reservationId", (req, res) => {
             hall.occupied.delete(seatID);
           });
           hall.save();
-          return Reservation.deleteById(req.params.reservationId);
+          //Delete reservation obj
+          request("http://localhost:80/graphql", deleteReservation, {
+            id: req.params.reservationId,
+          })
+            .then((response) => console.log(response))
+            .catch((err) => console.log(err));
+          // return Reservation.deleteById(req.params.reservationId);
         })
         .then(() => res.sendStatus(200))
         .catch((err) => res.status(500).send(err));
