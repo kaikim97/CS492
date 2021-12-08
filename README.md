@@ -211,48 +211,53 @@ $ node server
 ### 서버 구성
 
 ```bash
+├── graphql
+│   ├── typeDefs.js
+│   └── resolvers.js
 ├── models
 │   ├── hall.js
 │   └── reservation.js
 ├── routes
 │   ├── halls.js
-│   ├── reservations.js
-│   └── movies.js
+│   └── reservations.js
 ├── server.js
 └── createData.js
 ```
+📁 graphql : graphql 스키마 정의
+      📓 typeDefs.js : Reservation, Mutation, Subscription 타입 정의
+      
+      📓 resolver.js : 예약 생성 및 삭제, subscription 함수 정의
 
 📁 models : 오브젝트 스키마 및 필요한 함수 생성
 
       📓 hall.js : 특정 공연, 날짜, 시간에 해당하는 공연장의 정보를 나타내는 스키마
-
+   
       📓 reservation.js : 예약 내역 정보를 나타내는 스키마
-
+    
 📁 routes : router 이용하여 서버 API상의 데이터 송/수신
 
       📓 halls.js : 공연장 정보 조회를 위한 API
-
+      
             GET /halls : 전체 공연 list 조회
             GET /halls/hall?title=:title&date=:date&time:time : 특정 공연 조회 (title, date, time query로 입력)
             GET /halls/available?title=:title&date=:date : 해당 제목, 날짜의 모든 공연의 (시간, 잔여좌석) 정보 조회 (title, date query로 입력)
             POST /halls : 새로운 공연 정보 DB에 등록 (title, date, time, available body로 입력)
-            DELETE /halls/hall?title=:title&date=:date&time:time : 특정 공연 DB에서 삭제 (title, date, time query로 입력)
+            DELETE /halls/hall?title=:title&date=:date&time:time : 특정 공연 DB에서 삭제 (title, date, time query로 입력)            
             POST /preoccupy : 공연장 및 좌석을 body로 받아 선점, 선점 후 개인정보 미등록시 5분뒤 삭제
             PUT /clear : body로 공연장 정보 받아 해당 공연장의 예약/선점정보 모두 삭제
-
+   
       📓 reservation.js : 예약 내역 생성, 조회를 위한 API
-
+      
             GET /reservations : 전체 예약 내역 조회
             GET /reservations/search?birth=:birth&phone=:phone&password=:password : 개인정보 및 비밀번호로 예약내역 조회 (query로 개인정보 및 비밀번호 입력)
             GET /reservations/:reservationId : 예약번호로 예약내역 조회 (예약번호 param으로 입력)
             POST /reservations : 새로운 예약 생성 및 생성된 예약 내역 반환 (개인정보 및 비밀번호 body로 전송)
             DELETE /reservations/:reservationId : 예약번호로 예약내역 삭제
-
-      📓 movies.js : 영화 정보 표시를 위한 네이버 오픈 API 연동
-
-📓 server.js : 서버 주소 설정, DB연결 등을 담당하는 서버 실행을 위한 가장 기본 Javascript 파일
+   
+📓 server.js : 서버 주소 설정, DB연결, Apollo 서버 설정, Subscription 서버 설정 등을 담당하는 서버 실행을 위한 가장 기본 Javascript 파일
 
 📓 createData.js : DB에 초기 공연장 정보 저장을 위한 Javascript 파일, 서버 실행과는 별개로 작동
+
 
 ## Browser Support
 
