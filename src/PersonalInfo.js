@@ -128,11 +128,18 @@ export default function PersonalInfo(props) {
     <div>
       <Modal open={open}>
         <div class="overflow-y-scroll outline-none bg-white rounded-2xl text-gray-500 m-auto mt-8vh mb-12vh w-7/12 sm:w-6/12 h-80vh">
-          <div class="h-40p px-4vw pt-8vh ">
+          <div class="h-40p px-4vw pt-8vh relative">
+            <button
+              class="w-30 py-3 text-4xl rounded-lg bg-white text-gray-500 absolute top-0 right-0 h-16 w-16"
+              type="submit"
+              onClick={setClose}
+            >
+              X
+            </button>
             <Ticket
               title={context.title}
               date={context.date}
-              time={context.time.substring(0, 2) + context.time.substring(3, 5)}
+              time={context.time}
               seats={context.seats}
               price={context.price}
             />

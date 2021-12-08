@@ -9,6 +9,8 @@ module.exports = {
       S: "#86CA67",
       A: "#DFC66E",
       selected: "#3C68D8",
+      reserved: "#808080",
+      preoccupied: "#c0c0c0",
     }),
     fontFamily: {
       sans: ["Noto Sans KR"],

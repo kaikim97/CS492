@@ -77,9 +77,12 @@
 │   │   └── DateTimeSeatTable.js
 │   ├── PersonalInfo.js
 │   └── FindReservation.js
-└── library
-    ├── CustomButton.js
-    └── Ticket.js
+├── library
+│   ├── CustomButton.js
+│   ├── Ticket.js
+├── api.js
+├── context.js
+└── apolloSetup.js
 ```
 
 📁 data : 이미지 또는 dummy data, json 파일을 저장하는 디렉토리
@@ -113,7 +116,7 @@
       📓 PersonalInfo.js : 영화, 날짜, 시간, 좌석 선택 후 예약을 위해 사용자의 개인정보를 입력받는 컴포넌트
 
       📓 FindReservation.js : 상단바의 "예약조회" 버튼을 누르면 나오는 화면에 관한 컴포넌트
-                              생년월일 / 휴대폰 번호 / 비밀번호 로 조회한 경우 모든 예약 내역을 보여줌.
+                              생년월일 / 휴대폰 번호 / 비밀번호 로 조회한 경우 해당하는 모든 예약 내역을 보여줌.
 
 📁 library : 반복되어 사용되는 기능의 라이브러리화
 

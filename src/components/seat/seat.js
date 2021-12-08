@@ -1,4 +1,10 @@
-import React, { useRef, useEffect, useContext, useState } from "react";
+import React, {
+  useRef,
+  useEffect,
+  useContext,
+  useState,
+  useLayoutEffect,
+} from "react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { AuthContext } from "../../context.js";
 import seatData from "./seats-kaist.json";
@@ -10,6 +16,24 @@ import { gql } from "@apollo/client";
 import PersonalInfo from "../../PersonalInfo.js";
 
 function Seat() {
+  const ctx = useContext(AuthContext);
+  const navigate = useNavigate();
+  const canvasRef = useRef(null);
+  const seatMap = seatData.map;
+  const seatInfo = seatData.seats;
+  const cornerRadius = 8;
+
+  const [realTimeSeat, setRealSeat] = useState([]);
+  const [selectedSeat, setSeat] = useState([]);
+  const [reservedSeat, modSeat] = useState([]);
+  const [upload, setLoad] = useState(false);
+  const [totalPrice, setPrice] = useState(0);
+  const [open, setOpen] = useState(false);
+  const [size, setSize] = useState([window.innerWidth, window.innerHeight]);
+
+  const resSeatRef = useRef(reservedSeat);
+  const realSeatRef = useRef(realTimeSeat);
+
   const createSubscription = gql`
     subscription subscription {
       reservationUpdated {
@@ -24,38 +48,7 @@ function Seat() {
       }
     }
   `;
-
   const { data, loading, error } = useSubscription(createSubscription);
-
-  if (data) {
-    console.log(data);
-  }
-  if (error) {
-    console.log(error.message);
-  }
-
-  const ctx = useContext(AuthContext);
-  const navigate = useNavigate();
-  const canvasRef = useRef(null);
-  const seatMap = seatData.map;
-  const seatInfo = seatData.seats;
-  const cornerRadius = 8;
-
-  seatInfo.forEach((seatgroup) => {
-    console.log(seatgroup.color, seatgroup.price);
-  });
-
-  const [selectedSeat, setSeat] = useState([]);
-  const [reservedSeat, modSeat] = useState([]);
-  const [upload, setLoad] = useState(false);
-  const [totalPrice, setPrice] = useState(0);
-  const [open, setOpen] = useState(false);
-
-  const resSeatRef = useRef(reservedSeat);
-
-  const makeTimeNum = (time) => {
-    return time.split(":").join("");
-  };
 
   const closeModal = () => {
     setOpen(false);
@@ -71,14 +64,14 @@ function Seat() {
   };
 
   const goNext = () => {
-    ctx.setSeats(selectedSeat);
+    ctx.setSeats(selectedSeat.sort());
     ctx.setPrice(totalPrice);
 
     const createReservation = apis
       .preoccupySeat({
         title: ctx.title,
         date: ctx.date,
-        time: makeTimeNum(ctx.time),
+        time: ctx.time,
         seats: selectedSeat,
       })
       .then((response) => {
@@ -87,7 +80,6 @@ function Seat() {
           ctx.setId(response.data._id);
           setOpen(true);
         } else {
-          // TODO: 이후 별도 창으로 띄워야함
           console.log("이미 선택된 좌석입니다");
         }
       });
@@ -106,13 +98,18 @@ function Seat() {
     return [x, y];
   };
 
+  const codeToColor = (code) => {
+    const row = code.charCodeAt(0) - 65;
+    if (row < 6) return "#86CA67";
+    else if (row < 12) return "#F4AB67";
+    else return "#DFC66E";
+  };
+
   // Draw seats
   useEffect(() => {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
-    const params = `title=${ctx.title}&date=${ctx.date}&time=${makeTimeNum(
-      ctx.time
-    )}`;
+    const params = `title=${ctx.title}&date=${ctx.date}&time=${ctx.time}`;
     // Initialize
     canvas.style.width = "100%";
     canvas.style.height = "100%";
@@ -124,12 +121,9 @@ function Seat() {
     setLoad(false);
 
     apis.getHallsByInfo(params).then((response) => {
-      // console.log(response.data);
       const occupied = response.data.occupied;
-      const resSeat = Object.entries(occupied)
-        .filter((s) => s[1] !== false)
-        .map((entrie, idx) => entrie[0]);
-      resSeatRef.current = resSeat;
+      const resSeat = Object.entries(occupied);
+      resSeatRef.current = resSeat.map((entrie, idx) => entrie[0]);
       modSeat((reservedSeat) => resSeat);
       setLoad(true);
     });
@@ -171,9 +165,9 @@ function Seat() {
       context.fillStyle = "black";
       context.fillText(String(i), 30 * i - 12, 12);
     }
-  }, [ctx.time]);
+  }, [size, ctx.time]);
 
-  // Draw reserved seats
+  // Draw occupied & reserved seats
   useEffect(() => {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
@@ -182,10 +176,10 @@ function Seat() {
       reservedSeat.forEach((seat) => {
         context.lineJoin = "round";
         context.lineWidth = cornerRadius;
-        context.fillStyle = "grey";
-        context.strokeStyle = "grey";
+        context.fillStyle = "#808080";
+        context.strokeStyle = "#808080";
 
-        const [x, y] = codeToNum(seat);
+        const [x, y] = codeToNum(seat[0]);
 
         context.strokeRect(
           x + cornerRadius / 2,
@@ -203,6 +197,61 @@ function Seat() {
     }
   }, [upload]);
 
+  // Draw realtime seats
+  useEffect(() => {
+    if (!loading) {
+      console.log(data.reservationUpdated);
+      const realTimeData = data.reservationUpdated;
+      if (
+        ctx.title === realTimeData.info.title &&
+        ctx.date === realTimeData.info.date &&
+        ctx.time === realTimeData.info.time
+      ) {
+        const canvas = canvasRef.current;
+        const context = canvas.getContext("2d");
+        const seats = realTimeData.info.seats;
+
+        context.lineJoin = "round";
+        context.lineWidth = cornerRadius;
+        console.log(realTimeSeat);
+        seats.forEach((seat) => {
+          const seatColor = codeToColor(seat[0]);
+          if (realTimeData.type === "create") {
+            context.fillStyle = "#808080";
+            context.strokeStyle = "#808080";
+            setRealSeat((realTimeSeat) => realTimeSeat.concat(seat));
+            console.log(realTimeSeat);
+          }
+          if (realTimeData.type === "delete") {
+            context.fillStyle = seatColor;
+            context.strokeStyle = seatColor;
+            setRealSeat((realTimeSeat) =>
+              realTimeSeat.filter((s) => s !== seat)
+            );
+          }
+          const [x, y] = codeToNum(seat);
+          context.strokeRect(
+            x + cornerRadius / 2,
+            y + cornerRadius / 2,
+            20 - cornerRadius,
+            20 - cornerRadius
+          );
+          context.fillRect(
+            x + cornerRadius / 2,
+            y + cornerRadius / 2,
+            20 - cornerRadius,
+            20 - cornerRadius
+          );
+        });
+        // console.log(realTimeSeat);
+      }
+    }
+  }, [data]);
+
+  useEffect(() => {
+    realSeatRef.current = realTimeSeat;
+  }, [realTimeSeat]);
+
   // Manage click event
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -212,6 +261,7 @@ function Seat() {
       "click",
       function (e) {
         const resSeat = resSeatRef.current;
+        const realTimeSeat = realSeatRef.current;
         // Get x, y coordinates
         var x = e.offsetX;
         var y = e.offsetY;
@@ -230,7 +280,11 @@ function Seat() {
               // Alphabet : A ~ S
               // Number   : 1 ~ 29
               const seatNum = numToCode(seat.lefttop.x, seat.lefttop.y);
-              if (!resSeat.includes(seatNum)) {
+              console.log(realTimeSeat);
+              if (
+                !resSeat.includes(seatNum) &&
+                !realTimeSeat.includes(seatNum)
+              ) {
                 if (seat.available) {
                   context.fillStyle = "#3C68D8";
                   context.strokeStyle = "#3C68D8";
@@ -276,6 +330,16 @@ function Seat() {
     return () => window.removeEventListener("popstate", handleEvent);
   });
 
+  // Manage canvas size when window is resized
+  useLayoutEffect(() => {
+    function updateSize() {
+      setSize([window.innerWidth, window.innerHeight]);
+    }
+    window.addEventListener("resize", updateSize);
+    updateSize();
+    return () => window.removeEventListener("resize", updateSize);
+  }, []);
+
   return (
     <div class=" flex flex-col h-full overflow-scroll">
       <div class=" flex items-center flex-auto flex-shrink-0 my-2p">
@@ -309,8 +373,8 @@ function Seat() {
               <canvas
                 id="seats"
                 ref={canvasRef}
-                width={window.innerWidth}
-                height={window.innerHeight}
+                width={size[0]}
+                height={size[1]}
                 // width={seatMap.size.width}
                 // height={seatMap.size.height}
                 color={seatMap.background}
@@ -323,7 +387,7 @@ function Seat() {
       <div class=" w-full flex-auto py-2p flex-shrink-0 flex-grow-0 flex  ">
         <div class="w-97/100  mx-auto  py-1p h-full flex  bg-white font-bold rounded-lg items-center">
           <div class="text-md md:text-xl text-left text-gray-500 w-4/12  overflow-x-scroll flex ml-10 mr-10 flex-initial">
-            {selectedSeat.map((seat) => (
+            {selectedSeat.sort().map((seat) => (
               <div>
                 <div class="mr-2 align-middle">{seat}</div>
               </div>
@@ -337,8 +401,12 @@ function Seat() {
             {parseInt(totalPrice / 1000) + ",000"}원
           </div>
 
-          <CustomButton name="예약하기" disabled={selectedSeat.length == 0} />
-
+          <CustomButton
+            name="예약하기"
+            disabled={selectedSeat.length == 0}
+            onClick={goNext}
+            width="w-40 "
+          />
           <PersonalInfo open={open} setClose={closeModal} />
         </div>
       </div>
