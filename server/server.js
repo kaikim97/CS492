@@ -5,10 +5,10 @@ const { createServer } = require("http");
 const { ApolloServer, gql } = require("apollo-server-express");
 const { execute, subscribe } = require("graphql");
 const { SubscriptionServer } = require("subscriptions-transport-ws");
-const { PubSub } = require("graphql-subscriptions");
-
+const { makeExecutableSchema } = require("@graphql-tools/schema");
 const typeDefs = require("./graphql/typeDefs");
 const resolvers = require("./graphql/resolvers");
+
 
 const MONGO_URI =
   "mongodb+srv://admin:admin12345@cluster0.pzm0h.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
