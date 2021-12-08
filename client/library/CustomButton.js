@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 export default function CustomButton(props) {
   const { name, disabled, onClick, width } = props;

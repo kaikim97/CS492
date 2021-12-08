@@ -1,10 +1,7 @@
 // import "./PersonalInfo.css";
 import { useEffect, useState, useContext } from "react";
-import { Link } from "react-router-dom";
 import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
-import Paper from "@mui/material/Paper";
 import api from "../api";
 import { AuthContext } from "../context.js";
 import CustomButton from "../library/CustomButton";
@@ -69,7 +66,6 @@ export default function PersonalInfo(props) {
         })
         .then((response) => {
           if (response) {
-            // console.log(response.data);
             console.log("예약이 완료되었습니다.");
             setDone(true);
           }

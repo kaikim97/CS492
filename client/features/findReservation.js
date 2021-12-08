@@ -5,7 +5,6 @@ import TextField from "@mui/material/TextField";
 import { Button, Modal } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import CustomButton from "../library/CustomButton";
-// import "./FindReservation.css";
 import Ticket from "../library/Ticket";
 
 export default function FindReservation() {
@@ -16,10 +15,6 @@ export default function FindReservation() {
   const [pwd, setPwd] = useState("");
   const [data, setData] = useState(null);
   const [open, setOpen] = useState(false);
-
-  // const temp = api.getAllReservations().then((response) => {
-  //   console.log(response.data);
-  // });
 
   const handleChange = (event) => {
     switch (event.target.id) {
