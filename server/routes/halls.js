@@ -140,7 +140,7 @@ router.post("/preoccupy", (req, res) => {
                     }
                   })
                   .catch((err) => console.log(err));
-              }, 10 * 1000);
+              }, 5 * 60 * 1000);
             })
             .catch((err) => {
               res.status(500).send({ err: "failed to save hall" });
