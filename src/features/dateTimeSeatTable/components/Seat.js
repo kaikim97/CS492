@@ -215,7 +215,7 @@ function Seat() {
 
         context.lineJoin = "round";
         context.lineWidth = cornerRadius;
-        console.log(realTimeSeat);
+        console.log("realtime", realTimeSeat);
         seats.forEach((seat) => {
           const seatColor = codeToColor(seat[0]);
           if (realTimeData.type === "create") {
@@ -227,9 +227,13 @@ function Seat() {
           if (realTimeData.type === "delete") {
             context.fillStyle = seatColor;
             context.strokeStyle = seatColor;
+
+            modSeat((reservedSeat) => reservedSeat.filter((s) => s[1]));
             setRealSeat((realTimeSeat) =>
               realTimeSeat.filter((s) => s !== seat)
             );
+            console.log("reserved", reservedSeat);
+            console.log("delete");
           }
           const [x, y] = codeToNum(seat);
           context.strokeRect(
@@ -252,6 +256,7 @@ function Seat() {
 
   useEffect(() => {
     realSeatRef.current = realTimeSeat;
+    resSeatRef.current = reservedSeat.map((entrie, idx) => entrie[0]);
   }, [realTimeSeat]);
 
   // Manage click event
@@ -283,6 +288,7 @@ function Seat() {
               // Number   : 1 ~ 29
               const seatNum = numToCode(seat.lefttop.x, seat.lefttop.y);
               console.log(realTimeSeat);
+              console.log(resSeat);
               if (
                 !resSeat.includes(seatNum) &&
                 !realTimeSeat.includes(seatNum)

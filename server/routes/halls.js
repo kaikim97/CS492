@@ -89,11 +89,12 @@ router.post("/preoccupy", (req, res) => {
           err: "Hall not found",
         });
       //Check if any of the selected seats are preoccupied or reserved.
-      seats.forEach(function (seatID) {
+      for (var seatID in seats) {
         if (hall.occupied.has(seatID)) {
           return res.status(404).send({ err: "Preoccupied or reserved seat" });
         }
-      });
+      }
+
       //Create reservation object and append to occupied map.
       request("http://localhost:80/graphql", createReservation, {
         title: title,
@@ -112,6 +113,34 @@ router.post("/preoccupy", (req, res) => {
             .save()
             .then((savedHall) => {
               res.send(reservation.createReservation);
+              //Cancel preoccupancy if the seats are not reserved within 5 min.
+              setTimeout(async function () {
+                Reservation.findOneById(rv_id)
+                  .then((rv) => {
+                    if (!rv)
+                      return res
+                        .status(404)
+                        .send({ err: "Reservation not found" });
+                    if (rv.birth === "") {
+                      hall.available = hall.available + req.body.seats.length;
+                      req.body.seats.forEach(function (seatID) {
+                        hall.occupied.delete(seatID);
+                      });
+                      hall.save();
+                      //Delete reservation obj
+                      request(
+                        "http://localhost:80/graphql",
+                        deleteReservation,
+                        {
+                          id: rv_id,
+                        }
+                      )
+                        .then((response) => console.log(response))
+                        .catch((err) => console.log(err));
+                    }
+                  })
+                  .catch((err) => console.log(err));
+              }, 10 * 1000);
             })
             .catch((err) => {
               res.status(500).send({ err: "failed to save hall" });
@@ -120,36 +149,11 @@ router.post("/preoccupy", (req, res) => {
         .catch((err) => {
           res.status(500).send({ err: "failed to create reservation" });
         });
-
-      //Cancel preoccupancy if the seats are not reserved within 5 min.
-      setTimeout(async function () {
-        Reservation.findOneById(rv_id)
-          .then((rv) => {
-            if (!rv)
-              return res.status(404).send({ err: "Reservation not found" });
-            if (rv.birth === "") {
-              hall.available = hall.available + req.body.seats.length;
-              req.body.seats.forEach(function (seatID) {
-                hall.occupied.delete(seatID);
-              });
-              hall.save();
-              //Delete reservation obj
-              request("http://localhost:80/graphql", deleteReservation, {
-                id: rv_id,
-              })
-                .then((response) => console.log(response))
-                .catch((err) => console.log(err));
-            }
-          })
-          .catch((err) => console.log(err));
-      }, 5*60*1000);
     })
     .catch((err) => {
       res.status(500).send({ err: "failed to find hall" });
     });
 });
-
-
 
 // [DB management]
 
